@@ -28,6 +28,9 @@
    that are ready to run but not actually running. */
 static struct list ready_list;
 
+static struct list sleep_list;
+static int64_t next_tick_to_awake = INT64_MAX;
+
 /* Idle thread. */
 static struct thread *idle_thread;
 
@@ -58,7 +61,7 @@ static void kernel_thread (thread_func *, void *aux);
 
 static void idle (void *aux UNUSED);
 static struct thread *next_thread_to_run (void);
-static void init_thread (struct thread *, const char *name, int priority);
+static void init_thread (struct thread *, const char *name, int priority, int wakeup_tick);
 static void do_schedule(int status);
 static void schedule (void);
 static tid_t allocate_tid (void);
@@ -108,11 +111,12 @@ thread_init (void) {
 	/* Init the globla thread context */
 	lock_init (&tid_lock);
 	list_init (&ready_list);
+	list_init (&sleep_list);
 	list_init (&destruction_req);
 
 	/* Set up a thread structure for the running thread. */
 	initial_thread = running_thread ();
-	init_thread (initial_thread, "main", PRI_DEFAULT);
+	init_thread (initial_thread, "main", PRI_DEFAULT, 0);
 	initial_thread->status = THREAD_RUNNING;
 	initial_thread->tid = allocate_tid ();
 }
@@ -190,7 +194,7 @@ thread_create (const char *name, int priority,
 		return TID_ERROR;
 
 	/* Initialize thread. */
-	init_thread (t, name, priority);
+	init_thread (t, name, priority, 0);
 	tid = t->tid = allocate_tid ();
 
 	/* Call the kernel_thread if it scheduled.
@@ -308,6 +312,57 @@ thread_yield (void) {
 	intr_set_level (old_level);
 }
 
+
+void thread_sleep(int64_t ticks) {
+	struct thread *curr = thread_current ();
+	enum intr_level old_level;
+
+	ASSERT (!intr_context ());
+
+	old_level = intr_disable ();
+	if (curr != idle_thread) {
+		curr->wakeup_tick = ticks; 
+		list_push_back (&sleep_list, &curr->elem);
+		if (ticks < get_next_tick_to_awake())
+			update_next_tick_to_awake(ticks);
+	}
+	do_schedule (THREAD_BLOCKED);
+	intr_set_level (old_level);
+}
+
+void thread_awake(int64_t ticks) {
+	if (list_empty (&sleep_list))
+		return idle_thread;
+	else {
+		struct list_elem *temp = list_front(&sleep_list);
+		int64_t min_value = INT64_MAX;
+		while (temp != list_tail(&sleep_list)) {
+			struct thread *cur = list_entry(temp, struct thread, elem);
+			if (cur->wakeup_tick <= ticks) {
+				cur->status = THREAD_READY;
+				list_push_back (&ready_list, &cur->elem);
+				list_remove(temp);
+			} else {
+				if (cur->wakeup_tick < min_value) {
+					min_value = cur->wakeup_tick;
+				}
+			}
+			palloc_free_page(cur);
+			temp = temp->next;
+		}
+		update_next_tick_to_awake(min_value);
+	}
+		// return list_entry (list_pop_front (&sleep_list), struct thread, elem);
+}
+
+void update_next_tick_to_awake(int64_t ticks) {
+	next_tick_to_awake = ticks;
+}
+
+int64_t get_next_tick_to_awake(void) {
+	return next_tick_to_awake;
+}
+
 /* Sets the current thread's priority to NEW_PRIORITY. */
 void
 thread_set_priority (int new_priority) {
@@ -398,7 +453,7 @@ kernel_thread (thread_func *function, void *aux) {
 /* Does basic initialization of T as a blocked thread named
    NAME. */
 static void
-init_thread (struct thread *t, const char *name, int priority) {
+init_thread (struct thread *t, const char *name, int priority, int wakeup_tick) {
 	ASSERT (t != NULL);
 	ASSERT (PRI_MIN <= priority && priority <= PRI_MAX);
 	ASSERT (name != NULL);
@@ -408,6 +463,7 @@ init_thread (struct thread *t, const char *name, int priority) {
 	strlcpy (t->name, name, sizeof t->name);
 	t->tf.rsp = (uint64_t) t + PGSIZE - sizeof (void *);
 	t->priority = priority;
+	t->wakeup_tick = wakeup_tick;
 	t->magic = THREAD_MAGIC;
 }
 
