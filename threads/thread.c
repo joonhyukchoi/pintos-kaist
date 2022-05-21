@@ -336,20 +336,60 @@ void thread_awake(int64_t ticks) {
 	else {
 		struct list_elem *temp = list_front(&sleep_list);
 		int64_t min_value = INT64_MAX;
+		printf("sleep list count = %d\n", list_size(&sleep_list));
+		struct list_elem *e;
+		for (e = list_begin (&sleep_list); e != list_end (&sleep_list); e = list_next (e)) {
+			struct thread *cur = list_entry(e, struct thread, elem);
+			printf("sleep list >> %d #%d\n", cur->wakeup_tick, cur->tid);
+		}
 		while (temp != list_tail(&sleep_list)) {
 			struct thread *cur = list_entry(temp, struct thread, elem);
+			// if (cur -> tid == 1) {
+			// 	temp = temp->next;
+			// 	continue;
+			// }
+			// if (cur -> tid == 0) {
+			// 	break;
+			// }
+			printf("%d : sleep list %d #%d\n", timer_ticks (), cur->wakeup_tick, cur->tid);
 			if (cur->wakeup_tick <= ticks) {
-				cur->status = THREAD_READY;
+				printf("일어나! %d  #%d\n", cur->wakeup_tick, cur->tid);
+				temp = list_remove(temp);
 				list_push_back (&ready_list, &cur->elem);
-				list_remove(temp);
+				cur->status = THREAD_READY;
 			} else {
+				printf("아직 자는중! %d  #%d\n", cur->wakeup_tick, cur->tid);
 				if (cur->wakeup_tick < min_value) {
 					min_value = cur->wakeup_tick;
 				}
+				temp = list_next(temp);
 			}
-			palloc_free_page(cur);
-			temp = temp->next;
+			// palloc_free_page(cur);
 		}
+		printf("while문 끝!--\n");
+		for (e = list_begin (&sleep_list); e != list_end (&sleep_list); e = list_next (e)) {
+			struct thread *cur = list_entry(e, struct thread, elem);
+			printf("sleep list >> %d #%d\n", cur->wakeup_tick, cur->tid);
+		}
+		printf("while문 끝!---\n");
+		// struct list_elem *cur_list, *next_list;
+		// cur_list = list_begin(&sleep_list);
+		// while ((next_list = list_next (cur_list)) != list_end (&sleep_list)) {
+		// 	struct thread *cur = list_entry(next_list, struct thread, elem);
+		// 	if (cur->wakeup_tick <= ticks) {
+		// 		printf("일어나! %d  #%d\n", cur->wakeup_tick, cur->tid);
+		// 		cur->status = THREAD_READY;
+		// 		list_push_back (&ready_list, next_list);
+		// 		list_remove(next_list);
+		// 	} else {
+		// 		printf("아직 자는중! %d  #%d\n", cur->wakeup_tick, cur->tid);
+		// 		if (cur->wakeup_tick < min_value) {
+		// 			min_value = cur->wakeup_tick;
+		// 		}
+		// 		cur_list = next_list;
+		// 	}
+		// 	palloc_free_page(cur);
+		// }
 		update_next_tick_to_awake(min_value);
 	}
 		// return list_entry (list_pop_front (&sleep_list), struct thread, elem);
