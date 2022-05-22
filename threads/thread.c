@@ -211,7 +211,23 @@ thread_create (const char *name, int priority,
 	/* Add to run queue. */
 	thread_unblock (t);
 
+  // * 추가 코드
+  if (cmp_priority(&t->elem, &thread_current()->elem, t))
+    thread_yield();
+
 	return tid;
+}
+
+// * cmp_priority 추가
+bool
+cmp_priority (const struct list_elem *a, const struct list_elem *b, void *aux UNUSED) {
+  int priorityA = list_entry(a, struct thread, elem)->priority;
+  int priorityB = list_entry(b, struct thread, elem)->priority;
+
+  if (priorityB < priorityA)
+    return 1;
+  return 0;
+  
 }
 
 /* Puts the current thread to sleep.  It will not be scheduled
@@ -244,7 +260,9 @@ thread_unblock (struct thread *t) {
 
 	old_level = intr_disable ();
 	ASSERT (t->status == THREAD_BLOCKED);
-	list_push_back (&ready_list, &t->elem);
+	// list_push_back (&ready_list, &t->elem);
+  // * 추가 코드
+  list_insert_ordered(&ready_list, &t->elem, cmp_priority, NULL);
 	t->status = THREAD_READY;
 	intr_set_level (old_level);
 }
@@ -307,7 +325,8 @@ thread_yield (void) {
 
 	old_level = intr_disable ();
 	if (curr != idle_thread)
-		list_push_back (&ready_list, &curr->elem);
+    list_insert_ordered(&ready_list, &curr->elem, cmp_priority, NULL);
+  // list_push_back (&ready_list, &curr->elem);
 	do_schedule (THREAD_READY);
 	intr_set_level (old_level);
 }
@@ -336,11 +355,11 @@ void thread_awake(int64_t ticks) {
 	else {
 		struct list_elem *temp = list_front(&sleep_list);
 		int64_t min_value = INT64_MAX;
-		
+
 		while (temp != list_tail(&sleep_list)) {
 			struct thread *cur = list_entry(temp, struct thread, elem);
 			if (cur->wakeup_tick <= ticks) {
-				temp = list_remove(temp);
+			  temp = list_remove(temp);
 				list_push_back (&ready_list, &cur->elem);
 				cur->status = THREAD_READY;
 			} else {
@@ -366,6 +385,10 @@ int64_t get_next_tick_to_awake(void) {
 void
 thread_set_priority (int new_priority) {
 	thread_current ()->priority = new_priority;
+  // * 추가 코드
+  
+  if (!list_empty(&ready_list) && (cmp_priority(&thread_current()->elem, list_front(&ready_list), NULL)))
+    thread_yield();
 }
 
 /* Returns the current thread's priority. */
