@@ -7,18 +7,11 @@ Pintos booting with:
 Calibrating timer...  157,081,600 loops/s.
 Boot complete.
 Executing 'mlfqs-block':
-(mlfqs-block) begin
-(mlfqs-block) Main thread acquiring lock.
-(mlfqs-block) Main thread creating block thread, sleeping 25 seconds...
-(mlfqs-block) Block thread spinning for 20 seconds...
-(mlfqs-block) Block thread acquiring lock...
-(mlfqs-block) Main thread spinning for 5 seconds...
-(mlfqs-block) Main thread releasing lock.
-(mlfqs-block) Block thread should have already acquired lock.
-(mlfqs-block) end
-Execution of 'mlfqs-block' complete.
-Timer: 3025 ticks
-Thread: 500 idle ticks, 2525 kernel ticks, 0 user ticks
-Console: 794 characters output
-Keyboard: 0 keys pressed
-Powering off...
+Kernel PANIC at ../../tests/threads/tests.c:60 in run_test(): no test named "mlfqs-block"
+Call stack: 0x8004213592 0x8004216a40 0x8004206636 0x8004206783 0x8004206120.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 23 ticks
+Thread: 0 idle ticks, 23 kernel ticks, 0 user ticks
+Console: 

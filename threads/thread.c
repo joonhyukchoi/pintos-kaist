@@ -386,8 +386,7 @@ void
 thread_set_priority (int new_priority) {
 	thread_current ()->priority = new_priority;
   // * 추가 코드
-  
-  if (!list_empty(&ready_list) && (cmp_priority(&thread_current()->elem, list_front(&ready_list), NULL)))
+  if (!list_empty(&ready_list) && (cmp_priority(list_front(&ready_list), &thread_current()->elem, NULL)))
     thread_yield();
 }
 
