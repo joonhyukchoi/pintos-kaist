@@ -130,7 +130,6 @@ timer_interrupt (struct intr_frame *args UNUSED) {
 	thread_tick ();
 
 	if (ticks >= get_next_tick_to_awake()) {
-		printf("thread awake in timer interrupt %d\n", ticks);
 		thread_awake(ticks);
 	} 
 }
