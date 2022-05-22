@@ -212,8 +212,7 @@ thread_create (const char *name, int priority,
 	thread_unblock (t);
 
   // * 추가 코드
-  if (cmp_priority(&t->elem, &thread_current()->elem, t))
-    thread_yield();
+  test_max_priority();
 
 	return tid;
 }
@@ -228,6 +227,15 @@ cmp_priority (const struct list_elem *a, const struct list_elem *b, void *aux UN
     return 1;
   return 0;
   
+}
+
+// * test_max_priority() 함수 추가
+void test_max_priority (void) {
+
+  // * 추가 코드
+  if (cmp_priority(list_begin(&ready_list), &thread_current()->elem, NULL))
+    thread_yield();
+
 }
 
 /* Puts the current thread to sleep.  It will not be scheduled
@@ -386,8 +394,7 @@ void
 thread_set_priority (int new_priority) {
 	thread_current ()->priority = new_priority;
   // * 추가 코드
-  if (!list_empty(&ready_list) && (cmp_priority(list_front(&ready_list), &thread_current()->elem, NULL)))
-    thread_yield();
+  test_max_priority();
 }
 
 /* Returns the current thread's priority. */
