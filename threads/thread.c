@@ -392,11 +392,12 @@ int64_t get_next_tick_to_awake(void) {
 void donate_priority(void) {
 	struct thread *cur = thread_current();
 	int depth = 0;
+  int priority = cur->priority;
 	
-	while ((cur->wait_on_lock != NULL) && (cur->wait_on_lock->holder != NULL) && (depth < 8)) {
+	while ((cur->wait_on_lock != NULL) && (depth < 8)) {
 		struct thread *nest_thread = cur->wait_on_lock->holder;
-		if (nest_thread->priority < cur->priority) {
-			nest_thread->priority = cur->priority;
+		if (nest_thread->priority < priority) {
+    nest_thread->priority = priority;
 		}
 		cur = nest_thread;
 		depth++;
@@ -427,25 +428,24 @@ void refresh_priority(void) {
 
 	struct list *cur_list = &cur->donations;
 	int max_priority = cur->priority;
-
 	if(!list_empty(cur_list)) {
 		struct list_elem *cur_elem = list_front(cur_list);
 		while (cur_elem != list_tail(cur_list)) {
 			struct thread *target_thread = list_entry(cur_elem, struct thread, donation_elem);
-
-			if (max_priority < target_thread->priority)
+			if (max_priority < target_thread->priority) {
 				max_priority = target_thread->priority;
+      }
 				
 			cur_elem = list_next(cur_elem);
 		}
+    cur->priority = max_priority;
 	}
-	cur->priority = max_priority;
 }
 
 /* Sets the current thread's priority to NEW_PRIORITY. */
 void
 thread_set_priority (int new_priority) {
-	thread_current ()->priority = new_priority;
+	thread_current ()->init_priority = new_priority;
 	// * 추가 코드
 	refresh_priority();
 	donate_priority();

@@ -10,26 +10,26 @@ Executing 'priority-fifo':
 (priority-fifo) begin
 (priority-fifo) 16 threads will iterate 16 times in the same order each time.
 (priority-fifo) If the order varies then there is a bug.
-(priority-fifo) iteration: 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-(priority-fifo) iteration: 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
-(priority-fifo) iteration: 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
-(priority-fifo) iteration: 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3 3
-(priority-fifo) iteration: 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
-(priority-fifo) iteration: 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
-(priority-fifo) iteration: 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6
-(priority-fifo) iteration: 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7
-(priority-fifo) iteration: 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8
-(priority-fifo) iteration: 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9 9
-(priority-fifo) iteration: 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10 10
-(priority-fifo) iteration: 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11 11
-(priority-fifo) iteration: 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12
-(priority-fifo) iteration: 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13 13
-(priority-fifo) iteration: 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14 14
-(priority-fifo) iteration: 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+(priority-fifo) iteration: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
 (priority-fifo) end
 Execution of 'priority-fifo' complete.
-Timer: 34 ticks
-Thread: 0 idle ticks, 34 kernel ticks, 0 user ticks
+Timer: 30 ticks
+Thread: 0 idle ticks, 30 kernel ticks, 0 user ticks
 Console: 1597 characters output
 Keyboard: 0 keys pressed
 Powering off...
