@@ -389,12 +389,67 @@ int64_t get_next_tick_to_awake(void) {
 	return next_tick_to_awake;
 }
 
+void donate_priority(void) {
+	struct thread *cur = thread_current();
+	int depth = 0;
+	
+	while ((cur->wait_on_lock != NULL) && (cur->wait_on_lock->holder != NULL) && (depth < 8)) {
+		struct thread *nest_thread = cur->wait_on_lock->holder;
+		if (nest_thread->priority < cur->priority) {
+			nest_thread->priority = cur->priority;
+		}
+		cur = nest_thread;
+		depth++;
+	}
+}
+
+void remove_with_lock(struct lock *lock) {
+	struct thread *cur = thread_current();
+	struct list *cur_list = &cur->donations;
+	
+	if (!list_empty(cur_list)) {
+		struct list_elem *cur_elem = list_front(cur_list);
+		while (cur_elem != list_tail(cur_list)) {
+			struct thread *target_thread = list_entry(cur_elem, struct thread, donation_elem);
+
+			if (target_thread->wait_on_lock == lock) {
+				cur_elem = list_remove(&target_thread->donation_elem);
+			} else {
+				cur_elem = list_next(cur_elem);
+			}
+		}
+	}
+}
+
+void refresh_priority(void) {
+	struct thread *cur = thread_current();
+	cur->priority = cur->init_priority;
+
+	struct list *cur_list = &cur->donations;
+	int max_priority = cur->priority;
+
+	if(!list_empty(cur_list)) {
+		struct list_elem *cur_elem = list_front(cur_list);
+		while (cur_elem != list_tail(cur_list)) {
+			struct thread *target_thread = list_entry(cur_elem, struct thread, donation_elem);
+
+			if (max_priority < target_thread->priority)
+				max_priority = target_thread->priority;
+				
+			cur_elem = list_next(cur_elem);
+		}
+	}
+	cur->priority = max_priority;
+}
+
 /* Sets the current thread's priority to NEW_PRIORITY. */
 void
 thread_set_priority (int new_priority) {
 	thread_current ()->priority = new_priority;
-  // * 추가 코드
-  test_max_priority();
+	// * 추가 코드
+	refresh_priority();
+	donate_priority();
+	test_max_priority();
 }
 
 /* Returns the current thread's priority. */
@@ -491,6 +546,9 @@ init_thread (struct thread *t, const char *name, int priority, int wakeup_tick) 
 	strlcpy (t->name, name, sizeof t->name);
 	t->tf.rsp = (uint64_t) t + PGSIZE - sizeof (void *);
 	t->priority = priority;
+	t->init_priority = priority;
+	t->wait_on_lock = NULL;
+	list_init(&t->donations);
 	t->wakeup_tick = wakeup_tick;
 	t->magic = THREAD_MAGIC;
 }
