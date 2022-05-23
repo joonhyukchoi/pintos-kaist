@@ -93,7 +93,10 @@ struct thread {
 	char name[16];                      /* Name (for debugging purposes). */
 	int priority;                       /* Priority. */
 	int wakeup_tick;					/* Wake up tick */
-
+	int init_priority;					/* initial priority before priority donation */
+	struct lock *wait_on_lock;			/* lock, thread waiting for */
+	struct list donations;				/* list for multi donation */
+	struct list_elem donation_elem;		/* list_elem for donation list */
 	/* Shared between thread.c and synch.c. */
 	struct list_elem elem;              /* List element. */
 
@@ -153,5 +156,10 @@ void do_iret (struct intr_frame *tf);
 // * priority schedule 추가 함수
 void test_max_priority (void);
 bool cmp_priority (const struct list_elem *a, const struct list_elem *b, void *aux UNUSED);
+
+// * priority donation 추가 함수
+void donate_priority(void);
+void remove_with_lock(struct lock *lock);
+void refresh_priority(void);
 
 #endif /* threads/thread.h */
