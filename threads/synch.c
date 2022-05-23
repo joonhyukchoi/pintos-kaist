@@ -68,7 +68,7 @@ sema_down (struct semaphore *sema) {
 	old_level = intr_disable ();
 	while (sema->value == 0) {
     // * Semaphore를 얻고 waiters 리스트 삽입 시, 우선순위대로 삽입되도록 수정
-    list_insert_ordered(&sema->waiters, &thread_current() ->elem, cmp_sem_priority, NULL);
+    list_insert_ordered(&sema->waiters, &thread_current() ->elem, cmp_priority, NULL);
 		// list_push_back (&sema->waiters, &thread_current ()->elem);
 		thread_block ();
 	}
@@ -115,30 +115,15 @@ sema_up (struct semaphore *sema) {
 	old_level = intr_disable ();
 	if (!list_empty (&sema->waiters)) {
     // * waiter list에 있는 우선순위가 변경 되었을 경우를 고려하여 waiter list를 정렬
-    // list_sort(&sema->waiters, cmp_sem_priority, NULL);
 		thread_unblock (list_entry (list_pop_front (&sema->waiters),
 					struct thread, elem));
-    list_sort(&sema->waiters, cmp_sem_priority, NULL);
+    list_sort(&sema->waiters, cmp_priority, NULL);
   }
 	sema->value++;
   // * Semaphore 해제 후 priority preemption 기능 추가
   test_max_priority();
 
 	intr_set_level (old_level);
-}
-
-bool
-cmp_sem_priority(const struct list_elem *a, const struct list_elem *b, void *aux UNUSED) {
-  int priorityA = list_entry(a, struct thread, elem)->priority;
-  int priorityB = list_entry(b, struct thread, elem)->priority;
-
-  // puts("===================");
-  // printf("PA: %d / PB: %d\n", priorityA, priorityB);
-  // puts("===================");
-
-  if (priorityB < priorityA)
-    return 1;
-  return 0;
 }
 
 static void sema_test_helper (void *sema_);
@@ -267,6 +252,25 @@ struct semaphore_elem {
 	struct semaphore semaphore;         /* This semaphore. */
 };
 
+bool
+cmp_sem_priority(const struct list_elem *a, const struct list_elem *b, void *aux UNUSED) {
+  struct semaphore_elem *sa = list_entry(a, struct semaphore_elem, elem);
+  struct semaphore_elem *sb = list_entry(b, struct semaphore_elem, elem);
+  
+  struct list *la = &(sa->semaphore.waiters);
+  struct list *lb = &(sb->semaphore.waiters);
+
+  struct list_elem *lea = list_begin(la);
+  struct list_elem *leb = list_begin(lb);
+
+  struct thread *ta = list_entry(lea, struct thread, elem);
+  struct thread *tb = list_entry(leb, struct thread, elem);
+
+  if (tb->priority < ta->priority)
+    return 1;
+  return 0;
+}
+
 /* Initializes condition variable COND.  A condition variable
    allows one piece of code to signal a condition and cooperating
    code to receive the signal and act upon it. */
@@ -307,13 +311,10 @@ cond_wait (struct condition *cond, struct lock *lock) {
 	ASSERT (lock_held_by_current_thread (lock));
 
 	sema_init (&waiter.semaphore, 0);
-  int size = list_size(&cond->waiters);
-  printf("size of cond: %d\n", size);
 
-	list_push_back (&cond->waiters, &waiter.elem);
-  list_sort(&cond->waiters, cmp_sem_priority, NULL);
-
-	lock_release (lock);
+	list_insert_ordered(&cond->waiters, &waiter.elem, cmp_sem_priority, NULL);
+  
+  lock_release (lock);
 	sema_down (&waiter.semaphore);
 	lock_acquire (lock);
 }
@@ -333,9 +334,9 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED) {
 	ASSERT (lock_held_by_current_thread (lock));
 
 	if (!list_empty (&cond->waiters)) {
+    list_sort(&cond->waiters, cmp_sem_priority, NULL);
 		sema_up (&list_entry (list_pop_front (&cond->waiters),
 					struct semaphore_elem, elem)->semaphore);
-    list_sort(&cond->waiters, cmp_sem_priority, NULL);
   }
 
 }
