@@ -216,7 +216,8 @@ lock_acquire (struct lock *lock) {
 	ASSERT (lock != NULL);
 	ASSERT (!intr_context ());
 	ASSERT (!lock_held_by_current_thread (lock));
-  
+
+#if !thread_mlfqs
   if (lock->holder != NULL) {
     struct thread *cur = thread_current();
     cur->wait_on_lock = lock;
@@ -227,6 +228,10 @@ lock_acquire (struct lock *lock) {
 	sema_down (&lock->semaphore);
   thread_current()->wait_on_lock = NULL;
 	lock->holder = thread_current();
+#else
+  sema_down (&lock->semaphore);
+  lock->holder = thread_current();
+#endif
 }
 
 /* Tries to acquires LOCK and returns true if successful or false
@@ -260,10 +265,10 @@ lock_release (struct lock *lock) {
 	ASSERT (lock_held_by_current_thread (lock));
 
 	lock->holder = NULL;
-
+#if !thread_mlfqs
   remove_with_lock(lock);
   refresh_priority();
-
+#endif
 	sema_up (&lock->semaphore);
 }
 
@@ -319,7 +324,8 @@ cond_wait (struct condition *cond, struct lock *lock) {
 
 	sema_init (&waiter.semaphore, 0);
 
-	list_insert_ordered(&cond->waiters, &waiter.elem, cmp_sem_priority, NULL);
+  list_insert_ordered(&cond->waiters, &waiter.elem, cmp_sem_priority, NULL);
+  // list_push_back(&cond->waiters, &waiter.elem);
   
   lock_release (lock);
 	sema_down (&waiter.semaphore);

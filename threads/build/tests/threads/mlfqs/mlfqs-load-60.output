@@ -7,11 +7,8 @@ Pintos booting with:
 Calibrating timer...  157,081,600 loops/s.
 Boot complete.
 Executing 'mlfqs-load-60':
-Kernel PANIC at ../../tests/threads/tests.c:60 in run_test(): no test named "mlfqs-load-60"
-Call stack: 0x8004213968 0x8004216e16 0x8004206636 0x8004206783 0x8004206120.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Timer: 23 ticks
-Thread: 0 idle ticks, 23 kernel ticks, 0 user ticks
-Console: 
+(mlfqs-load-60) begin
+(mlfqs-load-60) Starting 60 niced load threads...
+(mlfqs-load-60) Starting threads took 0 seconds.
+(mlfqs-load-60) After 0 seconds, load average=0.00.
+TIMEOUT

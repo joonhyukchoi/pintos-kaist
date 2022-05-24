@@ -7,11 +7,14 @@ Pintos booting with:
 Calibrating timer...  157,081,600 loops/s.
 Boot complete.
 Executing 'mlfqs-load-1':
-Kernel PANIC at ../../tests/threads/tests.c:60 in run_test(): no test named "mlfqs-load-1"
-Call stack: 0x8004213968 0x8004216e16 0x8004206636 0x8004206783 0x8004206120.
+(mlfqs-load-1) begin
+(mlfqs-load-1) spinning for up to 45 seconds, please wait...
+(mlfqs-load-1) FAIL: load average stayed below 0.5 for more than 45 seconds
+Kernel PANIC at ../../tests/threads/tests.c:93 in fail(): test failed
+Call stack: 0x8004213fc1 0x80042175c3 0x800421a5ff 0x80042173fd 0x8004206636 0x8004206783 0x8004206120.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 23 ticks
-Thread: 0 idle ticks, 23 kernel ticks, 0 user ticks
+Timer: 4623 ticks
+Thread: 0 idle ticks, 4623 kernel ticks, 0 user ticks
 Console: 

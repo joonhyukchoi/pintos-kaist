@@ -1,4 +1,5 @@
 #include "threads/thread.h"
+#include "threads/fixed_point.h"
 #include <debug.h>
 #include <stddef.h>
 #include <random.h>
@@ -51,6 +52,13 @@ static long long user_ticks;    /* # of timer ticks in user programs. */
 /* Scheduling. */
 #define TIME_SLICE 4            /* # of timer ticks to give each thread. */
 static unsigned thread_ticks;   /* # of timer ticks since last yield. */
+
+// * Advanced Scheuler 추가
+#define NICE_DEFAULT 0
+#define RECENT_CPU_DEFAULT 0
+#define LOAD_AVG_DEFAULT 0 
+
+int load_avg;
 
 /* If false (default), use round-robin scheduler.
    If true, use multi-level feedback queue scheduler.
@@ -129,6 +137,7 @@ thread_start (void) {
 	struct semaphore idle_started;
 	sema_init (&idle_started, 0);
 	thread_create ("idle", PRI_MIN, idle, &idle_started);
+  load_avg = LOAD_AVG_DEFAULT;
 
 	/* Start preemptive thread scheduling. */
 	intr_enable ();
@@ -396,9 +405,7 @@ void donate_priority(void) {
 	
 	while ((cur->wait_on_lock != NULL) && (depth < 8)) {
 		struct thread *nest_thread = cur->wait_on_lock->holder;
-		if (nest_thread->priority < priority) {
     nest_thread->priority = priority;
-		}
 		cur = nest_thread;
 		depth++;
 	}
@@ -424,6 +431,7 @@ void remove_with_lock(struct lock *lock) {
 
 void refresh_priority(void) {
 	struct thread *cur = thread_current();
+  // * 원래 자신의 priority로 바꿔준다.
 	cur->priority = cur->init_priority;
 
 	struct list *cur_list = &cur->donations;
@@ -432,10 +440,7 @@ void refresh_priority(void) {
 		struct list_elem *cur_elem = list_front(cur_list);
 		while (cur_elem != list_tail(cur_list)) {
 			struct thread *target_thread = list_entry(cur_elem, struct thread, donation_elem);
-			if (max_priority < target_thread->priority) {
-				max_priority = target_thread->priority;
-      }
-				
+      max_priority = target_thread->priority;
 			cur_elem = list_next(cur_elem);
 		}
     cur->priority = max_priority;
@@ -445,11 +450,14 @@ void refresh_priority(void) {
 /* Sets the current thread's priority to NEW_PRIORITY. */
 void
 thread_set_priority (int new_priority) {
-	thread_current ()->init_priority = new_priority;
-	// * 추가 코드
-	refresh_priority();
-	donate_priority();
-	test_max_priority();
+  // * mlfqs 스케줄러 일때 우선순위를 임의로 변경할 수 없도록 한다.
+#if !thread_mlfqs
+    thread_current ()->init_priority = new_priority;
+    // * 추가 코드
+    refresh_priority();
+    donate_priority();
+    test_max_priority();
+#endif
 }
 
 /* Returns the current thread's priority. */
@@ -462,27 +470,67 @@ thread_get_priority (void) {
 void
 thread_set_nice (int nice UNUSED) {
 	/* TODO: Your implementation goes here */
+  
+  /* 
+   * 현재 스레드의 nice값을 변경하는 함수를 구현하다.
+   * 해당 작업중에 인터럽트는 비활성화 해야 한다.
+   */
+	enum intr_level old_level;
+	old_level = intr_disable ();
+
+  /*
+   * 현재 스레드의 nice 값을 변경한다.
+   * nice 값 변경 후에 현재 스레드의 우선순위를 재계산 하고
+   * 우선순위에 의해 스케줄링 한다.
+   */
+  struct thread *cur = thread_current();
+  cur->nice = nice;
+  mlfqs_priority(cur);
+  if (list_entry(list_begin(&ready_list), struct thread, elem)->priority < cur->priority) {
+    thread_yield();
+  }
+  intr_set_level (old_level);
 }
 
 /* Returns the current thread's nice value. */
 int
 thread_get_nice (void) {
 	/* TODO: Your implementation goes here */
-	return 0;
+  /* 현재 스레드의 nice 값을 반환한다.
+  해당 작업중에 인터럽트는 비활성되어야 한다. */
+	enum intr_level old_level;
+	old_level = intr_disable ();
+  struct thread *cur = thread_current();
+
+  intr_set_level (old_level);
+  return cur->nice;
 }
 
 /* Returns 100 times the system load average. */
 int
 thread_get_load_avg (void) {
 	/* TODO: Your implementation goes here */
-	return 0;
+  /* load_avg에 100을 곱해서 반환 한다.
+  해당 과정중에 인터럽트는 비활성되어야 한다. */
+	enum intr_level old_level;
+	old_level = intr_disable ();
+  int value = mult_mixed(load_avg, 100);
+  intr_set_level (old_level);
+  // * 맞음
+  return fp_to_int_round(value);
 }
 
 /* Returns 100 times the current thread's recent_cpu value. */
 int
 thread_get_recent_cpu (void) {
 	/* TODO: Your implementation goes here */
-	return 0;
+  /* recent_cpu 에 100을 곱해서 반환 한다.
+  해당 과정중에 인터럽트는 비활성되어야 한다. */
+  enum intr_level old_level;
+	old_level = intr_disable ();
+  int value = mult_mixed(thread_current()->recent_cpu, 100);
+  intr_set_level (old_level);
+  return fp_to_int_round(value);
 }
 
 /* Idle thread.  Executes when no other thread is ready to run.
@@ -548,6 +596,10 @@ init_thread (struct thread *t, const char *name, int priority, int wakeup_tick) 
 	t->priority = priority;
 	t->init_priority = priority;
 	t->wait_on_lock = NULL;
+  // * Advanced Scheduler 구현
+  t->nice = NICE_DEFAULT;
+  t->recent_cpu = RECENT_CPU_DEFAULT;
+
 	list_init(&t->donations);
 	t->wakeup_tick = wakeup_tick;
 	t->magic = THREAD_MAGIC;
@@ -729,4 +781,52 @@ allocate_tid (void) {
 	lock_release (&tid_lock);
 
 	return tid;
+}
+
+// * Advanced Scheduler 함수 추가
+void mlfqs_priority(struct thread *t) {
+  if (t != idle_thread) {
+    // * priority 계산식을 구현 (fixed_point.h의 계산함수 이용)
+    // PRI_MAX - (recent_cpu / 4) - (nice * 2)
+    t->priority = PRI_MAX - (fp_to_int(t->recent_cpu / 4)) - (t->nice * 2);
+  }
+}
+
+void mlfqs_recent_cpu(struct thread *t) {
+  if (t != idle_thread) {
+    // * recent_cpu 계산식을 구현 (fixed_point.h의 계산함수 이용)
+    t->recent_cpu = mult_fp(div_mixed(mult_mixed(load_avg, 2), fp_to_int(mult_mixed(load_avg, 2) + int_to_fp(1))), t->recent_cpu) + int_to_fp(t->nice);
+  }
+}
+
+void mlfqs_load_avg(void) {
+  // * load_avg 계산식을 구현
+  // * load_avg는 0보다 작아질 수 없다.
+  int num = list_size(&ready_list);
+  if (thread_current() != idle_thread)
+    num += 1;
+
+  load_avg = mult_fp (div_mixed(int_to_fp (59), 60), load_avg) + mult_mixed (div_mixed(int_to_fp(1), 60), num);
+  
+  printf("load_avg: %d\n", load_avg);
+}
+
+void mlfqs_increment(void) {
+  struct thread *cur = thread_current();
+  if (cur != idle_thread) {
+    add_mixed(cur->recent_cpu, 1);
+  }
+}
+
+void mlfqs_recalc(void) {
+  // * 모든 thread의 recent_cpu와 priority값 재계산
+  struct thread *cur = thread_current();
+  mlfqs_recent_cpu(cur);
+  mlfqs_priority(cur);
+  struct thread *ready = list_begin(&ready_list);
+  while (ready != list_tail(&ready_list)) {
+    mlfqs_recent_cpu(ready);
+    mlfqs_priority(ready);
+    ready = list_next(&ready_list);
+  }
 }

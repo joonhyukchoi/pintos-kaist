@@ -94,9 +94,16 @@ struct thread {
 	int priority;                       /* Priority. */
 	int wakeup_tick;					/* Wake up tick */
 	int init_priority;					/* initial priority before priority donation */
+
+  // * priority schedule 추가
 	struct lock *wait_on_lock;			/* lock, thread waiting for */
 	struct list donations;				/* list for multi donation */
 	struct list_elem donation_elem;		/* list_elem for donation list */
+
+  // * Advanced Scheduler 구현 추가
+  int nice;
+  int recent_cpu;
+
 	/* Shared between thread.c and synch.c. */
 	struct list_elem elem;              /* List element. */
 
@@ -161,5 +168,12 @@ bool cmp_priority (const struct list_elem *a, const struct list_elem *b, void *a
 void donate_priority(void);
 void remove_with_lock(struct lock *lock);
 void refresh_priority(void);
+
+// * 스케줄러를 위해 추가로 구현할 함수 선언
+void mlfqs_priority(struct thread *t);
+void mlfqs_recent_cpu(struct thread *t);
+void mlfqs_load_avg(void);
+void mlfqs_increment(void);
+void mlfqs_recalc(void);
 
 #endif /* threads/thread.h */
