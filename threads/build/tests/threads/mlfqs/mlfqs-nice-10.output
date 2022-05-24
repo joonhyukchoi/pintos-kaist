@@ -4,38 +4,27 @@ Kernel command line: -q -mlfqs run mlfqs-nice-10
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  78,336,000 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 Boot complete.
 Executing 'mlfqs-nice-10':
 (mlfqs-nice-10) begin
-thread set nice: -20
 (mlfqs-nice-10) Starting 10 threads...
-(mlfqs-nice-10) Starting threads took 1 ticks.
+(mlfqs-nice-10) Starting threads took 0 ticks.
 (mlfqs-nice-10) Sleeping 40 seconds to let threads run, please wait...
-thread set nice: 0
-thread set nice: 1
-thread set nice: 2
-thread set nice: 3
-thread set nice: 4
-thread set nice: 5
-thread set nice: 6
-thread set nice: 7
-thread set nice: 8
-thread set nice: 9
-(mlfqs-nice-10) Thread 0 received 681 ticks.
-(mlfqs-nice-10) Thread 1 received 600 ticks.
-(mlfqs-nice-10) Thread 2 received 501 ticks.
+(mlfqs-nice-10) Thread 0 received 684 ticks.
+(mlfqs-nice-10) Thread 1 received 592 ticks.
+(mlfqs-nice-10) Thread 2 received 496 ticks.
 (mlfqs-nice-10) Thread 3 received 409 ticks.
-(mlfqs-nice-10) Thread 4 received 305 ticks.
-(mlfqs-nice-10) Thread 5 received 221 ticks.
-(mlfqs-nice-10) Thread 6 received 152 ticks.
-(mlfqs-nice-10) Thread 7 received 89 ticks.
+(mlfqs-nice-10) Thread 4 received 304 ticks.
+(mlfqs-nice-10) Thread 5 received 229 ticks.
+(mlfqs-nice-10) Thread 6 received 153 ticks.
+(mlfqs-nice-10) Thread 7 received 88 ticks.
 (mlfqs-nice-10) Thread 8 received 40 ticks.
-(mlfqs-nice-10) Thread 9 received 9 ticks.
+(mlfqs-nice-10) Thread 9 received 8 ticks.
 (mlfqs-nice-10) end
 Execution of 'mlfqs-nice-10' complete.
-Timer: 4030 ticks
-Thread: 998 idle ticks, 3032 kernel ticks, 0 user ticks
-Console: 1248 characters output
+Timer: 4026 ticks
+Thread: 1000 idle ticks, 3026 kernel ticks, 0 user ticks
+Console: 1039 characters output
 Keyboard: 0 keys pressed
 Powering off...

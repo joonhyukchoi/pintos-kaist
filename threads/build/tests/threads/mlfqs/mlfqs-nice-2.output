@@ -8,18 +8,15 @@ Calibrating timer...  157,081,600 loops/s.
 Boot complete.
 Executing 'mlfqs-nice-2':
 (mlfqs-nice-2) begin
-thread set nice: -20
 (mlfqs-nice-2) Starting 2 threads...
 (mlfqs-nice-2) Starting threads took 0 ticks.
 (mlfqs-nice-2) Sleeping 40 seconds to let threads run, please wait...
-thread set nice: 0
-thread set nice: 5
-(mlfqs-nice-2) Thread 0 received 1932 ticks.
-(mlfqs-nice-2) Thread 1 received 1069 ticks.
+(mlfqs-nice-2) Thread 0 received 1937 ticks.
+(mlfqs-nice-2) Thread 1 received 1065 ticks.
 (mlfqs-nice-2) end
 Execution of 'mlfqs-nice-2' complete.
-Timer: 4024 ticks
-Thread: 1000 idle ticks, 3024 kernel ticks, 0 user ticks
-Console: 733 characters output
+Timer: 4023 ticks
+Thread: 1000 idle ticks, 3023 kernel ticks, 0 user ticks
+Console: 674 characters output
 Keyboard: 0 keys pressed
 Powering off...

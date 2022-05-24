@@ -484,7 +484,7 @@ thread_set_nice (int nice UNUSED) {
 	enum intr_level old_level;
 	old_level = intr_disable ();
   struct thread *cur = thread_current();
-  printf("thread set nice: %d\n", nice);
+//   printf("thread set nice: %d\n", nice);
   cur->nice = nice;
   mlfqs_priority(cur);
   if (cur->priority < list_entry(list_begin(&ready_list), struct thread, elem)->priority) {
@@ -754,7 +754,7 @@ schedule (void) {
 
 	if (curr != next) {
 		/* If the thread we switched from is dying, destroy its struct
-		   thread. This must happen late so that thread_exit() doesn't
+		   thread.f This must happen late so that thread_exit() doesn't
 		   pull out the rug under itself.
 		   We just queuing the page free reqeust here because the page is
 		   currently used bye the stack.
@@ -807,7 +807,7 @@ void mlfqs_load_avg(void) {
   int num = list_size(&ready_list);
   if (thread_current() != idle_thread)
     num += 1;
-
+	// printf("ready list size: %d\n", num);
   load_avg = mult_fp (div_mixed(int_to_fp (59), 60), load_avg) + mult_mixed (div_mixed(int_to_fp(1), 60), num);
   
   // printf("load_avg: %d\n", load_avg);
@@ -830,5 +830,12 @@ void mlfqs_recalc(void) {
     mlfqs_recent_cpu(list_entry(ready, struct thread, elem));
     mlfqs_priority(list_entry(ready, struct thread, elem));
     ready = list_next(ready);
+  }
+
+  struct list_elem *sleep = list_begin(&sleep_list);
+  while (sleep != list_tail(&sleep_list)) {
+    mlfqs_recent_cpu(list_entry(sleep, struct thread, elem));
+    mlfqs_priority(list_entry(sleep, struct thread, elem));
+    sleep = list_next(sleep);
   }
 }
