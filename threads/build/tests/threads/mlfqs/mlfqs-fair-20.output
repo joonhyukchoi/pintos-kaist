@@ -4,14 +4,58 @@ Kernel command line: -q -mlfqs run mlfqs-fair-20
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  156,672,000 loops/s.
+Calibrating timer...  94,822,400 loops/s.
 Boot complete.
 Executing 'mlfqs-fair-20':
-Kernel PANIC at ../../tests/threads/tests.c:60 in run_test(): no test named "mlfqs-fair-20"
-Call stack: 0x8004213fc1 0x800421746f 0x8004206636 0x8004206783 0x8004206120.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Timer: 24 ticks
-Thread: 0 idle ticks, 24 kernel ticks, 0 user ticks
-Console: 
+(mlfqs-fair-20) begin
+thread set nice: -20
+(mlfqs-fair-20) Starting 20 threads...
+(mlfqs-fair-20) Starting threads took 1 ticks.
+(mlfqs-fair-20) Sleeping 40 seconds to let threads run, please wait...
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+thread set nice: 0
+(mlfqs-fair-20) Thread 0 received 152 ticks.
+(mlfqs-fair-20) Thread 1 received 153 ticks.
+(mlfqs-fair-20) Thread 2 received 152 ticks.
+(mlfqs-fair-20) Thread 3 received 149 ticks.
+(mlfqs-fair-20) Thread 4 received 152 ticks.
+(mlfqs-fair-20) Thread 5 received 152 ticks.
+(mlfqs-fair-20) Thread 6 received 153 ticks.
+(mlfqs-fair-20) Thread 7 received 148 ticks.
+(mlfqs-fair-20) Thread 8 received 152 ticks.
+(mlfqs-fair-20) Thread 9 received 152 ticks.
+(mlfqs-fair-20) Thread 10 received 149 ticks.
+(mlfqs-fair-20) Thread 11 received 152 ticks.
+(mlfqs-fair-20) Thread 12 received 153 ticks.
+(mlfqs-fair-20) Thread 13 received 149 ticks.
+(mlfqs-fair-20) Thread 14 received 148 ticks.
+(mlfqs-fair-20) Thread 15 received 148 ticks.
+(mlfqs-fair-20) Thread 16 received 148 ticks.
+(mlfqs-fair-20) Thread 17 received 148 ticks.
+(mlfqs-fair-20) Thread 18 received 148 ticks.
+(mlfqs-fair-20) Thread 19 received 149 ticks.
+(mlfqs-fair-20) end
+Execution of 'mlfqs-fair-20' complete.
+Timer: 4031 ticks
+Thread: 995 idle ticks, 3036 kernel ticks, 0 user ticks
+Console: 1902 characters output
+Keyboard: 0 keys pressed
+Powering off...

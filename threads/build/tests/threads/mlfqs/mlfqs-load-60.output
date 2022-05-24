@@ -4,11 +4,75 @@ Kernel command line: -q -mlfqs run mlfqs-load-60
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  52,428,800 loops/s.
 Boot complete.
 Executing 'mlfqs-load-60':
 (mlfqs-load-60) begin
 (mlfqs-load-60) Starting 60 niced load threads...
 (mlfqs-load-60) Starting threads took 0 seconds.
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
+thread set nice: 20
 (mlfqs-load-60) After 0 seconds, load average=0.00.
-TIMEOUT
+(mlfqs-load-60) After 2 seconds, load average=5.82.
+(mlfqs-load-60) After 4 seconds, load average=5.82.
+(mlfqs-load-60) After 6 seconds, load average=5.82.
+(mlfqs-load-60) After 8 seconds, load average=9.37.
+(mlfqs-load-60) After 10 seconds, load average=9.37.
