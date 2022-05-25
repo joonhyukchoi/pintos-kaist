@@ -358,27 +358,31 @@ void thread_sleep(int64_t ticks) {
 	old_level = intr_disable ();
 	if (curr != idle_thread) {
 		curr->wakeup_tick = ticks; 
-		list_push_back (&sleep_list, &curr->elem);
+		// list_push_back (&sleep_list, &curr->elem);
+		list_insert_ordered(&sleep_list, &curr->elem, cmp_priority, NULL);
 		if (ticks < get_next_tick_to_awake())
 			update_next_tick_to_awake(ticks);
 	}
+	// printf("check call one ** ");
 	do_schedule (THREAD_BLOCKED);
+	// printf("check call two ** ");
 	intr_set_level (old_level);
 }
 
 void thread_awake(int64_t ticks) {
-	if (list_empty (&sleep_list))
-		return idle_thread;
-	else {
-		struct list_elem *temp = list_front(&sleep_list);
+	// if (list_empty (&sleep_list)) {
+	// }
+	// else {
+		struct list_elem *temp = list_begin(&sleep_list);
 		int64_t min_value = INT64_MAX;
 
-		while (temp != list_tail(&sleep_list)) {
+		while (temp != list_end(&sleep_list)) {
 			struct thread *cur = list_entry(temp, struct thread, elem);
 			if (cur->wakeup_tick <= ticks) {
 			  temp = list_remove(temp);
-				list_push_back (&ready_list, &cur->elem);
-				cur->status = THREAD_READY;
+				// list_push_back (&ready_list, &cur->elem);
+				// cur->status = THREAD_READY;
+				thread_unblock(cur);
 			} else {
 				if (cur->wakeup_tick < min_value) {
 					min_value = cur->wakeup_tick;
@@ -387,7 +391,7 @@ void thread_awake(int64_t ticks) {
 			}
 		}
 		update_next_tick_to_awake(min_value);
-	}
+	// }
 }
 
 void update_next_tick_to_awake(int64_t ticks) {
@@ -451,14 +455,14 @@ void refresh_priority(void) {
 void
 thread_set_priority (int new_priority) {
   // * mlfqs 스케줄러 일때 우선순위를 임의로 변경할 수 없도록 한다.
-#if !thread_mlfqs
+ if(!thread_mlfqs) {
   thread_current ()->init_priority = new_priority;
   // * 추가 코드
   refresh_priority();
   donate_priority();
   test_max_priority();
   // puts("can't");
-#endif
+ }
   // printf("thread mlfqs\n");
 }
 
@@ -791,6 +795,8 @@ void mlfqs_priority(struct thread *t) {
     // PRI_MAX - (recent_cpu / 4) - (nice * 2)
     // t->priority = PRI_MAX - (fp_to_int(t->recent_cpu / 4)) - (t->nice * 2);
     t->priority = fp_to_int(int_to_fp(PRI_MAX) - (div_mixed(t->recent_cpu, 4)) - int_to_fp(t->nice * 2));
+	t->priority = t->priority > PRI_MIN ? t->priority : PRI_MIN;
+	t->priority = t->priority < PRI_MAX ? t->priority : PRI_MAX;
   }
 }
 
@@ -807,10 +813,10 @@ void mlfqs_load_avg(void) {
   int num = list_size(&ready_list);
   if (thread_current() != idle_thread)
     num += 1;
-	// printf("ready list size: %d\n", num);
+//   printf("ready list size: %d\n", num);
   load_avg = mult_fp (div_mixed(int_to_fp (59), 60), load_avg) + mult_mixed (div_mixed(int_to_fp(1), 60), num);
   
-  // printf("load_avg: %d\n", load_avg);
+//   printf("load_avg 몇번 호출되는지 확인: %f\n", int_to_fp(load_avg));
 }
 
 void mlfqs_increment(void) {
@@ -826,9 +832,11 @@ void mlfqs_recalc(void) {
   mlfqs_recent_cpu(cur);
   mlfqs_priority(cur);
   struct list_elem *ready = list_begin(&ready_list);
+  struct thread *ready_thread;
   while (ready != list_tail(&ready_list)) {
-    mlfqs_recent_cpu(list_entry(ready, struct thread, elem));
-    mlfqs_priority(list_entry(ready, struct thread, elem));
+	ready_thread = list_entry(ready, struct thread, elem);
+    mlfqs_recent_cpu(ready_thread);
+    mlfqs_priority(ready_thread);
     ready = list_next(ready);
   }
 

@@ -90,11 +90,19 @@ timer_elapsed (int64_t then) {
 /* Suspends execution for approximately TICKS timer ticks. */
 void
 timer_sleep (int64_t ticks) {
+	ASSERT (intr_get_level () == INTR_ON);
+	// enum intr_level old_level;
+	// old_level = intr_disable ();
 	int64_t start = timer_ticks ();
 
-	ASSERT (intr_get_level () == INTR_ON);
-	if (timer_elapsed (start) < ticks)
-		thread_sleep(start + ticks);
+	// ASSERT (intr_get_level () == INTR_ON);
+	// while (timer_elapsed (start) < ticks)
+	// 	thread_yield ();
+	// printf("timer sleep checking, ticks: %d start: %d timer_elapsed(start): %d\n", ticks, start, timer_elapsed (start));
+	// if (timer_elapsed (start) < ticks)
+	thread_sleep(start + ticks);
+	// intr_set_level (old_level);
+	// printf("timer sleep checking, ticks(after): %d start: %d timer_elapsed(start): %d\n", ticks, start, timer_elapsed (start));
 }
 
 /* Suspends execution for approximately MS milliseconds. */
@@ -126,18 +134,19 @@ static void
 timer_interrupt (struct intr_frame *args UNUSED) {
 	ticks++;
 	thread_tick ();
-  if (thread_mlfqs) {
-    mlfqs_increment();
-    if (ticks % 100 == 0) {
-      mlfqs_load_avg();
-      mlfqs_recalc();
-    } else if (ticks % 4 == 0) {
-      mlfqs_priority(thread_current());
-    }
-  }
+	if (thread_mlfqs) {
+		mlfqs_increment();
+		if (ticks % 100 == 0) {
+			mlfqs_load_avg();
+			mlfqs_recalc();
+		} else if (ticks % 4 == 0) {
+			mlfqs_priority(thread_current());
+		}
+	}
+
 	if (ticks >= get_next_tick_to_awake()) {
 		thread_awake(ticks);
-	} 
+	}	
 }
 
 /* Returns true if LOOPS iterations waits for more than one timer

@@ -217,7 +217,7 @@ lock_acquire (struct lock *lock) {
 	ASSERT (!intr_context ());
 	ASSERT (!lock_held_by_current_thread (lock));
 
-#if !thread_mlfqs
+  if(!thread_mlfqs) {
   if (lock->holder != NULL) {
     struct thread *cur = thread_current();
     cur->wait_on_lock = lock;
@@ -228,10 +228,10 @@ lock_acquire (struct lock *lock) {
 	sema_down (&lock->semaphore);
   thread_current()->wait_on_lock = NULL;
 	lock->holder = thread_current();
-#else
+  } else {
   sema_down (&lock->semaphore);
   lock->holder = thread_current();
-#endif
+  }
 }
 
 /* Tries to acquires LOCK and returns true if successful or false
@@ -265,10 +265,10 @@ lock_release (struct lock *lock) {
 	ASSERT (lock_held_by_current_thread (lock));
 
 	lock->holder = NULL;
-#if !thread_mlfqs
+  if (!thread_mlfqs) {
   remove_with_lock(lock);
   refresh_priority();
-#endif
+  }
 	sema_up (&lock->semaphore);
 }
 
@@ -348,6 +348,7 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED) {
 
 	if (!list_empty (&cond->waiters)) {
     list_sort(&cond->waiters, cmp_sem_priority, NULL);
+   
 		sema_up (&list_entry (list_pop_front (&cond->waiters),
 					struct semaphore_elem, elem)->semaphore);
   }

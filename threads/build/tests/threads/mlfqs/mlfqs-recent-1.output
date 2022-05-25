@@ -4,7 +4,7 @@ Kernel command line: -q -mlfqs run mlfqs-recent-1
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  68,505,600 loops/s.
 Boot complete.
 Executing 'mlfqs-recent-1':
 (mlfqs-recent-1) begin
@@ -101,8 +101,8 @@ Executing 'mlfqs-recent-1':
 (mlfqs-recent-1) After 180 seconds, recent_cpu is 190.00, load_avg is 0.95.
 (mlfqs-recent-1) end
 Execution of 'mlfqs-recent-1' complete.
-Timer: 19002 ticks
-Thread: 978 idle ticks, 18025 kernel ticks, 0 user ticks
-Console: 7290 characters output
+Timer: 19003 ticks
+Thread: 975 idle ticks, 18028 kernel ticks, 0 user ticks
+Console: 7289 characters output
 Keyboard: 0 keys pressed
 Powering off...
