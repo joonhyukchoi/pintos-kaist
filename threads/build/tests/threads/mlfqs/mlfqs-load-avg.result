@@ -25,11 +25,11 @@ Some load average values were missing or differed from those expected by more th
     42    29.87 >>> 12.13    Too big, by 15.24.
     44    29.87 >>> 13.16    Too big, by 14.21.
     46    29.87 >>> 14.23    Too big, by 13.14.
-    48    29.87 >>> 15.33    Too big, by 12.04.
-    50    29.87 >>> 16.46    Too big, by 10.91.
-    52    29.87 >>> 17.62    Too big, by 9.75.
-    54    29.87 >>> 18.81    Too big, by 8.56.
-    56    29.87 >>> 20.02    Too big, by 7.35.
+    48    29.64 >>> 15.33    Too big, by 11.81.
+    50    29.64 >>> 16.46    Too big, by 10.68.
+    52    29.64 >>> 17.62    Too big, by 9.52.
+    54    29.64 >>> 18.81    Too big, by 8.33.
+    56    29.64 >>> 20.02    Too big, by 7.12.
     58    29.64 >>> 21.26    Too big, by 5.88.
     60    29.64 >>> 22.52    Too big, by 4.62.
     62    29.64 >>> 23.71    Too big, by 3.43.

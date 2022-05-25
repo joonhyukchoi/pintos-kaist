@@ -515,10 +515,10 @@ thread_get_load_avg (void) {
   해당 과정중에 인터럽트는 비활성되어야 한다. */
 	enum intr_level old_level;
 	old_level = intr_disable ();
-  int value = mult_mixed(load_avg, 100);
+  int value = fp_to_int_round(mult_mixed(load_avg, 100));
   intr_set_level (old_level);
   // * 맞음
-  return fp_to_int_round(value);
+  return value;
 }
 
 /* Returns 100 times the current thread's recent_cpu value. */
@@ -529,9 +529,9 @@ thread_get_recent_cpu (void) {
   해당 과정중에 인터럽트는 비활성되어야 한다. */
   enum intr_level old_level;
 	old_level = intr_disable ();
-  int value = mult_mixed(thread_current()->recent_cpu, 100);
+  int value = fp_to_int_round(mult_mixed(thread_current()->recent_cpu, 100));
   intr_set_level (old_level);
-  return fp_to_int_round(value);
+  return value;
 }
 
 /* Idle thread.  Executes when no other thread is ready to run.

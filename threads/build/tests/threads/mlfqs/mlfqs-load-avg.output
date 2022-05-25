@@ -34,11 +34,11 @@ Executing 'mlfqs-load-avg':
 (mlfqs-load-avg) After 42 seconds, load average=29.87.
 (mlfqs-load-avg) After 44 seconds, load average=29.87.
 (mlfqs-load-avg) After 46 seconds, load average=29.87.
-(mlfqs-load-avg) After 48 seconds, load average=29.87.
-(mlfqs-load-avg) After 50 seconds, load average=29.87.
-(mlfqs-load-avg) After 52 seconds, load average=29.87.
-(mlfqs-load-avg) After 54 seconds, load average=29.87.
-(mlfqs-load-avg) After 56 seconds, load average=29.87.
+(mlfqs-load-avg) After 48 seconds, load average=29.64.
+(mlfqs-load-avg) After 50 seconds, load average=29.64.
+(mlfqs-load-avg) After 52 seconds, load average=29.64.
+(mlfqs-load-avg) After 54 seconds, load average=29.64.
+(mlfqs-load-avg) After 56 seconds, load average=29.64.
 (mlfqs-load-avg) After 58 seconds, load average=29.64.
 (mlfqs-load-avg) After 60 seconds, load average=29.64.
 (mlfqs-load-avg) After 62 seconds, load average=29.64.
@@ -102,8 +102,8 @@ Executing 'mlfqs-load-avg':
 (mlfqs-load-avg) After 178 seconds, load average=9.29.
 (mlfqs-load-avg) end
 Execution of 'mlfqs-load-avg' complete.
-Timer: 18823 ticks
-Thread: 6899 idle ticks, 11924 kernel ticks, 0 user ticks
+Timer: 18824 ticks
+Thread: 6899 idle ticks, 11925 kernel ticks, 0 user ticks
 Console: 5511 characters output
 Keyboard: 0 keys pressed
 Powering off...
