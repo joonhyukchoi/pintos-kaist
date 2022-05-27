@@ -50,8 +50,11 @@ process_create_initd (const char *file_name) {
 		return TID_ERROR;
 	strlcpy (fn_copy, file_name, PGSIZE);
 
+	char *token, *save_ptr;
+	token = strtok_r (file_name, " ", &save_ptr);
+
 	/* Create a new thread to execute FILE_NAME. */
-	tid = thread_create (file_name, PRI_DEFAULT, initd, fn_copy);
+	tid = thread_create (token, PRI_DEFAULT, initd, fn_copy);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
 	return tid;
@@ -178,12 +181,11 @@ process_exec (void *f_name) {
 
 	/* And then load the binary */
 	success = load (file_name, &_if);
-
+	
 	/* If load failed, quit. */
 	palloc_free_page (file_name);
 	if (!success)
 		return -1;
-
 	/* Start switched process. */
 	do_iret (&_if);
 	NOT_REACHED ();
@@ -334,7 +336,7 @@ load (const char *file_name, struct intr_frame *if_) {
 	if (t->pml4 == NULL)
 		goto done;
 	process_activate (thread_current ());
-
+	
 	/* Open executable file. */
 	file = filesys_open (file_name);
 	if (file == NULL) {
@@ -416,6 +418,17 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
+	char *token, *save_ptr;
+	char *parse[16];
+	int count = 0;
+
+   	for (token = strtok_r (file_name, " ", &save_ptr); token != NULL; token = strtok_r (NULL, " ", &save_ptr)) {
+		// printf ("'%s'\n", token);
+		parse[count++] = token;
+	}
+
+	argument_stack(parse, count, &if_->rsp);
+	hex_dump(if_->rsp, if_->rsp, USER_STACK - if_->rsp, true);
 
 	success = true;
 
@@ -425,6 +438,26 @@ done:
 	return success;
 }
 
+void argument_stack(char **parse, int count, void **esp) {
+	int i, j;
+	char *str_adrr[count];
+
+	for (i = count - 1; -1 < i; i--) {
+		*esp -= (strlen(parse[i]) + 1);
+		strlcpy(*esp, parse[i], strlen(parse[i]));
+		str_adrr[i] = *esp;
+	}
+
+	for (i = count % 8; 0 < i; i--) {
+		*esp = *esp - 1;
+		**(char **)esp = 0;
+	}
+
+	for (i = count - 1; -1 < i; i--) {
+		*esp = *esp - 8;
+		**(char **)esp = str_adrr[i];
+	}
+}
 
 /* Checks whether PHDR describes a valid, loadable segment in
  * FILE and returns true if so, false otherwise. */
