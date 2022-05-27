@@ -115,8 +115,7 @@ sema_up (struct semaphore *sema) {
 	if (!list_empty (&sema->waiters)) {
     // * waiter list에 있는 우선순위가 변경 되었을 경우를 고려하여 waiter list를 정렬
 		list_sort(&sema->waiters, cmp_priority, NULL);
-    thread_unblock (list_entry (list_pop_front (&sema->waiters),
-					struct thread, elem));
+    thread_unblock (list_entry (list_pop_front (&sema->waiters), struct thread, elem));
   }
 	sema->value++;
   // * Semaphore 해제 후 priority preemption 기능 추가
@@ -216,17 +215,22 @@ lock_acquire (struct lock *lock) {
 	ASSERT (lock != NULL);
 	ASSERT (!intr_context ());
 	ASSERT (!lock_held_by_current_thread (lock));
-  
-  if (lock->holder != NULL) {
-    struct thread *cur = thread_current();
-    cur->wait_on_lock = lock;
-    list_push_back(&lock->holder->donations, &cur->donation_elem);
-    donate_priority();
-  }
 
-	sema_down (&lock->semaphore);
-  thread_current()->wait_on_lock = NULL;
-	lock->holder = thread_current();
+  if(!thread_mlfqs) {
+    if (lock->holder != NULL) {
+      struct thread *cur = thread_current();
+      cur->wait_on_lock = lock;
+      list_push_back(&lock->holder->donations, &cur->donation_elem);
+      donate_priority();
+    }
+
+    sema_down (&lock->semaphore);
+    thread_current()->wait_on_lock = NULL;
+    lock->holder = thread_current();
+  } else {
+    sema_down (&lock->semaphore);
+    lock->holder = thread_current();
+  }
 }
 
 /* Tries to acquires LOCK and returns true if successful or false
@@ -260,10 +264,10 @@ lock_release (struct lock *lock) {
 	ASSERT (lock_held_by_current_thread (lock));
 
 	lock->holder = NULL;
-
-  remove_with_lock(lock);
-  refresh_priority();
-
+  if (!thread_mlfqs) {
+    remove_with_lock(lock);
+    refresh_priority();
+  }
 	sema_up (&lock->semaphore);
 }
 
@@ -319,7 +323,7 @@ cond_wait (struct condition *cond, struct lock *lock) {
 
 	sema_init (&waiter.semaphore, 0);
 
-	list_insert_ordered(&cond->waiters, &waiter.elem, cmp_sem_priority, NULL);
+  list_insert_ordered(&cond->waiters, &waiter.elem, cmp_sem_priority, NULL);
   
   lock_release (lock);
 	sema_down (&waiter.semaphore);
@@ -342,8 +346,8 @@ cond_signal (struct condition *cond, struct lock *lock UNUSED) {
 
 	if (!list_empty (&cond->waiters)) {
     list_sort(&cond->waiters, cmp_sem_priority, NULL);
-		sema_up (&list_entry (list_pop_front (&cond->waiters),
-					struct semaphore_elem, elem)->semaphore);
+   
+		sema_up (&list_entry (list_pop_front (&cond->waiters), struct semaphore_elem, elem)->semaphore);
   }
 
 }
