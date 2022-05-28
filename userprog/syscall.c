@@ -9,6 +9,7 @@
 #include "intrinsic.h"
 #include "include/threads/init.h"
 #include "include/filesys/filesys.h"
+#include "include/userprog/process.h"
 
 void syscall_entry (void);
 void syscall_handler (struct intr_frame *);
@@ -95,7 +96,7 @@ void halt() {
 }
 
 void exit(int status) {
-	struct thread *cur = thread_current();
+	// struct thread *cur = thread_current();
 	// printf("%s: exit(%d)\n", cur->name, status);
 	thread_exit();
 }
@@ -108,3 +109,9 @@ void exit(int status) {
 // 	return filesys_remove(file);
 // }
 
+tid_t exec(const char *cmd_line) {
+	check_address(cmd_line);
+	int file_size = strlen(cmd_line) + 1;
+	char *fn_copy
+
+}

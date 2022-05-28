@@ -4,7 +4,8 @@
     "stdio.h": "c",
     "init.h": "c",
     "interrupt.h": "c",
-    "syscall-nr.h": "c"
+    "syscall-nr.h": "c",
+    "filesys.h": "c"
   },
   "C_Cpp.errorSquiggles": "Disabled"
 }
