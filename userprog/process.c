@@ -52,11 +52,15 @@ process_create_initd (const char *file_name) {
 
 	char *token, *save_ptr;
 	token = strtok_r (file_name, " ", &save_ptr);
-
+	printf("process create initd!!\n");
 	/* Create a new thread to execute FILE_NAME. */
-	tid = thread_create (token, PRI_DEFAULT, initd, fn_copy);
-	if (tid == TID_ERROR)
+	printf("fn_copy: %s\n", fn_copy);
+	tid = thread_create (token, PRI_MAX, initd, fn_copy);
+	puts("debug choi");
+	printf("tid: %d\n", tid);
+	if (tid == TID_ERROR) {
 		palloc_free_page (fn_copy);
+	}
 	return tid;
 }
 
@@ -66,9 +70,8 @@ initd (void *f_name) {
 #ifdef VM
 	supplemental_page_table_init (&thread_current ()->spt);
 #endif
-
 	process_init ();
-
+	puts("===ERROR!====");
 	if (process_exec (f_name) < 0)
 		PANIC("Fail to launch initd\n");
 	NOT_REACHED ();
@@ -168,6 +171,7 @@ process_exec (void *f_name) {
 	char *file_name = f_name;
 	bool success;
 
+	printf("process %s exec!!\n", file_name);
 	/* We cannot use the intr_frame in the thread structure.
 	 * This is because when current thread rescheduled,
 	 * it stores the execution information to the member. */
@@ -181,7 +185,6 @@ process_exec (void *f_name) {
 
 	/* And then load the binary */
 	success = load (file_name, &_if);
-	
 	/* If load failed, quit. */
 	palloc_free_page (file_name);
 	if (!success)
@@ -331,6 +334,12 @@ load (const char *file_name, struct intr_frame *if_) {
 	bool success = false;
 	int i;
 
+	char *token, *save_ptr;
+	char *file_name_split;
+	char *parse[64];
+	int cnt = 0;
+
+	printf("start load!!\n");
 	/* Allocate and activate page directory. */
 	t->pml4 = pml4_create ();
 	if (t->pml4 == NULL)
@@ -338,7 +347,18 @@ load (const char *file_name, struct intr_frame *if_) {
 	process_activate (thread_current ());
 	
 	/* Open executable file. */
+	
+	// * 추가
+	file_name_split = strstr(file_name, " ");
+
+	if(file_name_split) {
+		*file_name_split = '\0';
+	}
+
 	file = filesys_open (file_name);
+
+	*file_name_split = ' ';
+
 	if (file == NULL) {
 		printf ("load: %s: open failed\n", file_name);
 		goto done;
@@ -418,22 +438,26 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
-	char *token, *save_ptr;
-	char *parse[16];
-	int count = 0;
+	printf("==== filename: %s %p %d\n", file_name, file_name, strlen(file_name));
 
    	for (token = strtok_r (file_name, " ", &save_ptr); token != NULL; token = strtok_r (NULL, " ", &save_ptr)) {
-		// printf ("'%s'\n", token);
-		parse[count++] = token;
+		printf ("'%s'\n", token);
+		parse[cnt++] = token;
 	}
 
-	argument_stack(parse, count, &if_->rsp);
+	argument_stack(parse, cnt, &if_->rsp);
+
+	if_->R.rdi = cnt;
+	if_->R.rsi = &if_->rsp;
+	
 	hex_dump(if_->rsp, if_->rsp, USER_STACK - if_->rsp, true);
 
 	success = true;
 
 done:
 	/* We arrive here whether the load is successful or not. */
+
+	printf("end load!!\n");
 	file_close (file);
 	return success;
 }
@@ -441,22 +465,47 @@ done:
 void argument_stack(char **parse, int count, void **esp) {
 	int i, j;
 	char *str_adrr[count];
+	uint8_t size = 0;
 
+	// * argv[i] 문자열
 	for (i = count - 1; -1 < i; i--) {
 		*esp -= (strlen(parse[i]) + 1);
-		strlcpy(*esp, parse[i], strlen(parse[i]));
+		strlcpy(*esp, parse[i], strlen(parse[i]) + 1);
+		size += strlen(parse[i]) + 1;
+		printf("parse[%d]: %s\n", i, parse[i]);
 		str_adrr[i] = *esp;
 	}
 
-	for (i = count % 8; 0 < i; i--) {
-		*esp = *esp - 1;
-		**(char **)esp = 0;
-	}
+	// * word allign
+	if (size % 8)
+		for (i = (8 - (size % 8)); 0 < i; i--) {
+			*esp = *esp - 1;
+			**(char **)esp = 0;
+		}
 
+	// printf("size pointer %d\n", sizeof(*esp)); // 32bit 시스템에서 포인터 크기 4byte, 64bit 시스템에서 포인터 크기 8byte, 여기서 출력해보면 8나옴
+	// * argv[count]
+	*esp = *esp - 4;
+	**(char **)esp = 0;
+
+	// * argv[i] 주소
 	for (i = count - 1; -1 < i; i--) {
-		*esp = *esp - 8;
-		**(char **)esp = str_adrr[i];
+		*esp = *esp - 4;
+		printf("stlcpy address >> %p %s\n", str_adrr[i], str_adrr[i]);
+		memcpy(*esp, &str_adrr[i], strlen(&str_adrr[i]));
 	}
+	
+	// * argv 주소
+	*esp = *esp - 4;
+	memcpy(*esp, str_adrr, strlen(str_adrr));
+
+	// * argc
+	*esp = *esp - 4;
+	**(char **)esp = count;
+
+	// * return address(fake)
+	*esp = *esp - 4;
+	**(char **)esp = 0;
 }
 
 /* Checks whether PHDR describes a valid, loadable segment in

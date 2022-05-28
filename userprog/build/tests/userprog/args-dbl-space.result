@@ -1,0 +1,44 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (args) begin
+  (args) argc = 3
+  (args) argv[0] = 'args-dbl-space'
+  (args) argv[1] = 'two'
+  (args) argv[2] = 'spaces!'
+  (args) argv[3] = null
+  (args) end
+  args-dbl-space: exit(0)
+Differences in `diff -u' format:
+- (args) begin
+- (args) argc = 3
+- (args) argv[0] = 'args-dbl-space'
+- (args) argv[1] = 'two'
+- (args) argv[2] = 'spaces!'
+- (args) argv[3] = null
+- (args) end
+- args-dbl-space: exit(0)
++ process create initd!!
++ fn_copy: args-dbl-space two  spaces!
++ ===ERROR!====
++ process args-dbl-space two  spaces! exec!!
++ start load!!
++ ==== filename: args-dbl-space two  spaces! 0x800423e000 27
++ 'args-dbl-space'
++ 'two'
++ 'spaces!'
++ parse[2]: spaces!
++ parse[1]: two
++ parse[0]: args-dbl-space
++ stlcpy address >> 0x4747fff8 spaces!
++ stlcpy address >> 0x4747fff4 two
++ stlcpy address >> 0x4747ffe5 args-dbl-space
++ 000000004747ffc0              00 00 00 00-03 00 00 00 e5 ff 47 47 |    ..........GG|
++ 000000004747ffd0  e5 ff 47 47 f4 ff 47 47-f8 ff 47 47 00 00 00 00 |..GG..GG..GG....|
++ 000000004747ffe0  00 00 00 00 00 61 72 67-73 2d 64 62 6c 2d 73 70 |.....args-dbl-sp|
++ 000000004747fff0  61 63 65 00 74 77 6f 00-73 70 61 63 65 73 21 00 |ace.two.spaces!.|
++ end load!!
++ system call!
++ debug choi
++ tid: 3

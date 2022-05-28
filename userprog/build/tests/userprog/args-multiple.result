@@ -1,0 +1,55 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (args) begin
+  (args) argc = 5
+  (args) argv[0] = 'args-multiple'
+  (args) argv[1] = 'some'
+  (args) argv[2] = 'arguments'
+  (args) argv[3] = 'for'
+  (args) argv[4] = 'you!'
+  (args) argv[5] = null
+  (args) end
+  args-multiple: exit(0)
+Differences in `diff -u' format:
+- (args) begin
+- (args) argc = 5
+- (args) argv[0] = 'args-multiple'
+- (args) argv[1] = 'some'
+- (args) argv[2] = 'arguments'
+- (args) argv[3] = 'for'
+- (args) argv[4] = 'you!'
+- (args) argv[5] = null
+- (args) end
+- args-multiple: exit(0)
++ process create initd!!
++ fn_copy: args-multiple some arguments for you!
++ ===ERROR!====
++ process args-multiple some arguments for you! exec!!
++ start load!!
++ ==== filename: args-multiple some arguments for you! 0x800423e000 37
++ 'args-multiple'
++ 'some'
++ 'arguments'
++ 'for'
++ 'you!'
++ parse[4]: you!
++ parse[3]: for
++ parse[2]: arguments
++ parse[1]: some
++ parse[0]: args-multiple
++ stlcpy address >> 0x4747fffb you!
++ stlcpy address >> 0x4747fff7 for
++ stlcpy address >> 0x4747ffed arguments
++ stlcpy address >> 0x4747ffe8 some
++ stlcpy address >> 0x4747ffda args-multiple
++ 000000004747ffb0              00 00 00 00-05 00 00 00 da ff 47 47 |    ..........GG|
++ 000000004747ffc0  da ff 47 47 e8 ff 47 47-ed ff 47 47 f7 ff 47 47 |..GG..GG..GG..GG|
++ 000000004747ffd0  fb ff 47 47 00 00 00 00-00 00 61 72 67 73 2d 6d |..GG......args-m|
++ 000000004747ffe0  75 6c 74 69 70 6c 65 00-73 6f 6d 65 00 61 72 67 |ultiple.some.arg|
++ 000000004747fff0  75 6d 65 6e 74 73 00 66-6f 72 00 79 6f 75 21 00 |uments.for.you!.|
++ end load!!
++ system call!
++ debug choi
++ tid: 3

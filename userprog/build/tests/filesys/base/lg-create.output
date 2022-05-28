@@ -1,0 +1,40 @@
+Kernel command line: -q -f put lg-create run lg-create
+0 ~ 9fc00 1
+100000 ~ 13e0000 1
+Pintos booting with: 
+	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
+	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
+Calibrating timer...  157,081,600 loops/s.
+hd0:0: detected 313 sector (156 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 107 sector (53 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+Formatting file system...done.
+Boot complete.
+Putting 'lg-create' into the file system...
+Executing 'lg-create':
+process create initd!!
+fn_copy: lg-create
+===ERROR!====
+process lg-create exec!!
+start load!!
+Page fault at 0: not present error writing page in kernel context.
+Interrupt 0x0e (#PF Page-Fault Exception) at rip=800421c148
+ cr2=0000000000000000 error=               2
+rax 0000000000000000 rbx 0000000000000000 rcx 0000000000000010 rdx 000000800423d418
+rsp 000000800423fbd0 rbp 000000800423fec0 rsi 0000000000000000 rdi 000000800423b038
+rip 000000800421c148 r8 000000800423fe4c  r9 0000000000000000 r10 0000000000000000
+r11 0000000000000000 r12 0000000000000000 r13 0000000000000000 r14 0000000000000000
+r15 0000000000000000 rflags 00000202
+es: 0010 ds: 0010 cs: 0008 ss: 0010
+Kernel PANIC at ../../userprog/exception.c:97 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0x800421859a 0x800421d15b 0x800421d2da 0x8004209536 0x8004209954 0x800421bf23 0x800421bc7e 0x8004207b54.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 62 ticks
+Thread: 30 idle ticks, 28 kernel ticks, 4 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 37 reads, 242 writes
+hd1:0: 107 reads, 0 writes
+Console: 1798 characters output
+Key

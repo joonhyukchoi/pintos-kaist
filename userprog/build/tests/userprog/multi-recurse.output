@@ -1,0 +1,52 @@
+Kernel command line: -q -f put multi-recurse run 'multi-recurse 15'
+0 ~ 9fc00 1
+100000 ~ 13e0000 1
+Pintos booting with: 
+	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
+	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
+Calibrating timer...  111,206,400 loops/s.
+hd0:0: detected 313 sector (156 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 113 sector (56 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+Formatting file system...done.
+Boot complete.
+Putting 'multi-recurse' into the file system...
+Executing 'multi-recurse 15':
+process create initd!!
+fn_copy: multi-recurse 15
+===ERROR!====
+process multi-recurse 15 exec!!
+start load!!
+==== filename: multi-recurse 15 0x800423e000 16
+'multi-recurse'
+'15'
+parse[1]: 15
+parse[0]: multi-recurse
+stlcpy address >> 0x4747fffd 15
+stlcpy address >> 0x4747ffef multi-recurse
+000000004747ffd0  00 00 00 00 02 00 00 00-ef ff 47 47 ef ff 47 47 |..........GG..GG|
+000000004747ffe0  fd ff 47 47 00 00 00 00-00 00 00 00 00 00 00 6d |..GG...........m|
+000000004747fff0  75 6c 74 69 2d 72 65 63-75 72 73 65 00 31 35 00 |ulti-recurse.15.|
+end load!!
+Page fault at 0x800423ff9f: rights violation error reading page in user context.
+multi-recurse: dying due to interrupt 0x0e (#PF Page-Fault Exception).
+Interrupt 0x0e (#PF Page-Fault Exception) at rip=40010b
+ cr2=000000800423ff9f error=               5
+rax 000000800423ff9f rbx 0000800423f00000 rcx 000080042295e800 rdx 000000800423ff97
+rsp 000000004747ff08 rbp 000000004747ffa8 rsi 000000800423ff97 rdi 0000000000000002
+rip 000000000040010b r8 0000800423ff6000  r9 000080042086a900 r10 0000800423ff3000
+r11 0000000000003f00 r12 0000800423ff0000 r13 000080042086dc00 r14 0000800423ff1000
+r15 0000000000000200 rflags 00000206
+es: 001b ds: 001b cs: 0023 ss: 001b
+debug choi
+tid: 3
+Execution of 'multi-recurse' complete.
+Timer: 70 ticks
+Thread: 30 idle ticks, 32 kernel ticks, 8 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 87 reads, 254 writes
+hd1:0: 113 reads, 0 writes
+Console: 2049 characters output
+Keyboard: 0 keys pressed
+Exception: 1 page faults
+Powering off...

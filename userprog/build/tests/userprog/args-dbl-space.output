@@ -1,0 +1,47 @@
+Kernel command line: -q -f put args-dbl-space run 'args-dbl-space two  spaces!'
+0 ~ 9fc00 1
+100000 ~ 13e0000 1
+Pintos booting with: 
+	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
+	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
+Calibrating timer...  157,081,600 loops/s.
+hd0:0: detected 313 sector (156 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 102 sector (51 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+Formatting file system...done.
+Boot complete.
+Putting 'args-dbl-space' into the file system...
+Executing 'args-dbl-space two  spaces!':
+process create initd!!
+fn_copy: args-dbl-space two  spaces!
+===ERROR!====
+process args-dbl-space two  spaces! exec!!
+start load!!
+==== filename: args-dbl-space two  spaces! 0x800423e000 27
+'args-dbl-space'
+'two'
+'spaces!'
+parse[2]: spaces!
+parse[1]: two
+parse[0]: args-dbl-space
+stlcpy address >> 0x4747fff8 spaces!
+stlcpy address >> 0x4747fff4 two
+stlcpy address >> 0x4747ffe5 args-dbl-space
+000000004747ffc0              00 00 00 00-03 00 00 00 e5 ff 47 47 |    ..........GG|
+000000004747ffd0  e5 ff 47 47 f4 ff 47 47-f8 ff 47 47 00 00 00 00 |..GG..GG..GG....|
+000000004747ffe0  00 00 00 00 00 61 72 67-73 2d 64 62 6c 2d 73 70 |.....args-dbl-sp|
+000000004747fff0  61 63 65 00 74 77 6f 00-73 70 61 63 65 73 21 00 |ace.two.spaces!.|
+end load!!
+system call!
+debug choi
+tid: 3
+Execution of 'args-dbl-space' complete.
+Timer: 65 ticks
+Thread: 30 idle ticks, 29 kernel ticks, 6 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 80 reads, 232 writes
+hd1:0: 102 reads, 0 writes
+Console: 1615 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...

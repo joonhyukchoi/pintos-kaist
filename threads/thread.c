@@ -195,6 +195,8 @@ thread_create (const char *name, int priority,
 	struct thread *t;
 	tid_t tid;
 
+	// printf("aux: %s\n", (char *)aux);
+
 	ASSERT (function != NULL);
 
 	/* Allocate thread. */
@@ -220,8 +222,8 @@ thread_create (const char *name, int priority,
 	/* Add to run queue. */
 	thread_unblock (t);
 
-  // * 추가 코드
-  test_max_priority();
+  	// * 추가 코드
+  	test_max_priority();
 
 	return tid;
 }

@@ -1,0 +1,43 @@
+Kernel command line: -q -f put args-single run 'args-single onearg'
+0 ~ 9fc00 1
+100000 ~ 13e0000 1
+Pintos booting with: 
+	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
+	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
+Calibrating timer...  157,081,600 loops/s.
+hd0:0: detected 313 sector (156 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 102 sector (51 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+Formatting file system...done.
+Boot complete.
+Putting 'args-single' into the file system...
+Executing 'args-single onearg':
+process create initd!!
+fn_copy: args-single onearg
+===ERROR!====
+process args-single onearg exec!!
+start load!!
+==== filename: args-single onearg 0x800423e000 18
+'args-single'
+'onearg'
+parse[1]: onearg
+parse[0]: args-single
+stlcpy address >> 0x4747fff9 onearg
+stlcpy address >> 0x4747ffed args-single
+000000004747ffd0  00 00 00 00 02 00 00 00-ed ff 47 47 ed ff 47 47 |..........GG..GG|
+000000004747ffe0  f9 ff 47 47 00 00 00 00-00 00 00 00 00 61 72 67 |..GG.........arg|
+000000004747fff0  73 2d 73 69 6e 67 6c 65-00 6f 6e 65 61 72 67 00 |s-single.onearg.|
+end load!!
+system call!
+debug choi
+tid: 3
+Execution of 'args-single' complete.
+Timer: 63 ticks
+Thread: 30 idle ticks, 29 kernel ticks, 4 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 80 reads, 232 writes
+hd1:0: 102 reads, 0 writes
+Console: 1411 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...
