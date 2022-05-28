@@ -1,6 +1,10 @@
 {
   "files.associations": {
     "thread.h": "c",
-    "stdio.h": "c"
-  }
+    "stdio.h": "c",
+    "init.h": "c",
+    "interrupt.h": "c",
+    "syscall-nr.h": "c"
+  },
+  "C_Cpp.errorSquiggles": "Disabled"
 }

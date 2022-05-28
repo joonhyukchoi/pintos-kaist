@@ -52,12 +52,10 @@ process_create_initd (const char *file_name) {
 
 	char *token, *save_ptr;
 	token = strtok_r (file_name, " ", &save_ptr);
-	printf("process create initd!!\n");
+	
 	/* Create a new thread to execute FILE_NAME. */
-	printf("fn_copy: %s\n", fn_copy);
-	tid = thread_create (token, PRI_MAX, initd, fn_copy);
-	puts("debug choi");
-	printf("tid: %d\n", tid);
+	tid = thread_create (token, PRI_DEFAULT, initd, fn_copy);
+	
 	if (tid == TID_ERROR) {
 		palloc_free_page (fn_copy);
 	}
@@ -71,7 +69,6 @@ initd (void *f_name) {
 	supplemental_page_table_init (&thread_current ()->spt);
 #endif
 	process_init ();
-	puts("===ERROR!====");
 	if (process_exec (f_name) < 0)
 		PANIC("Fail to launch initd\n");
 	NOT_REACHED ();
@@ -171,7 +168,7 @@ process_exec (void *f_name) {
 	char *file_name = f_name;
 	bool success;
 
-	printf("process %s exec!!\n", file_name);
+	// printf("process %s exec!!\n", file_name);
 	/* We cannot use the intr_frame in the thread structure.
 	 * This is because when current thread rescheduled,
 	 * it stores the execution information to the member. */
@@ -209,6 +206,16 @@ process_wait (tid_t child_tid UNUSED) {
 	/* XXX: Hint) The pintos exit if process_wait (initd), we recommend you
 	 * XXX:       to add infinite loop here before
 	 * XXX:       implementing the process_wait. */
+	struct thread *child_td = get_child_process(child_tid);
+	if (child_td) {
+		printf("process wait sema down %d\n", child_td->tid);
+		sema_down(&child_td->load_sema);
+		int exit_status = child_td->exit_status;
+		list_remove(&child_td->child_elem);
+		sema_up(&child_td->exit_sema);
+		return exit_status;
+	}
+
 	return -1;
 }
 
@@ -339,7 +346,6 @@ load (const char *file_name, struct intr_frame *if_) {
 	char *parse[64];
 	int cnt = 0;
 
-	printf("start load!!\n");
 	/* Allocate and activate page directory. */
 	t->pml4 = pml4_create ();
 	if (t->pml4 == NULL)
@@ -438,17 +444,17 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
-	printf("==== filename: %s %p %d\n", file_name, file_name, strlen(file_name));
+	// printf("==== filename: %s %p %d\n", file_name, file_name, strlen(file_name));
 
    	for (token = strtok_r (file_name, " ", &save_ptr); token != NULL; token = strtok_r (NULL, " ", &save_ptr)) {
-		printf ("'%s'\n", token);
+		// printf ("'%s'\n", token);
 		parse[cnt++] = token;
 	}
 
 	argument_stack(parse, cnt, &if_->rsp);
 
 	if_->R.rdi = cnt;
-	if_->R.rsi = &if_->rsp;
+	if_->R.rsi = &if_->rsp + 16;
 	
 	hex_dump(if_->rsp, if_->rsp, USER_STACK - if_->rsp, true);
 
@@ -456,8 +462,6 @@ load (const char *file_name, struct intr_frame *if_) {
 
 done:
 	/* We arrive here whether the load is successful or not. */
-
-	printf("end load!!\n");
 	file_close (file);
 	return success;
 }
@@ -472,7 +476,7 @@ void argument_stack(char **parse, int count, void **esp) {
 		*esp -= (strlen(parse[i]) + 1);
 		strlcpy(*esp, parse[i], strlen(parse[i]) + 1);
 		size += strlen(parse[i]) + 1;
-		printf("parse[%d]: %s\n", i, parse[i]);
+		// printf("parse[%d]: %s\n", i, parse[i]);
 		str_adrr[i] = *esp;
 	}
 
@@ -485,27 +489,45 @@ void argument_stack(char **parse, int count, void **esp) {
 
 	// printf("size pointer %d\n", sizeof(*esp)); // 32bit 시스템에서 포인터 크기 4byte, 64bit 시스템에서 포인터 크기 8byte, 여기서 출력해보면 8나옴
 	// * argv[count]
-	*esp = *esp - 4;
+	*esp = *esp - 8;
 	**(char **)esp = 0;
 
 	// * argv[i] 주소
 	for (i = count - 1; -1 < i; i--) {
-		*esp = *esp - 4;
+		*esp = *esp - 8;
 		printf("stlcpy address >> %p %s\n", str_adrr[i], str_adrr[i]);
 		memcpy(*esp, &str_adrr[i], strlen(&str_adrr[i]));
 	}
 	
 	// * argv 주소
-	*esp = *esp - 4;
+	*esp = *esp - 8;
 	memcpy(*esp, str_adrr, strlen(str_adrr));
 
 	// * argc
-	*esp = *esp - 4;
+	*esp = *esp - 8;
 	**(char **)esp = count;
 
 	// * return address(fake)
-	*esp = *esp - 4;
+	*esp = *esp - 8;
 	**(char **)esp = 0;
+}
+
+struct thread *get_child_process(int pid) {
+	struct thread *cur = thread_current();
+	struct list_elem *cur_elem = list_begin(&cur->children);
+
+	while (cur_elem != list_end(&cur->children)) {
+		struct thread *child_th = list_entry(cur_elem, struct thread, child_elem);
+		if (child_th->tid == pid) {
+			return child_th;
+		}
+		cur_elem = list_next(cur_elem);
+	}
+	return NULL;
+}
+
+void remove_child_process(struct thread *cp) {
+
 }
 
 /* Checks whether PHDR describes a valid, loadable segment in

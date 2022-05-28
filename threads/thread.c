@@ -208,6 +208,12 @@ thread_create (const char *name, int priority,
 	init_thread (t, name, priority, 0);
 	tid = t->tid = allocate_tid ();
 
+  // * userprog 구현
+  sema_init(&t->load_sema, 0);
+  sema_init(&t->exit_sema, 0);
+	printf("sema_init done!\n");
+  list_push_back(&thread_current()->children, &t->child_elem);
+
 	/* Call the kernel_thread if it scheduled.
 	 * Note) rdi is 1st argument, and rsi is 2nd argument. */
 	t->tf.rip = (uintptr_t) kernel_thread;
@@ -601,6 +607,9 @@ init_thread (struct thread *t, const char *name, int priority, int wakeup_tick) 
 	list_init(&t->donations);
 	t->wakeup_tick = wakeup_tick;
 	t->magic = THREAD_MAGIC;
+
+  // * userprog 구현
+  list_init(&t->children);
 }
 
 /* Chooses and returns the next thread to be scheduled.  Should

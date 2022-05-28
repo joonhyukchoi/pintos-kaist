@@ -7,6 +7,8 @@
 #include "userprog/gdt.h"
 #include "threads/flags.h"
 #include "intrinsic.h"
+#include "include/threads/init.h"
+#include "include/filesys/filesys.h"
 
 void syscall_entry (void);
 void syscall_handler (struct intr_frame *);
@@ -41,6 +43,68 @@ syscall_init (void) {
 void
 syscall_handler (struct intr_frame *f UNUSED) {
 	// TODO: Your implementation goes here.
-	printf ("system call!\n");
-	thread_exit ();
+	check_address(f->rsp);
+	printf("check address done!\n");
+	switch (f->R.rax) {
+		case SYS_HALT:
+			halt();
+			break;
+		case SYS_EXIT:
+			exit(0);
+			break;
+		case SYS_EXEC:
+			break;
+		case SYS_WAIT:
+			break;
+		case SYS_CREATE:
+			// create(f->R.rdi, f->R.rsi);
+			break;
+		case SYS_REMOVE:
+			// remove(f->R.rdi);
+			break;
+		case SYS_OPEN:
+			break;
+		case SYS_FILESIZE:
+			break;
+		case SYS_READ:
+			break;
+		case SYS_WRITE:
+			break;
+		case SYS_SEEK:
+			break;
+		case SYS_TELL:
+			break;
+		case SYS_CLOSE:
+			break;
+		default:
+			break;
+	}
+	// printf ("system call!\n");
+	// thread_exit ();
 }
+
+void check_address(void *addr) {
+	struct thread *cur = thread_current();
+	if (is_kernel_vaddr(addr) || pml4_get_page(cur->pml4, addr) == NULL) {
+		exit(-1);
+	}
+}
+
+void halt() {
+	power_off();
+}
+
+void exit(int status) {
+	struct thread *cur = thread_current();
+	// printf("%s: exit(%d)\n", cur->name, status);
+	thread_exit();
+}
+
+// bool create(const char *file, unsigned initial_size) {
+// 	return filesys_create(file, initial_size);
+// }
+
+// bool remove(const char *file) {
+// 	return filesys_remove(file);
+// }
+
