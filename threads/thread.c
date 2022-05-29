@@ -208,6 +208,13 @@ thread_create (const char *name, int priority,
 	t->tf.cs = SEL_KCSEG;
 	t->tf.eflags = FLAG_IF;
 
+  // * USERPROG 추가
+  t->parent = thread_current(); // * 부모 프로세스 저장
+  sema_init(&t->exit_sema, 0); // * exit 세마포어 0으로 초기화
+  sema_init(&t->load_sema, 0); // * load 세마포어 0으로 초기화
+  // * 자식 리스트에 추가
+  list_push_back(&thread_current()->children, &t->child_elem);
+
 	/* Add to run queue. */
 	thread_unblock (t);
 
@@ -551,6 +558,10 @@ init_thread (struct thread *t, const char *name, int priority, int wakeup_tick) 
 	list_init(&t->donations);
 	t->wakeup_tick = wakeup_tick;
 	t->magic = THREAD_MAGIC;
+
+  // * USERPROG 추가
+  list_init(&t->children);
+
 }
 
 /* Chooses and returns the next thread to be scheduled.  Should

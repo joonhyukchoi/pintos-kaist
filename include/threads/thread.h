@@ -10,6 +10,9 @@
 #include "vm/vm.h"
 #endif
 
+// * USERPROG 추가
+#include "include/threads/synch.h"
+
 
 /* States in a thread's life cycle. */
 enum thread_status {
@@ -99,6 +102,16 @@ struct thread {
 	struct list_elem donation_elem;		/* list_elem for donation list */
 	/* Shared between thread.c and synch.c. */
 	struct list_elem elem;              /* List element. */
+
+  // * USERPROG 추가 
+  int exit_status; /* 프로세스의 종료 상태를 확인하는 필드 추가 */
+  struct semaphore load_sema; /* 자식 프로세스의 생성 대기를 위한 세마포어 */
+  struct semaphore exit_sema; /* 자식 프로세스의 종료 대기를 위한 세마포어 */
+
+  struct list children;
+  struct list_elem child_elem;
+
+  struct thread *parent; /* 부모 프로세스 디스크립터를 가리키는 필드 추가 */
 
 #ifdef USERPROG
 	/* Owned by userprog/process.c. */

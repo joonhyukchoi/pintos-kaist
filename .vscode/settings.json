@@ -1,5 +1,13 @@
 {
   "files.associations": {
-    "thread.h": "c"
+    "thread.h": "c",
+    "syscall-nr.h": "c",
+    "syscall.h": "c",
+    "vaddr.h": "c",
+    "random.h": "c",
+    "process.h": "c",
+    "interrupt.h": "c",
+    "filesys.h": "c",
+    "file.h": "c"
   }
 }
