@@ -43,6 +43,8 @@ process_create_initd (const char *file_name) {
 	char *fn_copy;
 	tid_t tid;
 
+  puts("debug choi");
+
 	/* Make a copy of FILE_NAME.
 	 * Otherwise there's a race between the caller and load(). */
 	fn_copy = palloc_get_page (0);
@@ -216,9 +218,10 @@ process_wait (tid_t child_tid UNUSED) {
   int exit_status = child->exit_status;
   list_remove(&child->child_elem);
   sema_up(&child->exit_sema);
+  return exit_status;
 
-  while(1);
-	return -1;
+  // while(1);
+	// return -1;
 }
 
 /* Exit the process. This function is called by thread_exit (). */
@@ -229,6 +232,9 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
+
+  sema_up(&curr->load_sema);
+  sema_down(&curr->exit_sema);
 
 	process_cleanup ();
 }
@@ -463,7 +469,7 @@ struct thread *get_child_process(int pid) {
   struct list *child_list = &cur->children;
   struct list_elem *cur_child = list_begin(&child_list);
 
-  while (cur_child != list_back(&child_list)) {
+  while (cur_child != list_end(&child_list)) {
     struct thread *cur_t = list_entry(cur_child, struct thread, child_elem);
     if (cur_t->tid == pid) {
       return cur_t;
@@ -472,9 +478,11 @@ struct thread *get_child_process(int pid) {
   return NULL;
 }
 
-// void remove_child_process(struct thread *cp) {
-//   list_remove(&cp->child_elem);
-// }
+void remove_child_process(struct thread *cp) {
+  list_remove(&cp->child_elem);
+  // * 프로세스 디스크립터 메모리 해제 / 애매
+  palloc_free_page(cp);
+}
 
 void argument_stack(char **parse, int count, void **esp) {
   

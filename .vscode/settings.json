@@ -8,6 +8,7 @@
     "process.h": "c",
     "interrupt.h": "c",
     "filesys.h": "c",
-    "file.h": "c"
+    "file.h": "c",
+    "flags.h": "c"
   }
 }

@@ -67,6 +67,9 @@ syscall_handler (struct intr_frame *f UNUSED) {
       if(exec(f->R.rdi) == -1) {
         exit(-1);
       }
+    case SYS_WAIT:
+      f->R.rax = wait(f->R.rdi);
+      break;
     default:
       exit(-1);
       break;
@@ -90,7 +93,7 @@ void exit(int status) {
    */ 
   struct thread *cur = thread_current();
   cur->exit_status = status;
-  printf("%s: exit(%d)\n", thread_name(), status);
+  printf("%s: exit(%d)\n", cur->name, status);
   thread_exit();
 }
 
@@ -111,6 +114,11 @@ bool remove (const char *file) {
   check_address(file);
   return filesys_remove(file);
 }
+
+int wait (tid_t pid) {
+  return process_wait(pid);
+}
+
 
 // int write (int fd, const void *buffer, unsigned size) {
 //   check_address(buffer);
@@ -136,6 +144,6 @@ int exec(char *file_name) {
 
 void check_address(void *addr) {
   struct thread *cur = thread_current();
-  if (is_kernel_vaddr(addr) || pml4_get_page(cur->pml4, addr) == NULL)
+  if (addr == NULL || is_kernel_vaddr(addr) || pml4_get_page(cur->pml4, addr) == NULL)
     exit(-1);
 }
