@@ -1,0 +1,19 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (sm-create) begin
+  (sm-create) create "blargle"
+  (sm-create) open "blargle" for verification
+  (sm-create) verified contents of "blargle"
+  (sm-create) close "blargle"
+  (sm-create) end
+Differences in `diff -u' format:
+  (sm-create) begin
+  (sm-create) create "blargle"
+  (sm-create) open "blargle" for verification
+- (sm-create) verified contents of "blargle"
+- (sm-create) close "blargle"
+- (sm-create) end
+
+(Process exit codes are excluded for matching purposes.)

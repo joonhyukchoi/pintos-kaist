@@ -1,0 +1,17 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (multi-oom) begin
+  (multi-oom) Spawned at least 10 children.
+  (multi-oom) success. Program forked 10 iterations.
+  (multi-oom) end
+Differences in `diff -u' format:
+  (multi-oom) begin
+- (multi-oom) Spawned at least 10 children.
+- (multi-oom) success. Program forked 10 iterations.
+- (multi-oom) end
+
+(Process exit codes are excluded for matching purposes.)
+
+(User fault messages are excluded for matching purposes.)

@@ -1,0 +1,19 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (lg-create) begin
+  (lg-create) create "blargle"
+  (lg-create) open "blargle" for verification
+  (lg-create) verified contents of "blargle"
+  (lg-create) close "blargle"
+  (lg-create) end
+Differences in `diff -u' format:
+  (lg-create) begin
+  (lg-create) create "blargle"
+  (lg-create) open "blargle" for verification
+- (lg-create) verified contents of "blargle"
+- (lg-create) close "blargle"
+- (lg-create) end
+
+(Process exit codes are excluded for matching purposes.)

@@ -43,7 +43,7 @@ process_create_initd (const char *file_name) {
 	char *fn_copy;
 	tid_t tid;
 
-  puts("debug choi");
+  // puts("debug choi create initd");
 
 	/* Make a copy of FILE_NAME.
 	 * Otherwise there's a race between the caller and load(). */
@@ -53,6 +53,7 @@ process_create_initd (const char *file_name) {
 	strlcpy (fn_copy, file_name, PGSIZE);
 
 	/* Create a new thread to execute FILE_NAME. */
+  printf("create_initd filename: %s\n", file_name);
 	tid = thread_create (file_name, PRI_DEFAULT, initd, fn_copy);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
@@ -167,7 +168,7 @@ process_exec (void *f_name) {
 	char *file_name = f_name;
 	bool success;
 
-  printf("process %s exec!!\n", file_name);
+  // printf("process %s exec!!\n", file_name);
 
 	/* We cannot use the intr_frame in the thread structure.
 	 * This is because when current thread rescheduled,
@@ -221,6 +222,7 @@ process_wait (tid_t child_tid UNUSED) {
   return exit_status;
 
   // while(1);
+  // for(int i = 0; i < 1000000; i++)
 	// return -1;
 }
 
@@ -355,17 +357,17 @@ load (const char *file_name, struct intr_frame *if_) {
 		goto done;
 	process_activate (thread_current ());
 
-  printf("filename: %s\n", file_name);
+  // printf("filename: %s\n", file_name);
 
   char *token, *save_ptr;
   char *argv[64];
   uint64_t cnt = 0;
 
   for (token = strtok_r(file_name, " ", &save_ptr); token != NULL; token = strtok_r(NULL, " ", &save_ptr)) {
-    printf("token: %s\n", token);
+    // printf("token: %s\n", token);
     argv[cnt++] = token;
   }
-  printf("total cnt: %d\n", cnt);
+  // printf("total cnt: %d\n", cnt);
 
 	/* Open executable file. */
   file = filesys_open (argv[0]);
@@ -449,10 +451,8 @@ load (const char *file_name, struct intr_frame *if_) {
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
   
-  // puts("before argument_stack");
   argument_stack(argv, cnt, &if_->rsp);
-  hex_dump(if_->rsp, if_->rsp, USER_STACK - if_->rsp, true);
-  // puts("after");
+  // hex_dump(if_->rsp, if_->rsp, USER_STACK - if_->rsp, true);
   if_->R.rdi = cnt;
   if_->R.rsi = if_->rsp + 8;
 
@@ -467,13 +467,14 @@ done:
 struct thread *get_child_process(int pid) {
   struct thread *cur = thread_current();
   struct list *child_list = &cur->children;
-  struct list_elem *cur_child = list_begin(&child_list);
+  struct list_elem *cur_child = list_begin(child_list);
 
-  while (cur_child != list_end(&child_list)) {
+  while (cur_child != list_end(child_list)) {
     struct thread *cur_t = list_entry(cur_child, struct thread, child_elem);
     if (cur_t->tid == pid) {
       return cur_t;
     }
+    cur_child = list_next(cur_child);
   }
   return NULL;
 }
@@ -489,17 +490,15 @@ void argument_stack(char **parse, int count, void **esp) {
   char *argv_address[count];
   uint8_t size = 0;
 
-  puts("here");
 	// * argv[i] 문자열
 	for (int i = count - 1; -1 < i; i--) {
-    printf("%d parse[%d]: %s / len: %d\n", (int)*esp, i, parse[i], strlen(parse[i]));
+    // printf("%d parse[%d]: %s / len: %d\n", (int)*esp, i, parse[i], strlen(parse[i]));
     *esp -= (strlen(parse[i]) + 1);
     memcpy(*esp, parse[i], strlen(parse[i]) + 1);
 		// strlcpy(*esp, parse[i], strlen(parse[i]) + 1);
 		size += strlen(parse[i]) + 1;
 		argv_address[i] = *esp;
 	}
-  printf("address: %p\n", esp);
 
   if (size % 8) {
 		for (int i = (8 - (size % 8)); 0 < i; i--) {
@@ -514,17 +513,9 @@ void argument_stack(char **parse, int count, void **esp) {
   // * argv[i] 주소
 	for (int i = count - 1; -1 < i; i--) {
 		*esp = *esp - 8;
-		printf("stlcpy address >> %p %s\n", argv_address[i], argv_address[i]);
+		// printf("stlcpy address >> %p %s\n", argv_address[i], argv_address[i]);
 		memcpy(*esp, &argv_address[i], strlen(&argv_address[i]));
 	}
-	
-	// // * argv 주소
-	// *esp = *esp - 8;
-	// memcpy(*esp, argv_address, strlen(argv_address));
-
-	// // * argc
-	// *esp = *esp - 8;
-	// **(char **)esp = count;
 
 	// * return address(fake)
 	*esp = *esp - 8;

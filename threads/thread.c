@@ -240,8 +240,11 @@ cmp_priority (const struct list_elem *a, const struct list_elem *b, void *aux UN
 void test_max_priority (void) {
 
   // * 추가 코드
-  if (cmp_priority(list_begin(&ready_list), &thread_current()->elem, NULL))
-    thread_yield();
+  // if (!list_empty(&ready_list)) {
+    if (cmp_priority(list_begin(&ready_list), &thread_current()->elem, NULL)) {
+      thread_yield();
+    // }
+  }
 
 }
 

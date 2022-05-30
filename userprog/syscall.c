@@ -55,18 +55,19 @@ syscall_handler (struct intr_frame *f UNUSED) {
       exit(f->R.rdi);
       break;
     case SYS_CREATE:
-      f->R.rax = (f->R.rdi, f->R.rsi);
+      f->R.rax = create(f->R.rdi, f->R.rsi);
       break;
     case SYS_REMOVE:
       f->R.rax = remove(f->R.rdi);
       break;
-    // case SYS_WRITE:      
-    //   f->R.rax = write(f->R.rdi, f->R.rsi, f->R.rdx);
-    //   break;
+    case SYS_WRITE:      
+      f->R.rax = write(f->R.rdi, f->R.rsi, f->R.rdx);
+      break;
     case SYS_EXEC:
       if(exec(f->R.rdi) == -1) {
         exit(-1);
       }
+      break;
     case SYS_WAIT:
       f->R.rax = wait(f->R.rdi);
       break;
@@ -120,11 +121,14 @@ int wait (tid_t pid) {
 }
 
 
-// int write (int fd, const void *buffer, unsigned size) {
-//   check_address(buffer);
-//   int write_result;
-//   struct file f;
-// }
+int write (int fd UNUSED, const void *buffer, unsigned size) {
+	// temp()
+  check_address(buffer);
+  if (fd == 1) {
+	  putbuf(buffer, size);
+	  // return sizeof(buffer);
+  }
+}
 
 int exec(char *file_name) {
   check_address(file_name);

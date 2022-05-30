@@ -1,0 +1,20 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (exec-boundary) begin
+  (child-simple) run
+  child-simple: exit(81)
+  (exec-boundary) fork
+  (exec-boundary) wait
+  (exec-boundary) end
+  exec-boundary: exit(0)
+Differences in `diff -u' format:
+  (exec-boundary) begin
+- (child-simple) run
+- child-simple: exit(81)
+- (exec-boundary) fork
+- (exec-boundary) wait
+- (exec-boundary) end
+- exec-boundary: exit(0)
++ exec-boundary: exit(-1)
