@@ -15,14 +15,15 @@ Executing 'lg-random':
 (lg-random) begin
 (lg-random) create "bazzle"
 (lg-random) open "bazzle"
+(lg-random) write "bazzle" in random order
 lg-random: exit(-1)
 Execution of 'lg-random' complete.
-Timer: 62 ticks
+Timer: 61 ticks
 Thread: 30 idle ticks, 28 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 105 reads, 410 writes
+hd0:1: 109 reads, 410 writes
 hd1:0: 110 reads, 0 writes
-Console: 880 characters output
+Console: 923 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

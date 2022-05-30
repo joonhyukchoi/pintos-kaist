@@ -16,14 +16,15 @@ Putting 'child-read' into the file system...
 Executing 'exec-read':
 (exec-read) begin
 (exec-read) open "sample.txt"
+(exec-read) read "sample.txt" first 20 bytes
 exec-read: exit(-1)
 Execution of 'exec-read' complete.
 Timer: 63 ticks
 Thread: 30 idle ticks, 31 kernel ticks, 2 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 139 reads, 506 writes
+hd0:1: 144 reads, 506 writes
 hd1:0: 229 reads, 0 writes
-Console: 977 characters output
+Console: 1022 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

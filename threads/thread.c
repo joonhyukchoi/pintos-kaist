@@ -11,8 +11,11 @@
 #include "threads/synch.h"
 #include "threads/vaddr.h"
 #include "intrinsic.h"
+// * 추가
+#include "threads/malloc.h"
 #ifdef USERPROG
 #include "userprog/process.h"
+
 #endif
 
 /* Random value for struct thread's `magic' member.
@@ -214,6 +217,12 @@ thread_create (const char *name, int priority,
   sema_init(&t->load_sema, 0); // * load 세마포어 0으로 초기화
   // * 자식 리스트에 추가
   list_push_back(&thread_current()->children, &t->child_elem);
+
+  // * 파일 디스크립터 초기값 설정
+  t->fdt = (struct file **)calloc(64, sizeof(struct file *));
+  // t->fdt[0] = 1;
+  // t->fdt[1] = 2;
+  t->next_fd = 2;
 
 	/* Add to run queue. */
 	thread_unblock (t);

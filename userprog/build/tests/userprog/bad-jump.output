@@ -13,23 +13,14 @@ Boot complete.
 Putting 'bad-jump' into the file system...
 Executing 'bad-jump':
 (bad-jump) begin
-Page fault at 0: not present error reading page in user context.
-bad-jump: dying due to interrupt 0x0e (#PF Page-Fault Exception).
-Interrupt 0x0e (#PF Page-Fault Exception) at rip=0
- cr2=0000000000000000 error=               4
-rax 0000000000000000 rbx 0000000000000000 rcx 00000000000000ff rdx 0000000000000000
-rsp 000000004747ff88 rbp 000000004747ff90 rsi 00000000006050ce rdi 00000000006051bf
-rip 0000000000000000 r8 0000000000000000  r9 0000000000000000 r10 0000000000000000
-r11 0000000000000206 r12 0000000000000000 r13 0000000000000000 r14 0000000000000000
-r15 0000000000000000 rflags 00000212
-es: 001b ds: 001b cs: 0023 ss: 001b
+bad-jump: exit(-1)
 Execution of 'bad-jump' complete.
-Timer: 62 ticks
-Thread: 30 idle ticks, 27 kernel ticks, 5 user ticks
+Timer: 59 ticks
+Thread: 30 idle ticks, 28 kernel ticks, 1 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 80 reads, 234 writes
 hd1:0: 103 reads, 0 writes
-Console: 1434 characters output
+Console: 818 characters output
 Keyboard: 0 keys pressed
-Exception: 1 page faults
+Exception: 0 page faults
 Powering off...

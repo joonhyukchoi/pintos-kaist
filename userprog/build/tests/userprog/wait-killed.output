@@ -17,7 +17,7 @@ Executing 'wait-killed':
 wait-killed: exit(-1)
 Execution of 'wait-killed' complete.
 Timer: 61 ticks
-Thread: 30 idle ticks, 31 kernel ticks, 1 user ticks
+Thread: 30 idle ticks, 30 kernel ticks, 1 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 107 reads, 448 writes
 hd1:0: 205 reads, 0 writes

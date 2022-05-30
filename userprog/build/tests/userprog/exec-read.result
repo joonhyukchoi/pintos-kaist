@@ -18,7 +18,7 @@ Acceptable output:
 Differences in `diff -u' format:
   (exec-read) begin
   (exec-read) open "sample.txt"
-- (exec-read) read "sample.txt" first 20 bytes
+  (exec-read) read "sample.txt" first 20 bytes
 - (child-read) begin
 - (child-read) open "sample.txt"
 - (child-read) read "sample.txt" first 20 bytes

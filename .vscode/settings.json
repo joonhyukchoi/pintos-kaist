@@ -9,6 +9,7 @@
     "interrupt.h": "c",
     "filesys.h": "c",
     "file.h": "c",
-    "flags.h": "c"
+    "flags.h": "c",
+    "*.inc": "c"
   }
 }

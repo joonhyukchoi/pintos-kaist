@@ -42,7 +42,7 @@ Acceptable output:
 Differences in `diff -u' format:
   (rox-multichild) begin
   (rox-multichild) open "child-rox"
-- (rox-multichild) read "child-rox"
+  (rox-multichild) read "child-rox"
 - (rox-multichild) write "child-rox"
 - (rox-multichild) exec "child-rox 5"
 - (child-rox) begin

@@ -113,6 +113,9 @@ struct thread {
 
   struct thread *parent; /* 부모 프로세스 디스크립터를 가리키는 필드 추가 */
 
+  struct file **fdt;
+  int next_fd;
+
 #ifdef USERPROG
 	/* Owned by userprog/process.c. */
 	uint64_t *pml4;                     /* Page map level 4 */

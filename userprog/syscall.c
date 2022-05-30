@@ -31,6 +31,9 @@ void syscall_handler (struct intr_frame *);
 
 void
 syscall_init (void) {
+
+  lock_init(&filesys_lock);
+
 	write_msr(MSR_STAR, ((uint64_t)SEL_UCSEG - 0x10) << 48  |
 			((uint64_t)SEL_KCSEG) << 32);
 	write_msr(MSR_LSTAR, (uint64_t) syscall_entry);
@@ -60,6 +63,15 @@ syscall_handler (struct intr_frame *f UNUSED) {
     case SYS_REMOVE:
       f->R.rax = remove(f->R.rdi);
       break;
+    case SYS_OPEN:
+      f->R.rax = open(f->R.rdi);
+      break;
+    case SYS_FILESIZE:
+      f->R.rax = filesize(f->R.rdi);
+      break;
+    case SYS_READ:
+      f->R.rax = read(f->R.rdi, f->R.rsi, f->R.rdx);
+      break;  
     case SYS_WRITE:      
       f->R.rax = write(f->R.rdi, f->R.rsi, f->R.rdx);
       break;
@@ -70,14 +82,14 @@ syscall_handler (struct intr_frame *f UNUSED) {
       break;
     case SYS_WAIT:
       f->R.rax = wait(f->R.rdi);
+      break; 
+    case SYS_CLOSE:
+      close(f->R.rdi);
       break;
     default:
       exit(-1);
       break;
   }
-
-	// printf ("system call!\n");
-	// thread_exit ();
 }
 
 void halt(void) {
@@ -98,6 +110,30 @@ void exit(int status) {
   thread_exit();
 }
 
+int fork (const char *thread_name) {
+  
+}
+
+int exec(char *file_name) {
+  check_address(file_name);
+
+  int file_size = strlen(file_name) + 1;
+  char *fn_copy = palloc_get_page(PAL_ZERO);
+  if (fn_copy == NULL)
+    exit(-1);
+  strlcpy(fn_copy, file_name, file_size);
+
+  if(process_exec(fn_copy) == -1)
+    return -1;
+
+  NOT_REACHED();
+  return 0;
+}
+
+int wait (tid_t pid) {
+  return process_wait(pid);
+}
+
 bool create (const char *file, unsigned initial_size) {
   /* 
    * 파일 이름과 크기에 해당하는 파일 생성
@@ -116,34 +152,62 @@ bool remove (const char *file) {
   return filesys_remove(file);
 }
 
-int wait (tid_t pid) {
-  return process_wait(pid);
+int open (const char *file) {
+  check_address(file);
+  struct thread *cur = thread_current();
+  struct file *fd = filesys_open(file);
+  if (fd) {
+    cur->fdt[cur->next_fd] = fd;
+    return cur->next_fd++;
+  }
+  return -1;
 }
 
+int filesize (int fd) {
+  struct file *file = thread_current()->fdt[fd];
+  if (file)
+    return file_length(file);
+  return -1;
+}
+
+int read (int fd, void *buffer, unsigned size) {
+  if (fd == 0) {
+    return input_getc();
+  }
+  struct file *file = thread_current()->fdt[fd];
+  if (file) {
+    return file_read(file, buffer, size);
+  }
+  return -1;
+}
 
 int write (int fd UNUSED, const void *buffer, unsigned size) {
-	// temp()
   check_address(buffer);
   if (fd == 1) {
 	  putbuf(buffer, size);
-	  // return sizeof(buffer);
+    return size;
   }
+  struct file *file = thread_current()->fdt[fd];
+  if (file) {
+    return file_write(file, buffer, size);
+  }
+  return -1;
 }
 
-int exec(char *file_name) {
-  check_address(file_name);
+void seek (int fd, unsigned position) {
 
-  int file_size = strlen(file_name) + 1;
-  char *fn_copy = palloc_get_page(PAL_ZERO);
-  if (fn_copy == NULL)
-    exit(-1);
-  strlcpy(fn_copy, file_name, file_size);
+}
 
-  if(process_exec(fn_copy) == -1)
-    return -1;
+unsigned tell (int fd) {
 
-  NOT_REACHED();
-  return 0;
+}
+
+void close (int fd) {
+  struct file * file = thread_current()->fdt[fd];
+  if (file) {
+    file_close(file);
+    thread_current()->fdt[fd] = 0;
+  }
 }
 
 void check_address(void *addr) {

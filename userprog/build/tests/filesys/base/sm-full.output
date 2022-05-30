@@ -15,14 +15,20 @@ Executing 'sm-full':
 (sm-full) begin
 (sm-full) create "quux"
 (sm-full) open "quux"
-sm-full: exit(-1)
+(sm-full) writing "quux"
+(sm-full) close "quux"
+(sm-full) open "quux" for verification
+(sm-full) verified contents of "quux"
+(sm-full) close "quux"
+(sm-full) end
+sm-full: exit(0)
 Execution of 'sm-full' complete.
-Timer: 60 ticks
-Thread: 30 idle ticks, 27 kernel ticks, 3 user ticks
+Timer: 61 ticks
+Thread: 30 idle ticks, 27 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 102 reads, 264 writes
+hd0:1: 123 reads, 276 writes
 hd1:0: 106 reads, 0 writes
-Console: 858 characters output
+Console: 1019 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

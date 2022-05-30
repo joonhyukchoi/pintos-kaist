@@ -13,23 +13,14 @@ Boot complete.
 Putting 'bad-write2' into the file system...
 Executing 'bad-write2':
 (bad-write2) begin
-Page fault at 0x8004000000: rights violation error writing page in user context.
-bad-write2: dying due to interrupt 0x0e (#PF Page-Fault Exception).
-Interrupt 0x0e (#PF Page-Fault Exception) at rip=4000f6
- cr2=0000008004000000 error=               7
-rax 0000008004000000 rbx 0000000000000000 rcx 00000000000000ff rdx 0000000000000000
-rsp 000000004747ff90 rbp 000000004747ff90 rsi 000000000060508e rdi 000000000060517f
-rip 00000000004000f6 r8 0000000000000000  r9 0000000000000000 r10 0000000000000000
-r11 0000000000000206 r12 0000000000000000 r13 0000000000000000 r14 0000000000000000
-r15 0000000000000000 rflags 00000212
-es: 001b ds: 001b cs: 0023 ss: 001b
+bad-write2: exit(-1)
 Execution of 'bad-write2' complete.
-Timer: 62 ticks
-Thread: 30 idle ticks, 27 kernel ticks, 5 user ticks
+Timer: 59 ticks
+Thread: 30 idle ticks, 28 kernel ticks, 1 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 80 reads, 232 writes
 hd1:0: 102 reads, 0 writes
-Console: 1469 characters output
+Console: 832 characters output
 Keyboard: 0 keys pressed
-Exception: 1 page faults
+Exception: 0 page faults
 Powering off...

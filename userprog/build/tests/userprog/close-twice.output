@@ -15,14 +15,17 @@ Putting 'sample.txt' into the file system...
 Executing 'close-twice':
 (close-twice) begin
 (close-twice) open "sample.txt"
-close-twice: exit(-1)
+(close-twice) close "sample.txt"
+(close-twice) close "sample.txt" again
+(close-twice) end
+close-twice: exit(0)
 Execution of 'close-twice' complete.
 Timer: 60 ticks
 Thread: 30 idle ticks, 28 kernel ticks, 2 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 107 reads, 248 writes
+hd0:1: 111 reads, 248 writes
 hd1:0: 105 reads, 0 writes
-Console: 932 characters output
+Console: 1021 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...
