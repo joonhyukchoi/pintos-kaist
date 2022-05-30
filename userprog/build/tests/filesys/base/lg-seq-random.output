@@ -17,8 +17,8 @@ Executing 'lg-seq-random':
 (lg-seq-random) open "nibble"
 lg-seq-random: exit(-1)
 Execution of 'lg-seq-random' complete.
-Timer: 62 ticks
-Thread: 30 idle ticks, 28 kernel ticks, 4 user ticks
+Timer: 63 ticks
+Thread: 30 idle ticks, 29 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 103 reads, 402 writes
 hd1:0: 107 reads, 0 writes

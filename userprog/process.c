@@ -53,7 +53,11 @@ process_create_initd (const char *file_name) {
 	strlcpy (fn_copy, file_name, PGSIZE);
 
 	/* Create a new thread to execute FILE_NAME. */
-  printf("create_initd filename: %s\n", file_name);
+  // printf("create_initd filename: %s\n",file_name);
+
+  char *save_ptr;
+	strtok_r(file_name, " ", &save_ptr);
+
 	tid = thread_create (file_name, PRI_DEFAULT, initd, fn_copy);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
@@ -167,8 +171,6 @@ int
 process_exec (void *f_name) {
 	char *file_name = f_name;
 	bool success;
-
-  // printf("process %s exec!!\n", file_name);
 
 	/* We cannot use the intr_frame in the thread structure.
 	 * This is because when current thread rescheduled,
@@ -357,7 +359,8 @@ load (const char *file_name, struct intr_frame *if_) {
 		goto done;
 	process_activate (thread_current ());
 
-  // printf("filename: %s\n", file_name);
+  // printf("thread_name: '%s'\n", thread_name());
+  // printf("load file_name: %s\n", file_name);
 
   char *token, *save_ptr;
   char *argv[64];
@@ -492,7 +495,7 @@ void argument_stack(char **parse, int count, void **esp) {
 
 	// * argv[i] 문자열
 	for (int i = count - 1; -1 < i; i--) {
-    // printf("%d parse[%d]: %s / len: %d\n", (int)*esp, i, parse[i], strlen(parse[i]));
+    // printf("%d parse[%d]: '%s' / len: %d\n", (int)*esp, i, parse[i], strlen(parse[i]));
     *esp -= (strlen(parse[i]) + 1);
     memcpy(*esp, parse[i], strlen(parse[i]) + 1);
 		// strlcpy(*esp, parse[i], strlen(parse[i]) + 1);

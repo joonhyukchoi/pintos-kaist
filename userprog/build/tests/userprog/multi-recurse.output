@@ -14,14 +14,14 @@ Putting 'multi-recurse' into the file system...
 Executing 'multi-recurse 15':
 (multi-recurse) begin 15
 (multi-recurse) exec("multi-recurse 14")
-multi-recurse 1: exit(-1)
-Execution of 'multi-recurse 15' complete.
-Timer: 61 ticks
-Thread: 30 idle ticks, 29 kernel ticks, 2 user ticks
+multi-recurse: exit(-1)
+Execution of 'multi-recurse' complete.
+Timer: 59 ticks
+Thread: 30 idle ticks, 29 kernel ticks, 1 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 87 reads, 254 writes
 hd1:0: 113 reads, 0 writes
-Console: 910 characters output
+Console: 905 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

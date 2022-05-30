@@ -17,8 +17,8 @@ Executing 'sm-create':
 (sm-create) open "blargle" for verification
 sm-create: exit(-1)
 Execution of 'sm-create' complete.
-Timer: 61 ticks
-Thread: 30 idle ticks, 29 kernel ticks, 2 user ticks
+Timer: 60 ticks
+Thread: 30 idle ticks, 27 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 103 reads, 266 writes
 hd1:0: 107 reads, 0 writes

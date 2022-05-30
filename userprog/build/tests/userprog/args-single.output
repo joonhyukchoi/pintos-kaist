@@ -18,14 +18,14 @@ Executing 'args-single onearg':
 (args) argv[1] = 'onearg'
 (args) argv[2] = null
 (args) end
-args-single one: exit(0)
-Execution of 'args-single onearg' complete.
-Timer: 66 ticks
-Thread: 30 idle ticks, 32 kernel ticks, 5 user ticks
+args-single: exit(0)
+Execution of 'args-single' complete.
+Timer: 60 ticks
+Thread: 30 idle ticks, 28 kernel ticks, 2 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 80 reads, 232 writes
 hd1:0: 102 reads, 0 writes
-Console: 964 characters output
+Console: 953 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

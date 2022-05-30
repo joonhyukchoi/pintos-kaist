@@ -1,8 +1,8 @@
 pass tests/userprog/args-none
-FAIL tests/userprog/args-single
-FAIL tests/userprog/args-multiple
-FAIL tests/userprog/args-many
-FAIL tests/userprog/args-dbl-space
+pass tests/userprog/args-single
+pass tests/userprog/args-multiple
+pass tests/userprog/args-many
+pass tests/userprog/args-dbl-space
 pass tests/userprog/halt
 pass tests/userprog/exit
 pass tests/userprog/create-normal

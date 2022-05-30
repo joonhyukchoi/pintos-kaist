@@ -31,8 +31,8 @@ Executing 'alarm-simultaneous':
 (alarm-simultaneous) iteration 4, thread 2: woke up 0 ticks later
 (alarm-simultaneous) end
 Execution of 'alarm-simultaneous' complete.
-Timer: 311 ticks
-Thread: 280 idle ticks, 32 kernel ticks, 0 user ticks
+Timer: 310 ticks
+Thread: 280 idle ticks, 30 kernel ticks, 0 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 9 reads, 18 writes
 Console: 1920 characters output
