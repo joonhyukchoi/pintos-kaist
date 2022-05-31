@@ -18,9 +18,12 @@ Differences in `diff -u' format:
 - (child-close) begin
 - (child-close) verified contents of "sample.txt"
 - (child-close) end
-- child-close: exit(0)
-- (multi-child-fd) wait(exec()) = 0
-- (multi-child-fd) verified contents of "sample.txt"
-- (multi-child-fd) end
-- multi-child-fd: exit(0)
-+ multi-child-fd: exit(-1)
++ child sema_down
++ (multi-child-fd) wait(exec()) = -1
++ (multi-child-fd) verified contents of "sample.txt"
++ (multi-child-fd) end
+  child-close: exit(0)
+  (multi-child-fd) wait(exec()) = 0
+  (multi-child-fd) verified contents of "sample.txt"
+  (multi-child-fd) end
+  multi-child-fd: exit(0)

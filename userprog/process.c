@@ -81,10 +81,28 @@ initd (void *f_name) {
 /* Clones the current process as `name`. Returns the new process's thread id, or
  * TID_ERROR if the thread cannot be created. */
 tid_t
-process_fork (const char *name, struct intr_frame *if_ UNUSED) {
+process_fork (const char *name, struct intr_frame *if_) {
 	/* Clone current thread to new thread.*/
-	return thread_create (name,
-			PRI_DEFAULT, __do_fork, thread_current ());
+  struct thread *cur = thread_current();
+  memcpy(&cur->tf, if_, sizeof (struct intr_frame));
+  tid_t ctid = thread_create (name, PRI_DEFAULT, __do_fork, cur);
+  if (ctid == TID_ERROR)
+    return TID_ERROR;
+
+  struct thread *child = get_child_process(ctid);
+  puts("child sema_down");
+  sema_down(&child->fork_sema);
+  // // sema_down(&child->fork_sema);
+  // // printf("tid? : %d\n", thread_current()->tid);
+  // if (thread_current()->tid == ctid) {
+  //   return 0; 
+  // }
+  // else {
+  //   return ctid;
+  // }
+  // // sema_up(&child->fork_sema);
+
+  return ctid;
 }
 
 #ifndef VM
@@ -99,21 +117,31 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
 	bool writable;
 
 	/* 1. TODO: If the parent_page is kernel page, then return immediately. */
+  if (is_kernel_vaddr(va))
+    return true;
 
 	/* 2. Resolve VA from the parent's page map level 4. */
 	parent_page = pml4_get_page (parent->pml4, va);
+  if (parent_page == NULL)
+    return false;
 
 	/* 3. TODO: Allocate new PAL_USER page for the child and set result to
 	 *    TODO: NEWPAGE. */
+  newpage = palloc_get_page(PAL_USER);
+  if (newpage == NULL)
+    return false;  
 
 	/* 4. TODO: Duplicate parent's page to the new page and
 	 *    TODO: check whether parent's page is writable or not (set WRITABLE
 	 *    TODO: according to the result). */
+  memcpy(newpage, parent_page, PGSIZE);
+  writable = is_writable(pte);
 
 	/* 5. Add new page to child's page table at address VA with WRITABLE
 	 *    permission. */
 	if (!pml4_set_page (current->pml4, va, newpage, writable)) {
 		/* 6. TODO: if fail to insert page, do error handling. */
+    return false;
 	}
 	return true;
 }
@@ -129,7 +157,7 @@ __do_fork (void *aux) {
 	struct thread *parent = (struct thread *) aux;
 	struct thread *current = thread_current ();
 	/* TODO: somehow pass the parent_if. (i.e. process_fork()'s if_) */
-	struct intr_frame *parent_if;
+	struct intr_frame *parent_if = &parent->tf;;
 	bool succ = true;
 
 	/* 1. Read the cpu context to local stack. */
@@ -149,20 +177,33 @@ __do_fork (void *aux) {
 	if (!pml4_for_each (parent->pml4, duplicate_pte, parent))
 		goto error;
 #endif
-
 	/* TODO: Your code goes here.
 	 * TODO: Hint) To duplicate the file object, use `file_duplicate`
 	 * TODO:       in include/filesys/file.h. Note that parent should not return
 	 * TODO:       from the fork() until this function successfully duplicates
 	 * TODO:       the resources of parent.*/
+  int cnt = 2;
+  struct file **table = parent->fdt;
+  while (cnt < 64) {
+    if (table[cnt] != 0) {
+      current->fdt[cnt] = file_duplicate(table[cnt]);
+    }
+    cnt++;
+  }
+  current->next_fd = parent->next_fd;
 
 	process_init ();
+
+  sema_up(&current->fork_sema);
 
 	/* Finally, switch to the newly created process. */
 	if (succ)
 		do_iret (&if_);
 error:
-	thread_exit ();
+  current->exit_status = TID_ERROR;
+  puts("child sema_up error");
+  sema_up(&current->fork_sema);
+  exit(TID_ERROR);
 }
 
 /* Switch the current execution context to the f_name.
@@ -224,8 +265,7 @@ process_wait (tid_t child_tid UNUSED) {
   return exit_status;
 
   // while(1);
-  // for(int i = 0; i < 1000000; i++)
-	// return -1;
+  // for(int i = 0; i < 1000000000; i++)
 }
 
 /* Exit the process. This function is called by thread_exit (). */
@@ -359,18 +399,13 @@ load (const char *file_name, struct intr_frame *if_) {
 		goto done;
 	process_activate (thread_current ());
 
-  // printf("thread_name: '%s'\n", thread_name());
-  // printf("load file_name: %s\n", file_name);
-
   char *token, *save_ptr;
   char *argv[64];
   uint64_t cnt = 0;
 
   for (token = strtok_r(file_name, " ", &save_ptr); token != NULL; token = strtok_r(NULL, " ", &save_ptr)) {
-    // printf("token: %s\n", token);
     argv[cnt++] = token;
   }
-  // printf("total cnt: %d\n", cnt);
 
 	/* Open executable file. */
   file = filesys_open (argv[0]);

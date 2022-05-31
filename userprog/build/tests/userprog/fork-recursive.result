@@ -55,6 +55,10 @@ Differences in `diff -u' format:
 - (fork-recursive) Parent: child exit status is 5
 - child: exit(4)
 - (fork-recursive) Parent: child exit status is 4
-- (fork-recursive) end
-- fork-recursive: exit(0)
-+ fork-recursive: exit(-1)
++ child sema_down
++ (fork-recursive) Parent: child exit status is -1
++ (fork-recursive) end
++ child: exit(0)
++ (fork-recursive) Parent: child exit status is 0
+  (fork-recursive) end
+  fork-recursive: exit(0)

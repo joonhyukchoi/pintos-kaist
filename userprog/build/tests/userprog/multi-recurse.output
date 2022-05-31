@@ -14,14 +14,18 @@ Putting 'multi-recurse' into the file system...
 Executing 'multi-recurse 15':
 (multi-recurse) begin 15
 (multi-recurse) exec("multi-recurse 14")
-multi-recurse: exit(-1)
+child sema_down
+(multi-recurse) wait(exec("multi-recurse 14")) returned -1: FAILED
+multi-recurse: exit(1)
+(multi-recurse) wait(exec("multi-recurse 14")) returned 1: FAILED
+multi-recurse: exit(1)
 Execution of 'multi-recurse' complete.
-Timer: 59 ticks
-Thread: 30 idle ticks, 27 kernel ticks, 2 user ticks
+Timer: 61 ticks
+Thread: 30 idle ticks, 28 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 87 reads, 254 writes
 hd1:0: 113 reads, 0 writes
-Console: 905 characters output
+Console: 1076 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

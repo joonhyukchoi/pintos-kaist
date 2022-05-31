@@ -14,14 +14,20 @@ Putting 'wait-killed' into the file system...
 Putting 'child-bad' into the file system...
 Executing 'wait-killed':
 (wait-killed) begin
-wait-killed: exit(-1)
+child sema_down
+(wait-killed) wait(exec()) = -1
+(wait-killed) end
+child-bad: exit(0)
+(wait-killed) wait(exec()) = 0
+(wait-killed) end
+wait-killed: exit(0)
 Execution of 'wait-killed' complete.
-Timer: 61 ticks
-Thread: 30 idle ticks, 30 kernel ticks, 1 user ticks
+Timer: 63 ticks
+Thread: 30 idle ticks, 30 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 107 reads, 448 writes
 hd1:0: 205 reads, 0 writes
-Console: 899 characters output
+Console: 1032 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

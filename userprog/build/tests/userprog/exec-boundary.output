@@ -14,14 +14,22 @@ Putting 'exec-boundary' into the file system...
 Putting 'child-simple' into the file system...
 Executing 'exec-boundary':
 (exec-boundary) begin
-exec-boundary: exit(-1)
+child sema_down
+(exec-boundary) fork
+(exec-boundary) wait
+(exec-boundary) wait: FAILED
+child-simple: exit(1)
+(exec-boundary) fork
+(exec-boundary) wait
+(exec-boundary) wait: FAILED
+exec-boundary: exit(1)
 Execution of 'exec-boundary' complete.
-Timer: 61 ticks
-Thread: 30 idle ticks, 30 kernel ticks, 1 user ticks
+Timer: 63 ticks
+Thread: 30 idle ticks, 29 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 107 reads, 452 writes
 hd1:0: 207 reads, 0 writes
-Console: 919 characters output
+Console: 1098 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

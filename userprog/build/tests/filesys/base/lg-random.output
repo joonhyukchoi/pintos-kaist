@@ -16,14 +16,17 @@ Executing 'lg-random':
 (lg-random) create "bazzle"
 (lg-random) open "bazzle"
 (lg-random) write "bazzle" in random order
-lg-random: exit(-1)
+(lg-random) read "bazzle" in random order
+(lg-random) close "bazzle"
+(lg-random) end
+lg-random: exit(0)
 Execution of 'lg-random' complete.
-Timer: 61 ticks
-Thread: 30 idle ticks, 28 kernel ticks, 4 user ticks
+Timer: 65 ticks
+Thread: 30 idle ticks, 27 kernel ticks, 8 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 109 reads, 410 writes
+hd0:1: 259 reads, 560 writes
 hd1:0: 110 reads, 0 writes
-Console: 923 characters output
+Console: 1007 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

@@ -13,6 +13,10 @@ Differences in `diff -u' format:
 - (fork-once) child run
 - child: exit(81)
 - (fork-once) Parent: child exit status is 81
-- (fork-once) end
-- fork-once: exit(0)
-+ fork-once: exit(-1)
++ child sema_down
++ (fork-once) Parent: child exit status is -1
++ (fork-once) end
++ child: exit(0)
++ (fork-once) Parent: child exit status is 0
+  (fork-once) end
+  fork-once: exit(0)

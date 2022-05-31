@@ -15,14 +15,1396 @@ Putting 'child-syn-wrt' into the file system...
 Executing 'syn-write':
 (syn-write) begin
 (syn-write) create "stuff"
-syn-write: exit(-1)
+child sema_down
+(syn-write) exec child 1 of 10: "child-syn-wrt 0"
+child sema_down
+(syn-write) exec child 1 of 10: "child-syn-wrt 0"
+child sema_down
+(syn-write) exec child 2 of 10: "child-syn-wrt 1"
+child sema_down
+(syn-write) exec child 2 of 10: "child-syn-wrt 1"
+child sema_down
+(syn-write) exec child 2 of 10: "child-syn-wrt 1"
+child sema_down
+(syn-write) exec child 3 of 10: "child-syn-wrt 2"
+child sema_down
+(syn-write) exec child 2 of 10: "child-syn-wrt 1"
+child sema_down
+(syn-write) exec child 3 of 10: "child-syn-wrt 2"
+child sema_down
+(syn-write) exec child 3 of 10: "child-syn-wrt 2"
+child sema_down
+(syn-write) exec child 3 of 10: "child-syn-wrt 2"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 3 of 10: "child-syn-wrt 2"
+child sema_down
+(syn-write) exec child 3 of 10: "child-syn-wrt 2"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 3 of 10: "child-syn-wrt 2"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 3 of 10: "child-syn-wrt 2"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 4 of 10: "child-syn-wrt 3"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 5 of 10: "child-syn-wrt 4"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+child sema_down
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 6 of 10: "child-syn-wrt 5"
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 7 of 10: "child-syn-wrt 6": FAILED
+syn-write: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 7 of 10: "child-syn-wrt 6"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 8 of 10: "child-syn-wrt 7": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 8 of 10: "child-syn-wrt 7"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 9 of 10: "child-syn-wrt 8": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 9 of 10: "child-syn-wrt 8"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) exec child 10 of 10: "child-syn-wrt 9": FAILED
+child-syn-wrt: exit(1)
+child sema_up error
+child-syn-wrt: exit(-1)
+child sema_up error
+child-syn-wrt: exit(-1)
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
+(syn-write) exec child 10 of 10: "child-syn-wrt 9"
+(syn-write) wait for child 1 of 10 returned -1 (expected 0)
+(syn-write) wait for child 1 of 10 returned -1 (expected 0): FAILED
+child-syn-wrt: exit(1)
 Execution of 'syn-write' complete.
-Timer: 63 ticks
-Thread: 30 idle ticks, 31 kernel ticks, 2 user ticks
+Timer: 627 ticks
+Thread: 30 idle ticks, 95 kernel ticks, 502 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 132 reads, 512 writes
 hd1:0: 226 reads, 0 writes
-Console: 920 characters output
+Console: 48719 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

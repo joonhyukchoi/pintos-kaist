@@ -215,6 +215,7 @@ thread_create (const char *name, int priority,
   t->parent = thread_current(); // * 부모 프로세스 저장
   sema_init(&t->exit_sema, 0); // * exit 세마포어 0으로 초기화
   sema_init(&t->load_sema, 0); // * load 세마포어 0으로 초기화
+  sema_init(&t->fork_sema, 0); // * fork 세마포어 0으로 초기화
   // * 자식 리스트에 추가
   list_push_back(&thread_current()->children, &t->child_elem);
 

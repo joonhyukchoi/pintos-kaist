@@ -14,14 +14,22 @@ Putting 'wait-twice' into the file system...
 Putting 'child-simple' into the file system...
 Executing 'wait-twice':
 (wait-twice) begin
-wait-twice: exit(-1)
+child sema_down
+(wait-twice) wait(exec()) = -1
+(wait-twice) wait(exec()) = -1
+(wait-twice) end
+child-simple: exit(0)
+(wait-twice) wait(exec()) = 0
+(wait-twice) wait(exec()) = -1
+(wait-twice) end
+wait-twice: exit(0)
 Execution of 'wait-twice' complete.
-Timer: 61 ticks
-Thread: 30 idle ticks, 30 kernel ticks, 1 user ticks
+Timer: 66 ticks
+Thread: 30 idle ticks, 33 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 107 reads, 446 writes
 hd1:0: 204 reads, 0 writes
-Console: 898 characters output
+Console: 1092 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

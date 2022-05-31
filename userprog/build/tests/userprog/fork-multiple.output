@@ -13,14 +13,90 @@ Boot complete.
 Putting 'fork-multiple' into the file system...
 Executing 'fork-multiple':
 (fork-multiple) begin
-fork-multiple: exit(-1)
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+child sema_down
+(fork-multiple) Parent: child exit status is -1
+(fork-multiple) end
+child: exit(0)
+(fork-multiple) Parent: child exit status is 0
+(fork-multiple) end
+fork-multiple: exit(0)
 Execution of 'fork-multiple' complete.
-Timer: 59 ticks
-Thread: 30 idle ticks, 29 kernel ticks, 1 user ticks
+Timer: 85 ticks
+Thread: 30 idle ticks, 34 kernel ticks, 21 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 87 reads, 236 writes
 hd1:0: 104 reads, 0 writes
-Console: 853 characters output
+Console: 3063 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

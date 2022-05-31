@@ -13,14 +13,22 @@ Boot complete.
 Putting 'fork-boundary' into the file system...
 Executing 'fork-boundary':
 (fork-boundary) begin
-fork-boundary: exit(-1)
+child sema_down
+(fork-boundary) fork
+(fork-boundary) wait
+(fork-boundary) wait: FAILED
+child-simple: exit(1)
+(fork-boundary) fork
+(fork-boundary) wait
+(fork-boundary) wait: FAILED
+fork-boundary: exit(1)
 Execution of 'fork-boundary' complete.
-Timer: 59 ticks
-Thread: 30 idle ticks, 28 kernel ticks, 1 user ticks
+Timer: 61 ticks
+Thread: 30 idle ticks, 28 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 80 reads, 240 writes
 hd1:0: 106 reads, 0 writes
-Console: 853 characters output
+Console: 1032 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

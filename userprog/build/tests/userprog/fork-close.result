@@ -14,9 +14,10 @@ Differences in `diff -u' format:
   (fork-close) begin
   (fork-close) open "sample.txt"
 - (fork-close) child run
-- (fork-close) end
-- child: exit(0)
-- (fork-close) Parent success
-- (fork-close) end
-- fork-close: exit(0)
-+ fork-close: exit(-1)
++ child sema_down
++ (fork-close) Parent success
+  (fork-close) end
+  child: exit(0)
+  (fork-close) Parent success
+  (fork-close) end
+  fork-close: exit(0)

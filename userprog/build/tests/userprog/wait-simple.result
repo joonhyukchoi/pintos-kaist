@@ -13,6 +13,10 @@ Differences in `diff -u' format:
 - (child-simple) run
 - child-simple: exit(81)
 - (wait-simple) wait(exec()) = 81
-- (wait-simple) end
-- wait-simple: exit(0)
-+ wait-simple: exit(-1)
++ child sema_down
++ (wait-simple) wait(exec()) = -1
++ (wait-simple) end
++ child-simple: exit(0)
++ (wait-simple) wait(exec()) = 0
+  (wait-simple) end
+  wait-simple: exit(0)

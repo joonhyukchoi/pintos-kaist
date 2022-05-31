@@ -16,14 +16,20 @@ Executing 'rox-child':
 (rox-child) begin
 (rox-child) open "child-rox"
 (rox-child) read "child-rox"
-rox-child: exit(-1)
+(rox-child) write "child-rox"
+(rox-child) exec "child-rox 1"
+child sema_down
+(rox-child) wait for child: FAILED
+child-rox: exit(1)
+(rox-child) wait for child: FAILED
+rox-child: exit(1)
 Execution of 'rox-child' complete.
-Timer: 62 ticks
-Thread: 30 idle ticks, 30 kernel ticks, 2 user ticks
+Timer: 64 ticks
+Thread: 30 idle ticks, 31 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 113 reads, 478 writes
+hd0:1: 114 reads, 479 writes
 hd1:0: 220 reads, 0 writes
-Console: 943 characters output
+Console: 1108 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

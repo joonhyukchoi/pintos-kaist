@@ -18,14 +18,17 @@ Executing 'syn-remove':
 (syn-remove) remove "deleteme"
 (syn-remove) write "deleteme"
 (syn-remove) seek "deleteme" to 0
-syn-remove: exit(-1)
+(syn-remove) read "deleteme"
+(syn-remove) close "deleteme"
+(syn-remove) end
+syn-remove: exit(0)
 Execution of 'syn-remove' complete.
 Timer: 61 ticks
-Thread: 30 idle ticks, 28 kernel ticks, 3 user ticks
+Thread: 30 idle ticks, 27 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 113 reads, 265 writes
+hd0:1: 118 reads, 275 writes
 hd1:0: 109 reads, 0 writes
-Console: 988 characters output
+Console: 1063 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

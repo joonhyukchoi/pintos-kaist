@@ -17,14 +17,20 @@ Executing 'exec-read':
 (exec-read) begin
 (exec-read) open "sample.txt"
 (exec-read) read "sample.txt" first 20 bytes
-exec-read: exit(-1)
+child sema_down
+(exec-read) Parent success
+(exec-read) end
+child-read: exit(0)
+(exec-read) Parent success
+(exec-read) end
+exec-read: exit(0)
 Execution of 'exec-read' complete.
-Timer: 63 ticks
-Thread: 30 idle ticks, 31 kernel ticks, 2 user ticks
+Timer: 65 ticks
+Thread: 30 idle ticks, 32 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 144 reads, 506 writes
+hd0:1: 146 reads, 506 writes
 hd1:0: 229 reads, 0 writes
-Console: 1022 characters output
+Console: 1143 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

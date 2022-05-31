@@ -57,6 +57,9 @@ syscall_handler (struct intr_frame *f UNUSED) {
     case SYS_EXIT:
       exit(f->R.rdi);
       break;
+    case SYS_FORK:
+      f->R.rax = fork(f->R.rdi);
+      break;
     case SYS_CREATE:
       f->R.rax = create(f->R.rdi, f->R.rsi);
       break;
@@ -74,6 +77,8 @@ syscall_handler (struct intr_frame *f UNUSED) {
       break;  
     case SYS_WRITE:      
       f->R.rax = write(f->R.rdi, f->R.rsi, f->R.rdx);
+      if (f->R.rax  == -1)
+        exit(-1);
       break;
     case SYS_EXEC:
       if(exec(f->R.rdi) == -1) {
@@ -83,6 +88,12 @@ syscall_handler (struct intr_frame *f UNUSED) {
     case SYS_WAIT:
       f->R.rax = wait(f->R.rdi);
       break; 
+    case SYS_SEEK:
+      seek(f->R.rdi, f->R.rsi);
+      break;
+    case SYS_TELL:
+      f->R.rax = tell(f->R.rdi);
+      break;
     case SYS_CLOSE:
       close(f->R.rdi);
       break;
@@ -111,7 +122,7 @@ void exit(int status) {
 }
 
 int fork (const char *thread_name) {
-  
+  return process_fork(thread_name, thread_current()->tf);
 }
 
 int exec(char *file_name) {
@@ -125,9 +136,6 @@ int exec(char *file_name) {
 
   if(process_exec(fn_copy) == -1)
     return -1;
-
-  NOT_REACHED();
-  return 0;
 }
 
 int wait (tid_t pid) {
@@ -171,35 +179,48 @@ int filesize (int fd) {
 }
 
 int read (int fd, void *buffer, unsigned size) {
+  lock_acquire(&filesys_lock);
   if (fd == 0) {
-    return input_getc();
+    int byte = input_getc();
+    lock_release(&filesys_lock);
+    return byte;
   }
   struct file *file = thread_current()->fdt[fd];
   if (file) {
-    return file_read(file, buffer, size);
+    int read_byte = file_read(file, buffer, size);
+    lock_release(&filesys_lock);
+    return read_byte;
   }
+  lock_release(&filesys_lock);
   return -1;
 }
 
 int write (int fd UNUSED, const void *buffer, unsigned size) {
   check_address(buffer);
+  lock_acquire(&filesys_lock);
   if (fd == 1) {
 	  putbuf(buffer, size);
+    lock_release(&filesys_lock);
     return size;
   }
   struct file *file = thread_current()->fdt[fd];
   if (file) {
-    return file_write(file, buffer, size);
+    int write_byte =  file_write(file, buffer, size);
+    lock_release(&filesys_lock);
+    return write_byte;
   }
+  lock_release(&filesys_lock);
   return -1;
 }
 
 void seek (int fd, unsigned position) {
-
+  struct file *curfile = thread_current()->fdt[fd];
+  file_seek(curfile, position);
 }
 
 unsigned tell (int fd) {
-
+  struct file *curfile = thread_current()->fdt[fd];
+  return file_tell(curfile);
 }
 
 void close (int fd) {
