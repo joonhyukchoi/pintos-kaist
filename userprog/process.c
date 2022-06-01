@@ -278,18 +278,6 @@ process_exit (void) {
   struct list_elem *e;
   struct thread *ch;
 
-  // //* 추가
-	// for (e = list_begin(&curr->children); e != list_end(&curr->children); e = list_next(e)) {
-	// 	ch = list_entry(e, struct thread, child_elem);
-	// 	if (ch->load_sema.value > 0)
-	// 		process_wait(ch->tid);
-	// }
-
-  // if (curr->parent != NULL) {
-  //   sema_up(&curr->load_sema);
-  //   sema_down(&curr->exit_sema);
-  // }
-
   sema_up(&curr->load_sema);
   sema_down(&curr->exit_sema);
 
