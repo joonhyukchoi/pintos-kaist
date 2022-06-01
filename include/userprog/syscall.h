@@ -16,7 +16,7 @@ void check_address(void *addr);
 void halt(void);
 void exit(int status);
 int fork (const char *thread_name);
-int exec(char *file_name);
+int exec (const char *file_name);
 int wait (tid_t pid);
 bool create(const char *file, unsigned initial_size);
 bool remove(const char *file);

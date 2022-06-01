@@ -1,2 +1,1 @@
-FAIL
-run: wait(exec("multi-recurse 14")) returned -1: FAILED
+PASS

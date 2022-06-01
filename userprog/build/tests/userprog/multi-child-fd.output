@@ -5,7 +5,7 @@ Pintos booting with:
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
 Calibrating timer...  157,081,600 loops/s.
-hd0:0: detected 313 sector (156 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:0: detected 321 sector (160 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 220 sector (110 kB) disk, model "QEMU HARDDISK", serial "QM00003"
 Formatting file system...done.
@@ -16,22 +16,21 @@ Putting 'child-close' into the file system...
 Executing 'multi-child-fd':
 (multi-child-fd) begin
 (multi-child-fd) open "sample.txt"
-child sema_down
-(multi-child-fd) wait(exec()) = -1
-(multi-child-fd) verified contents of "sample.txt"
-(multi-child-fd) end
+(child-close) begin
+(child-close) verified contents of "sample.txt"
+(child-close) end
 child-close: exit(0)
 (multi-child-fd) wait(exec()) = 0
 (multi-child-fd) verified contents of "sample.txt"
 (multi-child-fd) end
 multi-child-fd: exit(0)
 Execution of 'multi-child-fd' complete.
-Timer: 65 ticks
-Thread: 30 idle ticks, 31 kernel ticks, 4 user ticks
+Timer: 67 ticks
+Thread: 30 idle ticks, 31 kernel ticks, 6 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 150 reads, 488 writes
+hd0:1: 204 reads, 488 writes
 hd1:0: 220 reads, 0 writes
-Console: 1268 characters output
+Console: 1231 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

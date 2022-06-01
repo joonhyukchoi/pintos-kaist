@@ -18,6 +18,8 @@
 #include "threads/mmu.h"
 #include "threads/vaddr.h"
 #include "intrinsic.h"
+
+
 #ifdef VM
 #include "vm/vm.h"
 #endif
@@ -81,27 +83,14 @@ initd (void *f_name) {
 /* Clones the current process as `name`. Returns the new process's thread id, or
  * TID_ERROR if the thread cannot be created. */
 tid_t
-process_fork (const char *name, struct intr_frame *if_) {
+process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
   struct thread *cur = thread_current();
-  memcpy(&cur->tf, if_, sizeof (struct intr_frame));
   tid_t ctid = thread_create (name, PRI_DEFAULT, __do_fork, cur);
   if (ctid == TID_ERROR)
     return TID_ERROR;
-
   struct thread *child = get_child_process(ctid);
-  puts("child sema_down");
-  sema_down(&child->fork_sema);
-  // // sema_down(&child->fork_sema);
-  // // printf("tid? : %d\n", thread_current()->tid);
-  // if (thread_current()->tid == ctid) {
-  //   return 0; 
-  // }
-  // else {
-  //   return ctid;
-  // }
-  // // sema_up(&child->fork_sema);
-
+  sema_down(&cur->fork_sema);
   return ctid;
 }
 
@@ -157,11 +146,12 @@ __do_fork (void *aux) {
 	struct thread *parent = (struct thread *) aux;
 	struct thread *current = thread_current ();
 	/* TODO: somehow pass the parent_if. (i.e. process_fork()'s if_) */
-	struct intr_frame *parent_if = &parent->tf;;
+	struct intr_frame *parent_if = &parent->ptf;
 	bool succ = true;
 
 	/* 1. Read the cpu context to local stack. */
 	memcpy (&if_, parent_if, sizeof (struct intr_frame));
+  if_.R.rax = 0;
 
 	/* 2. Duplicate PT */
 	current->pml4 = pml4_create();
@@ -184,25 +174,24 @@ __do_fork (void *aux) {
 	 * TODO:       the resources of parent.*/
   int cnt = 2;
   struct file **table = parent->fdt;
-  while (cnt < 64) {
-    if (table[cnt] != 0) {
+  while (cnt < 128) {
+    if (table[cnt]) {
       current->fdt[cnt] = file_duplicate(table[cnt]);
+    } else {
+      current->fdt[cnt] = NULL;
     }
     cnt++;
   }
   current->next_fd = parent->next_fd;
 
-	process_init ();
+  sema_up(&parent->fork_sema);
 
-  sema_up(&current->fork_sema);
-
+  process_init ();
 	/* Finally, switch to the newly created process. */
 	if (succ)
 		do_iret (&if_);
 error:
-  current->exit_status = TID_ERROR;
-  puts("child sema_up error");
-  sema_up(&current->fork_sema);
+  sema_up(&parent->fork_sema);
   exit(TID_ERROR);
 }
 
@@ -263,23 +252,48 @@ process_wait (tid_t child_tid UNUSED) {
   list_remove(&child->child_elem);
   sema_up(&child->exit_sema);
   return exit_status;
-
-  // while(1);
-  // for(int i = 0; i < 1000000000; i++)
 }
 
 /* Exit the process. This function is called by thread_exit (). */
 void
 process_exit (void) {
 	struct thread *curr = thread_current ();
+  struct file **table = curr->fdt;
 	/* TODO: Your code goes here.
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
+  
+  if (curr->run_file)
+    file_close(curr->run_file);
+
+  int cnt = 2;
+  while (cnt < 128) {
+    if (table[cnt]) { // != 0 && table[cnt] != NULL
+      file_close(table[cnt]);
+      table[cnt] = NULL;
+    }
+    cnt++;
+  }
+  struct list_elem *e;
+  struct thread *ch;
+
+  // //* 추가
+	// for (e = list_begin(&curr->children); e != list_end(&curr->children); e = list_next(e)) {
+	// 	ch = list_entry(e, struct thread, child_elem);
+	// 	if (ch->load_sema.value > 0)
+	// 		process_wait(ch->tid);
+	// }
+
+  // if (curr->parent != NULL) {
+  //   sema_up(&curr->load_sema);
+  //   sema_down(&curr->exit_sema);
+  // }
 
   sema_up(&curr->load_sema);
   sema_down(&curr->exit_sema);
 
+  palloc_free_page(table);
 	process_cleanup ();
 }
 
@@ -490,15 +504,17 @@ load (const char *file_name, struct intr_frame *if_) {
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
   
   argument_stack(argv, cnt, &if_->rsp);
-  // hex_dump(if_->rsp, if_->rsp, USER_STACK - if_->rsp, true);
   if_->R.rdi = cnt;
   if_->R.rsi = if_->rsp + 8;
 
 	success = true;
 
+  // * 추가
+  t->run_file = file;
+  file_deny_write(file);
+
 done:
 	/* We arrive here whether the load is successful or not. */
-	file_close (file);
 	return success;
 }
 
@@ -515,12 +531,6 @@ struct thread *get_child_process(int pid) {
     cur_child = list_next(cur_child);
   }
   return NULL;
-}
-
-void remove_child_process(struct thread *cp) {
-  list_remove(&cp->child_elem);
-  // * 프로세스 디스크립터 메모리 해제 / 애매
-  palloc_free_page(cp);
 }
 
 void argument_stack(char **parse, int count, void **esp) {
@@ -551,7 +561,6 @@ void argument_stack(char **parse, int count, void **esp) {
   // * argv[i] 주소
 	for (int i = count - 1; -1 < i; i--) {
 		*esp = *esp - 8;
-		// printf("stlcpy address >> %p %s\n", argv_address[i], argv_address[i]);
 		memcpy(*esp, &argv_address[i], strlen(&argv_address[i]));
 	}
 

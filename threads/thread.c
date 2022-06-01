@@ -220,9 +220,13 @@ thread_create (const char *name, int priority,
   list_push_back(&thread_current()->children, &t->child_elem);
 
   // * 파일 디스크립터 초기값 설정
-  t->fdt = (struct file **)calloc(64, sizeof(struct file *));
-  // t->fdt[0] = 1;
-  // t->fdt[1] = 2;
+  // t->fdt = (struct file **)calloc(128, sizeof(struct file *));
+  t->fdt = palloc_get_page(PAL_ZERO);
+	if (t->fdt == NULL) {
+		return TID_ERROR;
+	}
+  t->fdt[0] = 1;
+  t->fdt[1] = 2;
   t->next_fd = 2;
 
 	/* Add to run queue. */

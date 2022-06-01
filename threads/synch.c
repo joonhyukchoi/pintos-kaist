@@ -114,7 +114,7 @@ sema_up (struct semaphore *sema) {
 	old_level = intr_disable ();
 	if (!list_empty (&sema->waiters)) {
     // * waiter list에 있는 우선순위가 변경 되었을 경우를 고려하여 waiter list를 정렬
-		list_sort(&sema->waiters, cmp_priority, NULL);
+    list_sort(&sema->waiters, cmp_priority, NULL);
     thread_unblock (list_entry (list_pop_front (&sema->waiters),
 					struct thread, elem));
   }
