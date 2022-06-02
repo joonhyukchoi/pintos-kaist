@@ -15,7 +15,7 @@ void check_address(void *addr);
 // * syscall 추가
 void halt(void);
 void exit(int status);
-int fork (const char *thread_name);
+tid_t fork (const char *thread_name);
 int exec (const char *file_name);
 int wait (tid_t pid);
 bool create(const char *file, unsigned initial_size);
@@ -27,7 +27,6 @@ int write(int fd, const void *buffer, unsigned size);
 void seek (int fd, unsigned position);
 unsigned tell (int fd);
 void close (int fd);
-
 
 
 #endif /* userprog/syscall.h */

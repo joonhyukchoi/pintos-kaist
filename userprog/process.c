@@ -146,7 +146,7 @@ __do_fork (void *aux) {
 	struct thread *parent = (struct thread *) aux;
 	struct thread *current = thread_current ();
 	/* TODO: somehow pass the parent_if. (i.e. process_fork()'s if_) */
-	struct intr_frame *parent_if = &parent->ptf;
+	struct intr_frame *parent_if = &parent->fork_tf;
 	bool succ = true;
 
 	/* 1. Read the cpu context to local stack. */
@@ -258,42 +258,27 @@ process_wait (tid_t child_tid UNUSED) {
 void
 process_exit (void) {
 	struct thread *curr = thread_current ();
-  struct file **table = curr->fdt;
 	/* TODO: Your code goes here.
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
   
-  if (curr->run_file)
-    file_close(curr->run_file);
-
-  int cnt = 2;
-  while (cnt < 128) {
-    if (table[cnt]) { // != 0 && table[cnt] != NULL
-      file_close(table[cnt]);
-      table[cnt] = NULL;
-    }
-    cnt++;
-  }
-  struct list_elem *e;
-  struct thread *ch;
-
-  // //* 추가
-	// for (e = list_begin(&curr->children); e != list_end(&curr->children); e = list_next(e)) {
-	// 	ch = list_entry(e, struct thread, child_elem);
-	// 	if (ch->load_sema.value > 0)
-	// 		process_wait(ch->tid);
-	// }
-
-  // if (curr->parent != NULL) {
-  //   sema_up(&curr->load_sema);
-  //   sema_down(&curr->exit_sema);
-  // }
+	for (int i = 2; i < 128; i++) {
+		struct file *f = curr->fdt[i];
+		if (f) {
+			// file_close (curr->fdt[i]);
+			// table[i] = NULL;
+			close(i);
+	}
+	}
+	// free(curr->fdt);
+  // if (curr->run_file)
+  file_close(curr->run_file);
 
   sema_up(&curr->load_sema);
   sema_down(&curr->exit_sema);
 
-  palloc_free_page(table);
+  // palloc_free_page(table);
 	process_cleanup ();
 }
 
@@ -428,6 +413,10 @@ load (const char *file_name, struct intr_frame *if_) {
 		goto done;
 	}
 
+  // * 추가
+  t->run_file = file;
+  file_deny_write(file);
+
 	/* Read and verify executable header. */
 	if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
 			|| memcmp (ehdr.e_ident, "\177ELF\2\1\1", 7)
@@ -508,10 +497,6 @@ load (const char *file_name, struct intr_frame *if_) {
   if_->R.rsi = if_->rsp + 8;
 
 	success = true;
-
-  // * 추가
-  t->run_file = file;
-  file_deny_write(file);
 
 done:
 	/* We arrive here whether the load is successful or not. */

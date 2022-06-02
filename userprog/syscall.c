@@ -58,38 +58,39 @@ syscall_handler (struct intr_frame *f UNUSED) {
       exit(f->R.rdi);
       break;
     case SYS_FORK:
-      memcpy(&thread_current()->ptf, f, sizeof(struct intr_frame));
-      f->R.rax = (uint64_t)fork(f->R.rdi);
+      memcpy(&thread_current()->fork_tf, f, sizeof(struct intr_frame));
+      f->R.rax = fork(f->R.rdi);
       break;
     case SYS_CREATE:
-      f->R.rax = (uint64_t)create(f->R.rdi, f->R.rsi);
+      f->R.rax = create(f->R.rdi, f->R.rsi);
       break;
     case SYS_REMOVE:
-      f->R.rax = (uint64_t)remove(f->R.rdi);
+      f->R.rax = remove(f->R.rdi);
       break;
     case SYS_OPEN:
-      f->R.rax = (uint64_t)open(f->R.rdi);
+      f->R.rax = open(f->R.rdi);
       break;
     case SYS_FILESIZE:
-      f->R.rax = (uint64_t)filesize(f->R.rdi);
+      f->R.rax = filesize(f->R.rdi);
       break;
     case SYS_READ:
-      f->R.rax = (uint64_t)read(f->R.rdi, f->R.rsi, f->R.rdx);
+      f->R.rax = read(f->R.rdi, f->R.rsi, f->R.rdx);
       break;  
     case SYS_WRITE:      
-      f->R.rax = (uint64_t)write(f->R.rdi, f->R.rsi, f->R.rdx);
+      f->R.rax = write(f->R.rdi, f->R.rsi, f->R.rdx);
       break;
     case SYS_EXEC:
-      f->R.rax = (uint64_t)exec(f->R.rdi);
+      if(exec(f->R.rdi) == -1) 
+        exit(-1);
       break;
     case SYS_WAIT:
-      f->R.rax = (uint64_t)wait(f->R.rdi);
+      f->R.rax = wait(f->R.rdi);
       break; 
     case SYS_SEEK:
       seek(f->R.rdi, f->R.rsi);
       break;
     case SYS_TELL:
-      f->R.rax = (uint64_t)tell(f->R.rdi);
+      f->R.rax = tell(f->R.rdi);
       break;
     case SYS_CLOSE:
       close(f->R.rdi);
@@ -118,9 +119,9 @@ void exit(int status) {
   thread_exit();
 }
 
-int fork (const char *thread_name) {
+tid_t fork (const char *thread_name) {
   check_address(thread_name);
-  return process_fork(thread_name, &thread_current()->ptf);
+  return process_fork(thread_name, &thread_current()->fork_tf);
 }
 
 int exec (const char *file_name) {
@@ -134,7 +135,6 @@ int exec (const char *file_name) {
   strlcpy(fn_copy, file_name, file_size);
 
   if (process_exec(fn_copy) == -1) {
-    exit(-1);
     return -1;
   }
 }
@@ -173,6 +173,7 @@ int open (const char *file) {
         return i;
       }
     }
+    file_close(fd);
   }
   return -1;
 }
