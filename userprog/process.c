@@ -174,7 +174,7 @@ __do_fork (void *aux) {
 	 * TODO:       the resources of parent.*/
   int cnt = 2;
   struct file **table = parent->fdt;
-  while (cnt < 128) {
+  while (cnt < FD_MAX) {
     if (table[cnt]) {
       current->fdt[cnt] = file_duplicate(table[cnt]);
     } else {
@@ -263,7 +263,7 @@ process_exit (void) {
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
   
-	for (int i = 2; i < 128; i++) {
+	for (int i = 2; i < FD_MAX; i++) {
 		struct file *f = curr->fdt[i];
 		if (f) {
 			// file_close (curr->fdt[i]);

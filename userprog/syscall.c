@@ -166,7 +166,7 @@ int open (const char *file) {
   struct thread *cur = thread_current();
   struct file *fd = filesys_open(file);
   if (fd) {
-    for (int i = 2; i < 128; i++) {
+    for (int i = 2; i < FD_MAX; i++) {
       if (cur->fdt[i] == NULL) {
         cur->fdt[i] = fd;
         cur->next_fd = i + 1;
