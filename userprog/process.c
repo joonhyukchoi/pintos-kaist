@@ -400,10 +400,10 @@ load (const char *file_name, struct intr_frame *if_) {
 
   char *token, *save_ptr;
   char *argv[64];
-  uint64_t cnt = 0;
+  uint64_t argc = 0;
 
   for (token = strtok_r(file_name, " ", &save_ptr); token != NULL; token = strtok_r(NULL, " ", &save_ptr)) {
-    argv[cnt++] = token;
+    argv[argc++] = token;
   }
 
 	/* Open executable file. */
@@ -491,16 +491,53 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
-  
-  argument_stack(argv, cnt, &if_->rsp);
-  if_->R.rdi = cnt;
+  argument_stack(argv, argc, &if_->rsp);
+  if_->R.rdi = argc;
   if_->R.rsi = if_->rsp + 8;
+
+	// hex_dump(if_->rsp, if_->rsp, USER_STACK - if_->rsp, true);
 
 	success = true;
 
 done:
 	/* We arrive here whether the load is successful or not. */
 	return success;
+}
+
+void argument_stack(char **argv, int argc, void **rsp) {
+  
+  char *argv_address[argc];
+  uint8_t size = 0;
+
+	// * argv[i] 문자열
+	for (int i = argc - 1; -1 < i; i--) {
+    // printf("%d parse[%d]: '%s' / len: %d\n", (int)*esp, i, parse[i], strlen(parse[i]));
+    *rsp -= (strlen(argv[i]) + 1);
+    memcpy(*rsp, argv[i], strlen(argv[i]) + 1);
+		// strlcpy(*esp, parse[i], strlen(parse[i]) + 1);
+		size += strlen(argv[i]) + 1;
+		argv_address[i] = *rsp;
+	}
+
+  if (size % 8) {
+		for (int i = (8 - (size % 8)); 0 < i; i--) {
+			*rsp -= 1;
+      **(char **)rsp = 0;
+    }
+  }
+
+  *rsp -= 8;
+  **(char **)rsp = 0;
+
+  // * argv[i] 주소
+	for (int i = argc - 1; -1 < i; i--) {
+		*rsp = *rsp - 8;
+		memcpy(*rsp, &argv_address[i], strlen(&argv_address[i]));
+	}
+
+	// * return address(fake)
+	*rsp = *rsp - 8;
+	**(char **)rsp = 0;
 }
 
 struct thread *get_child_process(int pid) {
@@ -517,44 +554,6 @@ struct thread *get_child_process(int pid) {
   }
   return NULL;
 }
-
-void argument_stack(char **parse, int count, void **esp) {
-  
-  char *argv_address[count];
-  uint8_t size = 0;
-
-	// * argv[i] 문자열
-	for (int i = count - 1; -1 < i; i--) {
-    // printf("%d parse[%d]: '%s' / len: %d\n", (int)*esp, i, parse[i], strlen(parse[i]));
-    *esp -= (strlen(parse[i]) + 1);
-    memcpy(*esp, parse[i], strlen(parse[i]) + 1);
-		// strlcpy(*esp, parse[i], strlen(parse[i]) + 1);
-		size += strlen(parse[i]) + 1;
-		argv_address[i] = *esp;
-	}
-
-  if (size % 8) {
-		for (int i = (8 - (size % 8)); 0 < i; i--) {
-			*esp -= 1;
-      **(char **)esp = 0;
-    }
-  }
-
-  *esp -= 8;
-  **(char **)esp = 0;
-
-  // * argv[i] 주소
-	for (int i = count - 1; -1 < i; i--) {
-		*esp = *esp - 8;
-		memcpy(*esp, &argv_address[i], strlen(&argv_address[i]));
-	}
-
-	// * return address(fake)
-	*esp = *esp - 8;
-	**(char **)esp = 0;
-
-}
-
 
 /* Checks whether PHDR describes a valid, loadable segment in
  * FILE and returns true if so, false otherwise. */
