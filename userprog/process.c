@@ -262,23 +262,17 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-  
 	for (int i = 2; i < FD_MAX; i++) {
 		struct file *f = curr->fdt[i];
 		if (f) {
-			// file_close (curr->fdt[i]);
-			// table[i] = NULL;
 			close(i);
+		}
 	}
-	}
-	// free(curr->fdt);
-  // if (curr->run_file)
   file_close(curr->run_file);
 
   sema_up(&curr->load_sema);
   sema_down(&curr->exit_sema);
 
-  // palloc_free_page(table);
 	process_cleanup ();
 }
 
