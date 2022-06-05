@@ -164,16 +164,16 @@ bool remove (const char *file) {
 int open (const char *file) {
   check_address(file);
   struct thread *cur = thread_current();
-  struct file *fd = filesys_open(file);
-  if (fd) {
+  struct file *open_file = filesys_open(file);
+  if (open_file) {
     for (int i = 2; i < FD_MAX; i++) {
       if (cur->fdt[i] == NULL) {
-        cur->fdt[i] = fd;
+        cur->fdt[i] = open_file;
         cur->next_fd = i + 1;
         return i;
       }
     }
-    file_close(fd);
+    file_close(open_file); // fdt에 넣지 못했으면 file_close 해줘야함. 이거 추가했더니 multi-oom 통과!
   }
   return -1;
 }
