@@ -66,31 +66,31 @@ syscall_handler (struct intr_frame *f UNUSED) {
         exit(-1);
       break;
     case SYS_WAIT:
-      f->R.rax = wait(f->R.rdi);
+      f->R.rax = (uint64_t)wait(f->R.rdi);
       break; 
     case SYS_CREATE:
-      f->R.rax = create(f->R.rdi, f->R.rsi);
+      f->R.rax = (uint64_t)create(f->R.rdi, f->R.rsi);
       break;
     case SYS_REMOVE:
-      f->R.rax = remove(f->R.rdi);
+      f->R.rax = (uint64_t)remove(f->R.rdi);
       break;
     case SYS_OPEN:
-      f->R.rax = open(f->R.rdi);
+      f->R.rax = (uint64_t)open(f->R.rdi);
       break;
     case SYS_FILESIZE:
-      f->R.rax = filesize(f->R.rdi);
+      f->R.rax = (uint64_t)filesize(f->R.rdi);
       break;
     case SYS_READ:
-      f->R.rax = read(f->R.rdi, f->R.rsi, f->R.rdx);
+      f->R.rax = (uint64_t)read(f->R.rdi, f->R.rsi, f->R.rdx);
       break;  
     case SYS_WRITE:      
-      f->R.rax = write(f->R.rdi, f->R.rsi, f->R.rdx);
+      f->R.rax = (uint64_t)write(f->R.rdi, f->R.rsi, f->R.rdx);
       break;
     case SYS_SEEK:
       seek(f->R.rdi, f->R.rsi);
       break;
     case SYS_TELL:
-      f->R.rax = tell(f->R.rdi);
+      f->R.rax = (uint64_t)tell(f->R.rdi);
       break;
     case SYS_CLOSE:
       close(f->R.rdi);
@@ -188,7 +188,9 @@ int filesize (int fd) {
 int read (int fd, void *buffer, unsigned size) {
   check_address(buffer);
   if (fd == 0) {
+    lock_acquire(&filesys_lock);
     int byte = input_getc();
+    lock_release(&filesys_lock);
     return byte;
   }
   struct file *file = thread_current()->fdt[fd];
@@ -204,7 +206,9 @@ int read (int fd, void *buffer, unsigned size) {
 int write (int fd UNUSED, const void *buffer, unsigned size) {
   check_address(buffer);
   if (fd == 1) {
+    lock_acquire(&filesys_lock);
 	  putbuf(buffer, size);
+    lock_release(&filesys_lock);
     return size;
   }
 
@@ -219,12 +223,14 @@ int write (int fd UNUSED, const void *buffer, unsigned size) {
 
 void seek (int fd, unsigned position) {
   struct file *curfile = thread_current()->fdt[fd];
-  file_seek(curfile, position);
+  if (curfile)
+    file_seek(curfile, position);
 }
 
 unsigned tell (int fd) {
   struct file *curfile = thread_current()->fdt[fd];
-  return file_tell(curfile);
+  if (curfile)
+    return file_tell(curfile);
 }
 
 void close (int fd) {
