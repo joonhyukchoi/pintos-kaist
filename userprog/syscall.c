@@ -167,7 +167,7 @@ int open (const char *file) {
   struct file *open_file = filesys_open(file);
   if (open_file) {
     for (int i = 2; i < FD_MAX; i++) {
-      if (cur->fdt[i] == NULL) {
+      if (!cur->fdt[i]) {
         cur->fdt[i] = open_file;
         cur->next_fd = i + 1;
         return i;

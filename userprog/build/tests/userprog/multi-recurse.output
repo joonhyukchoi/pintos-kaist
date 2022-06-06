@@ -4,7 +4,7 @@ Kernel command line: -q -f put multi-recurse run 'multi-recurse 15'
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  65,433,600 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 313 sector (156 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 113 sector (56 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -76,12 +76,12 @@ multi-recurse: exit(14)
 (multi-recurse) end 15
 multi-recurse: exit(15)
 Execution of 'multi-recurse' complete.
-Timer: 101 ticks
-Thread: 30 idle ticks, 37 kernel ticks, 34 user ticks
+Timer: 103 ticks
+Thread: 30 idle ticks, 36 kernel ticks, 37 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 867 reads, 254 writes
 hd1:0: 113 reads, 0 writes
-Console: 2544 characters output
+Console: 2545 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

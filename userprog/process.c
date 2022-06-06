@@ -263,10 +263,7 @@ process_exit (void) {
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
 	for (int i = 2; i < FD_MAX; i++) {
-		struct file *f = curr->fdt[i];
-		if (f) {
-			close(i);
-		}
+		close(i);
 	}
   file_close(curr->run_file);
 
@@ -407,10 +404,6 @@ load (const char *file_name, struct intr_frame *if_) {
 		goto done;
 	}
 
-  // * 추가
-  t->run_file = file;
-  file_deny_write(file);
-
 	/* Read and verify executable header. */
 	if (file_read (file, &ehdr, sizeof ehdr) != sizeof ehdr
 			|| memcmp (ehdr.e_ident, "\177ELF\2\1\1", 7)
@@ -491,6 +484,10 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	// hex_dump(if_->rsp, if_->rsp, USER_STACK - if_->rsp, true);
 
+  // * 추가
+  t->run_file = file;
+  file_deny_write(file);
+	
 	success = true;
 
 done:
