@@ -202,6 +202,9 @@ process_exec (void *f_name) {
 	char *file_name = f_name;
 	bool success;
 
+	/* pintos project3 */
+	vm_init();
+	
 	/* We cannot use the intr_frame in the thread structure.
 	 * This is because when current thread rescheduled,
 	 * it stores the execution information to the member. */
@@ -209,6 +212,10 @@ process_exec (void *f_name) {
 	_if.ds = _if.es = _if.ss = SEL_UDSEG;
 	_if.cs = SEL_UCSEG;
 	_if.eflags = FLAG_IF | FLAG_MBS;
+
+	/* pintos project3 */
+	/* Initialize interrupt frame and load executable */
+	memset(&_if, 0, sizeof _if);
 
 	/* We first kill the current context */
 	process_cleanup ();
@@ -640,24 +647,24 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
 		size_t page_zero_bytes = PGSIZE - page_read_bytes;
 
-		/* Get a page of memory. */
-		uint8_t *kpage = palloc_get_page (PAL_USER);
-		if (kpage == NULL)
-			return false;
+		// /* Get a page of memory. */
+		// uint8_t *kpage = palloc_get_page (PAL_USER);
+		// if (kpage == NULL)
+		// 	return false;
 
-		/* Load this page. */
-		if (file_read (file, kpage, page_read_bytes) != (int) page_read_bytes) {
-			palloc_free_page (kpage);
-			return false;
-		}
-		memset (kpage + page_read_bytes, 0, page_zero_bytes);
+		// /* Load this page. */
+		// if (file_read (file, kpage, page_read_bytes) != (int) page_read_bytes) {
+		// 	palloc_free_page (kpage);
+		// 	return false;
+		// }
+		// memset (kpage + page_read_bytes, 0, page_zero_bytes);
 
-		/* Add the page to the process's address space. */
-		if (!install_page (upage, kpage, writable)) {
-			printf("fail\n");
-			palloc_free_page (kpage);
-			return false;
-		}
+		// /* Add the page to the process's address space. */
+		// if (!install_page (upage, kpage, writable)) {
+		// 	printf("fail\n");
+		// 	palloc_free_page (kpage);
+		// 	return false;
+		// }
 
 		/* Advance. */
 		read_bytes -= page_read_bytes;

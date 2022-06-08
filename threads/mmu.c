@@ -246,9 +246,10 @@ pml4_set_page (uint64_t *pml4, void *upage, void *kpage, bool rw) {
 /* Marks user virtual page UPAGE "not present" in page
  * directory PD.  Later accesses to the page will fault.  Other
  * bits in the page table entry are preserved.
- * UPAGE need not be mapped. */
+ * UPAGE need not be mapped.
+ * 페이지 테이블에서 upage에 해당하는 주소의 엔트리를 제거 */
 void
-pml4_clear_page (uint64_t *pml4, void *upage) {
+pml4_clear_page (uint64_t *pml4, void *upage) { // == pagedir_clear_page() / 한양대 파란색 ppt.392
 	uint64_t *pte;
 	ASSERT (pg_ofs (upage) == 0);
 	ASSERT (is_user_vaddr (upage));

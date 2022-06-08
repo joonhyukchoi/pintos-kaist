@@ -41,7 +41,7 @@ Executing 'args-many a b c d e f g h i j k l m n o p q r s t u v':
 (args) end
 args-many: exit(0)
 Execution of 'args-many' complete.
-Timer: 63 ticks
+Timer: 64 ticks
 Thread: 30 idle ticks, 28 kernel ticks, 6 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 80 reads, 232 writes

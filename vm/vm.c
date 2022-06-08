@@ -7,7 +7,7 @@
 /* Initializes the virtual memory subsystem by invoking each subsystem's
  * intialize codes. */
 void
-vm_init (void) {
+vm_init (struct hash *vm) {
 	vm_anon_init ();
 	vm_file_init ();
 #ifdef EFILESYS  /* For project 4 */
@@ -16,6 +16,71 @@ vm_init (void) {
 	register_inspect_intr ();
 	/* DO NOT MODIFY UPPER LINES. */
 	/* TODO: Your code goes here. */
+
+	/* pintos project3 */
+	hash_init(vm, vm_hash_func, vm_less_func, NULL);
+}
+
+/* pintos project3 */
+static unsigned vm_hash_func (const struct hash_elem *e, void *aux){
+    struct vm_entry *entry = hash_entry(e, struct vm_entry, elem);
+
+    return hash_int((int)entry->vaddr);
+}
+
+/* pintos project3 */
+static bool vm_less_func (const struct hash_elem *a, const struct hash_elem *b){
+    struct vm_entry *a_entry = hash_entry(a, struct vm_entry, elem);
+    struct vm_entry *b_entry = hash_entry(b, struct vm_entry, elem);
+
+    return (int)a_entry->vaddr < (int)b_entry->vaddr;
+}
+
+/* pintos project3 */
+bool insert_vme (struct hash *vm, struct vm_entry *vme){
+	if (hash_insert(vm, &vme->elem)){
+		return false;
+	}
+	return true;	
+}
+
+/* pintos project3 */
+bool delete_vme (struct hash *vm, struct vm_entry *vme){
+	if (hash_delete(vm, &vme->elem)){
+		return true;
+	}
+	return false;
+}
+
+/* pintos project3 */
+struct vm_entry *find_vme (void *vaddr){
+	// struct hash *hash_table = &((struct thread *)pg_round_down(vaddr))->vm;
+	struct hash_elem search_elem = ((struct vm_entry *)pg_round_down(vaddr))->elem;
+	struct thread *curr = thread_current();
+
+	struct hash_elem *found_elem = hash_find(&curr->vm, &search_elem);
+
+	if (!found_elem){
+		return NULL;
+	}
+
+	return hash_entry(found_elem, struct vm_entry, elem);
+}
+
+/* pintos project3 */
+void vm_destroy (struct hash *vm){
+	hash_destroy(vm, );
+}
+
+/* pintos project3 */
+void vm_destroy_func (struct hash_elem *e, void *aux){
+	struct vm_entry *vm_entry_destroy = hash_entry(e, struct vm_entry, elem);
+
+	if (vm_entry_destroy->is_loaded){
+		palloc_free_page(vm_entry_destroy);
+		pml4_clear_page();
+	}
+	// palloc_free_page(vm_entry_destroy);
 }
 
 /* Get the type of the page. This function is useful if you want to know the

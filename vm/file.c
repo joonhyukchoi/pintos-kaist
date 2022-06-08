@@ -6,7 +6,8 @@ static bool file_backed_swap_in (struct page *page, void *kva);
 static bool file_backed_swap_out (struct page *page);
 static void file_backed_destroy (struct page *page);
 
-/* DO NOT MODIFY this struct */
+/* DO NOT MODIFY this struct.
+ * file_ops는 파일 지원 페이지에 대한 함수 포인터 테이블 */
 static const struct page_operations file_ops = {
 	.swap_in = file_backed_swap_in,
 	.swap_out = file_backed_swap_out,
