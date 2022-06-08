@@ -210,7 +210,7 @@ int read (int fd, void *buffer, unsigned size) {
 int write (int fd UNUSED, const void *buffer, unsigned size) {
   check_address(buffer);
 
-  if (fd == 0) // STDIN일때 -1
+  if (fd == 0) // STDIN일 때 -1
     return -1;
 
   if (fd == 1) {
