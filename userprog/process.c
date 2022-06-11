@@ -264,12 +264,14 @@ process_wait (tid_t child_tid UNUSED) {
 /* Exit the process. This function is called by thread_exit (). */
 void
 process_exit (void) {
-	struct thread *curr = thread_current ();
+  struct thread *curr = thread_current ();
   struct file **table = curr->fdt;
 	/* TODO: Your code goes here.
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
+  /* pintos project3 */
+  uint32_t *pd;
   
   if (curr->run_file)
     file_close(curr->run_file);
@@ -289,7 +291,9 @@ process_exit (void) {
   sema_down(&curr->exit_sema);
 
   palloc_free_page(table);
-	process_cleanup ();
+  palloc_free_page(curr->next_fd);
+  pd = curr->pml4;
+  process_cleanup();
 }
 
 /* Free the current process's resources. */
@@ -647,24 +651,24 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
 		size_t page_zero_bytes = PGSIZE - page_read_bytes;
 
-		// /* Get a page of memory. */
-		// uint8_t *kpage = palloc_get_page (PAL_USER);
-		// if (kpage == NULL)
-		// 	return false;
+		/* Get a page of memory. */
+		uint8_t *kpage = palloc_get_page (PAL_USER);
+		if (kpage == NULL)
+			return false;
 
-		// /* Load this page. */
-		// if (file_read (file, kpage, page_read_bytes) != (int) page_read_bytes) {
-		// 	palloc_free_page (kpage);
-		// 	return false;
-		// }
-		// memset (kpage + page_read_bytes, 0, page_zero_bytes);
+		/* Load this page. */
+		if (file_read (file, kpage, page_read_bytes) != (int) page_read_bytes) {
+			palloc_free_page (kpage);
+			return false;
+		}
+		memset (kpage + page_read_bytes, 0, page_zero_bytes);
 
-		// /* Add the page to the process's address space. */
-		// if (!install_page (upage, kpage, writable)) {
-		// 	printf("fail\n");
-		// 	palloc_free_page (kpage);
-		// 	return false;
-		// }
+		/* Add the page to the process's address space. */
+		if (!install_page (upage, kpage, writable)) {
+			printf("fail\n");
+			palloc_free_page (kpage);
+			return false;
+		}
 
 		/* Advance. */
 		read_bytes -= page_read_bytes;
@@ -749,8 +753,16 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
 		size_t page_zero_bytes = PGSIZE - page_read_bytes;
 
+		struct aux_struct temp_aux = {
+			.vmfile = file,
+			.ofs = ofs,
+			.read_bytes = read_bytes,
+			.zero_bytes = zero_bytes,
+			.is_loaded = false
+		};
+
 		/* TODO: Set up aux to pass information to the lazy_load_segment. */
-		void *aux = NULL;
+		void *aux = &temp_aux;
 		if (!vm_alloc_page_with_initializer (VM_ANON, upage,
 					writable, lazy_load_segment, aux))
 			return false;

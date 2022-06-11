@@ -124,11 +124,11 @@ struct thread {
 
 #ifdef USERPROG
 	/* Owned by userprog/process.c. */
-	uint64_t *pml4;                     /* Page map level 4 */
-	uint32_t *pagedir; /* pintos project3 */
+	uint64_t *pml4; /* Page map level 4 == pagedir(32bit) */
 #endif
 #ifdef VM
-	/* Table for whole virtual memory owned by thread. */
+	/* Table for whole virtual memory owned by thread.
+	 * 스레드가 소유한 전체 가상 메모리에 대한 테이블입니다. */
 	struct supplemental_page_table spt;
 #endif
 
