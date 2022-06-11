@@ -723,6 +723,15 @@ lazy_load_segment (struct page *page, void *aux) {
 	/* TODO: Load the segment from the file */
 	/* TODO: This called when the first page fault occurs on address VA. */
 	/* TODO: VA is available when calling this function. */
+
+	if (!vm_do_claim_page(page)){
+		return false;
+	}
+	off_t read_buf = file_read_at(page->vmfile, page->frame->kva, page->read_bytes, page->ofs);
+	off_t remain_buf = (page->read_bytes + page->zero_bytes - read_buf);
+	memset((uint8_t *)page->frame->kva + read_buf, 0, remain_buf);
+
+	return true;
 }
 
 /* Loads a segment starting at offset OFS in FILE at address
@@ -778,7 +787,6 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 /* Create a PAGE of stack at the USER_STACK. Return true on success. */
 static bool
 setup_stack (struct intr_frame *if_) {
-	bool success = false;
 	void *stack_bottom = (void *) (((uint8_t *) USER_STACK) - PGSIZE);
 
 	/* TODO: Map the stack on stack_bottom and claim the page immediately.
@@ -786,6 +794,14 @@ setup_stack (struct intr_frame *if_) {
 	 * TODO: You should mark the page is stack. */
 	/* TODO: Your code goes here */
 
-	return success;
+	struct page setup_page = malloc(sizeof(struct page));
+	setup_page->va = stack_bottom;
+	setup_page->type = VM_ANON;
+
+	if (spt_insert_page(thread_current()->spt, setup_page)){
+		return false;
+	}
+
+	return anon_initializer(setup_page, VM_ANON, stack_bottom);
 }
 #endif /* VM */

@@ -149,7 +149,7 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
 		
 		/* TODO: Insert the page into the spt.
 		 * 페이지를 spt에 삽입하십시오. */
-		spt_insert_page(spt, newpage);
+		return spt_insert_page(spt, newpage);
 	}
 err:
 	return false;
@@ -245,12 +245,40 @@ vm_handle_wp (struct page *page UNUSED) {
 bool
 vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 		bool user UNUSED, bool write UNUSED, bool not_present UNUSED) {
+	
 	struct supplemental_page_table *spt UNUSED = &thread_current ()->spt;
-	struct page *page = NULL;
+	
+	struct page *page = spt_find_page(spt, addr);
 	/* TODO: Validate the fault */
 	/* TODO: Your code goes here */
 
-	return vm_do_claim_page (page);
+	if (page == NULL){
+		return false;
+	}
+
+	if (user || !write || not_present){
+		vm_dealloc_page(page);
+		process_exit();
+	}
+
+	/* you load some contents into the page and return control to the user program. */
+	bool check = vm_do_claim_page (page);
+
+	switch (page->type)
+	{
+	case VM_ANON:
+		lazy_load_segment(page, NULL);
+		break;
+	case VM_FILE:
+		lazy_load_segment(page, NULL);
+		break;
+	
+	default:
+		break;
+	}
+	
+	f->rsp = addr;
+	return check;
 }
 
 /* Free the page.
