@@ -7,6 +7,7 @@
 #include <hash.h>
 #include <./threads/vaddr.h>
 #include <./threads/mmu.h>
+// #include "./userprog/process.h"
 
 enum vm_type {
 	/* page not initialized */
@@ -164,12 +165,9 @@ bool vm_claim_page (void *va);
 enum vm_type page_get_type (struct page *page);
 
 /* pintos project3 */
-static unsigned vm_hash_func (const struct hash_elem *e, void *aux);
-static bool vm_less_func (const struct hash_elem *a, const struct hash_elem *b);
 bool insert_vm (struct hash *vm, struct page *vme);
 bool delete_vme (struct hash *vm, struct page *vme);
 struct page *find_vme (void *vaddr);
 void vm_destroy (struct hash *vm);
 void vm_destroy_func (struct hash_elem *e, void *aux);
-
 #endif  /* VM_VM_H */

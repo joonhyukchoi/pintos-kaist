@@ -1,0 +1,14 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (write-boundary) begin
+  (write-boundary) open "sample.txt"
+  (write-boundary) end
+  write-boundary: exit(0)
+Differences in `diff -u' format:
+- (write-boundary) begin
+- (write-boundary) open "sample.txt"
+- (write-boundary) end
+- write-boundary: exit(0)
++ write-boundary: exit(-1)

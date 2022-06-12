@@ -1,0 +1,14 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (open-boundary) begin
+  (open-boundary) open "sample.txt"
+  (open-boundary) end
+  open-boundary: exit(0)
+Differences in `diff -u' format:
+- (open-boundary) begin
+- (open-boundary) open "sample.txt"
+- (open-boundary) end
+- open-boundary: exit(0)
++ open-boundary: exit(-1)

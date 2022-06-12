@@ -1,0 +1,18 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (read-stdout) begin
+  read-stdout: exit(-1)
+Differences in `diff -u' format:
+- (read-stdout) begin
+  read-stdout: exit(-1)
+Acceptable output:
+  (read-stdout) begin
+  (read-stdout) end
+  read-stdout: exit(0)
+Differences in `diff -u' format:
+- (read-stdout) begin
+- (read-stdout) end
+- read-stdout: exit(0)
++ read-stdout: exit(-1)

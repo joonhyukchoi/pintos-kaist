@@ -1,0 +1,25 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (lg-seq-block) begin
+  (lg-seq-block) create "noodle"
+  (lg-seq-block) open "noodle"
+  (lg-seq-block) writing "noodle"
+  (lg-seq-block) close "noodle"
+  (lg-seq-block) open "noodle" for verification
+  (lg-seq-block) verified contents of "noodle"
+  (lg-seq-block) close "noodle"
+  (lg-seq-block) end
+Differences in `diff -u' format:
+- (lg-seq-block) begin
+- (lg-seq-block) create "noodle"
+- (lg-seq-block) open "noodle"
+- (lg-seq-block) writing "noodle"
+- (lg-seq-block) close "noodle"
+- (lg-seq-block) open "noodle" for verification
+- (lg-seq-block) verified contents of "noodle"
+- (lg-seq-block) close "noodle"
+- (lg-seq-block) end
+
+(Process exit codes are excluded for matching purposes.)

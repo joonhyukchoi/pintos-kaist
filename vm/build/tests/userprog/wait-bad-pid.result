@@ -1,0 +1,18 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (wait-bad-pid) begin
+  wait-bad-pid: exit(-1)
+Differences in `diff -u' format:
+- (wait-bad-pid) begin
+  wait-bad-pid: exit(-1)
+Acceptable output:
+  (wait-bad-pid) begin
+  (wait-bad-pid) end
+  wait-bad-pid: exit(0)
+Differences in `diff -u' format:
+- (wait-bad-pid) begin
+- (wait-bad-pid) end
+- wait-bad-pid: exit(0)
++ wait-bad-pid: exit(-1)

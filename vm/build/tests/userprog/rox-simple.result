@@ -1,0 +1,18 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (rox-simple) begin
+  (rox-simple) open "rox-simple"
+  (rox-simple) read "rox-simple"
+  (rox-simple) try to write "rox-simple"
+  (rox-simple) end
+  rox-simple: exit(0)
+Differences in `diff -u' format:
+- (rox-simple) begin
+- (rox-simple) open "rox-simple"
+- (rox-simple) read "rox-simple"
+- (rox-simple) try to write "rox-simple"
+- (rox-simple) end
+- rox-simple: exit(0)
++ rox-simple: exit(-1)

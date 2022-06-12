@@ -1,0 +1,16 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (open-twice) begin
+  (open-twice) open "sample.txt" once
+  (open-twice) open "sample.txt" again
+  (open-twice) end
+  open-twice: exit(0)
+Differences in `diff -u' format:
+- (open-twice) begin
+- (open-twice) open "sample.txt" once
+- (open-twice) open "sample.txt" again
+- (open-twice) end
+- open-twice: exit(0)
++ open-twice: exit(-1)

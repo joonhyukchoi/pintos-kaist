@@ -22,6 +22,7 @@
 
 #ifdef VM
 #include "vm/vm.h"
+static bool lazy_load_segment (struct page *page, void *aux);
 #endif
 
 static void process_cleanup (void);
@@ -724,10 +725,10 @@ lazy_load_segment (struct page *page, void *aux) {
 	/* TODO: This called when the first page fault occurs on address VA. */
 	/* TODO: VA is available when calling this function. */
 
-	if (!vm_do_claim_page(page)){
+	if (!vm_claim_page(page->va)){
 		return false;
 	}
-	off_t read_buf = file_read_at(page->vmfile, page->frame->kva, page->read_bytes, page->ofs);
+	off_t read_buf = file_read_at(page->vmfile, page->frame->kva, page->read_bytes, page->offset);
 	off_t remain_buf = (page->read_bytes + page->zero_bytes - read_buf);
 	memset((uint8_t *)page->frame->kva + read_buf, 0, remain_buf);
 
@@ -794,11 +795,11 @@ setup_stack (struct intr_frame *if_) {
 	 * TODO: You should mark the page is stack. */
 	/* TODO: Your code goes here */
 
-	struct page setup_page = malloc(sizeof(struct page));
+	struct page *setup_page = malloc(sizeof(struct page));
 	setup_page->va = stack_bottom;
 	setup_page->type = VM_ANON;
 
-	if (spt_insert_page(thread_current()->spt, setup_page)){
+	if (spt_insert_page(&thread_current()->spt, setup_page)){
 		return false;
 	}
 

@@ -1,0 +1,19 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (page-parallel) begin
+  (page-parallel) wait for child 0
+  (page-parallel) wait for child 1
+  (page-parallel) wait for child 2
+  (page-parallel) wait for child 3
+  (page-parallel) end
+Differences in `diff -u' format:
+- (page-parallel) begin
+- (page-parallel) wait for child 0
+- (page-parallel) wait for child 1
+- (page-parallel) wait for child 2
+- (page-parallel) wait for child 3
+- (page-parallel) end
+
+(Process exit codes are excluded for matching purposes.)

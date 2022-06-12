@@ -1,0 +1,17 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (mmap-zero) begin
+  (mmap-zero) create empty file "empty"
+  (mmap-zero) open "empty"
+  (mmap-zero) mmap "empty"
+  mmap-zero: exit(-1)
+Differences in `diff -u' format:
+- (mmap-zero) begin
+- (mmap-zero) create empty file "empty"
+- (mmap-zero) open "empty"
+- (mmap-zero) mmap "empty"
+  mmap-zero: exit(-1)
+
+(User fault messages are excluded for matching purposes.)

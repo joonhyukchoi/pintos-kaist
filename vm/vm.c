@@ -4,6 +4,10 @@
 #include "vm/vm.h"
 #include "vm/inspect.h"
 
+static unsigned vm_hash_func (const struct hash_elem *e, void *aux);
+static bool vm_less_func (const struct hash_elem *a, const struct hash_elem *b);
+static bool vm_do_claim_page (struct page *page);
+
 /* Initializes the virtual memory subsystem by invoking each subsystem's
  * intialize codes. */
 void
@@ -52,20 +56,20 @@ bool delete_vme (struct hash *vm, struct page *vme){
 	return false;
 }
 
-/* pintos project3 */
-struct page *find_vme (void *vaddr){
-	// struct hash *hash_table = &((struct thread *)pg_round_down(vaddr))->vm;
-	struct hash_elem search_elem = ((struct page *)pg_round_down(vaddr))->elem;
-	struct thread *curr = thread_current();
+// /* pintos project3 */
+// struct page *find_vme (void *vaddr){
+// 	// struct hash *hash_table = &((struct thread *)pg_round_down(vaddr))->vm;
+// 	struct hash_elem search_elem = ((struct page *)pg_round_down(vaddr))->elem;
+// 	struct thread *curr = thread_current();
 
-	struct hash_elem *found_elem = hash_find(&curr->vm, &search_elem);
+// 	struct hash_elem *found_elem = hash_find(&curr->vm, &search_elem);
 
-	if (!found_elem){
-		return NULL;
-	}
+// 	if (!found_elem){
+// 		return NULL;
+// 	}
 
-	return hash_entry(found_elem, struct vm_entry, elem);
-}
+// 	return hash_entry(found_elem, struct vm_entry, elem);
+// }
 
 /* pintos project3 */
 void vm_destroy (struct hash *vm){
@@ -83,7 +87,7 @@ void vm_destroy (struct hash *vm){
 
 /* pintos project3 */
 void vm_destroy_func (struct hash_elem *e, void *aux){
-	struct vm_entry *vm_entry_destroy = hash_entry(e, struct vm_entry, elem);
+	// struct vm_entry *vm_entry_destroy = hash_entry(e, struct vm_entry, elem);
 
 	// if (vm_entry_destroy->is_loaded){
 	// 	palloc_free_page(vm_entry_destroy);
@@ -264,18 +268,18 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	/* you load some contents into the page and return control to the user program. */
 	bool check = vm_do_claim_page (page);
 
-	switch (page->type)
-	{
-	case VM_ANON:
-		lazy_load_segment(page, NULL);
-		break;
-	case VM_FILE:
-		lazy_load_segment(page, NULL);
-		break;
+	// switch (page->type)
+	// {
+	// case VM_ANON:
+	// 	lazy_load_segment(page, NULL);
+	// 	break;
+	// case VM_FILE:
+	// 	lazy_load_segment(page, NULL);
+	// 	break;
 	
-	default:
-		break;
-	}
+	// default:
+	// 	break;
+	// }
 	
 	f->rsp = addr;
 	return check;
@@ -307,9 +311,9 @@ vm_do_claim_page (struct page *page) {
 	/* Set links */
 	frame->page = page;
 	page->frame = frame;
-
+	
 	/* TODO: Insert page table entry to map page's VA to frame's PA. */
-	if (spt_insert_page(thread_current()->spt, page))
+	if (spt_insert_page(&thread_current()->spt, page))
 		return swap_in (page, frame->kva);
 	free(page);
 	free(frame);

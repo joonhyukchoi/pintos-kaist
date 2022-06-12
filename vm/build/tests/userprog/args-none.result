@@ -1,0 +1,18 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (args) begin
+  (args) argc = 1
+  (args) argv[0] = 'args-none'
+  (args) argv[1] = null
+  (args) end
+  args-none: exit(0)
+Differences in `diff -u' format:
+- (args) begin
+- (args) argc = 1
+- (args) argv[0] = 'args-none'
+- (args) argv[1] = null
+- (args) end
+- args-none: exit(0)
++ args-none: exit(-1)

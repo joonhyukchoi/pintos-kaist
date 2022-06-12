@@ -1,0 +1,18 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (read-bad-fd) begin
+  read-bad-fd: exit(-1)
+Differences in `diff -u' format:
+- (read-bad-fd) begin
+  read-bad-fd: exit(-1)
+Acceptable output:
+  (read-bad-fd) begin
+  (read-bad-fd) end
+  read-bad-fd: exit(0)
+Differences in `diff -u' format:
+- (read-bad-fd) begin
+- (read-bad-fd) end
+- read-bad-fd: exit(0)
++ read-bad-fd: exit(-1)

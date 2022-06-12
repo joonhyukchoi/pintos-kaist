@@ -1,0 +1,33 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (page-shuffle) begin
+  (page-shuffle) init: cksum=3115322833
+  (page-shuffle) shuffle 0: cksum=2274652418
+  (page-shuffle) shuffle 1: cksum=2281360714
+  (page-shuffle) shuffle 2: cksum=3504443700
+  (page-shuffle) shuffle 3: cksum=2850516818
+  (page-shuffle) shuffle 4: cksum=2406916757
+  (page-shuffle) shuffle 5: cksum=3377643430
+  (page-shuffle) shuffle 6: cksum=658047850
+  (page-shuffle) shuffle 7: cksum=493716582
+  (page-shuffle) shuffle 8: cksum=3359519593
+  (page-shuffle) shuffle 9: cksum=143675990
+  (page-shuffle) end
+Differences in `diff -u' format:
+- (page-shuffle) begin
+- (page-shuffle) init: cksum=3115322833
+- (page-shuffle) shuffle 0: cksum=2274652418
+- (page-shuffle) shuffle 1: cksum=2281360714
+- (page-shuffle) shuffle 2: cksum=3504443700
+- (page-shuffle) shuffle 3: cksum=2850516818
+- (page-shuffle) shuffle 4: cksum=2406916757
+- (page-shuffle) shuffle 5: cksum=3377643430
+- (page-shuffle) shuffle 6: cksum=658047850
+- (page-shuffle) shuffle 7: cksum=493716582
+- (page-shuffle) shuffle 8: cksum=3359519593
+- (page-shuffle) shuffle 9: cksum=143675990
+- (page-shuffle) end
+
+(Process exit codes are excluded for matching purposes.)
