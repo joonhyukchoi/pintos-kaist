@@ -4,24 +4,62 @@ Kernel command line: -q -f put args-none run args-none
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  130,867,200 loops/s.
-hd0:0: detected 321 sector (160 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+Calibrating timer...  157,081,600 loops/s.
+hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 102 sector (51 kB) disk, model "QEMU HARDDISK", serial "QM00003"
 hd1:1: detected 8,064 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00004"
 Formatting file system...done.
+vm_init!!
 Boot complete.
 Putting 'args-none' into the file system...
 Executing 'args-none':
-args-none: exit(-1)
-Execution of 'args-none' complete.
-Timer: 59 ticks
-Thread: 30 idle ticks, 30 kernel ticks, 0 user ticks
+check in process_exec 
+***************process clean up
+***************load_segment
+##### vm_alloc_page_with_initializer!!
+##### spt_find_page!!
+##### spt_insert_page!!
+##### vm_alloc_page_with_initializer!!
+##### spt_find_page!!
+##### spt_insert_page!!
+##### vm_alloc_page_with_initializer!!
+##### spt_find_page!!
+##### spt_insert_page!!
+##### vm_alloc_page_with_initializer!!
+##### spt_find_page!!
+##### spt_insert_page!!
+##### vm_alloc_page_with_initializer!!
+##### spt_find_page!!
+##### spt_insert_page!!
+***************load_segment
+##### vm_alloc_page_with_initializer!!
+##### spt_find_page!!
+##### spt_insert_page!!
+##### vm_alloc_page_with_initializer!!
+##### spt_find_page!!
+##### spt_insert_page!!
+***********setupstack
+##### spt_insert_page!!
+success check: 1
+Interrupt 0x0d (#GP General Protection Exception) at rip=8004207c6d
+ cr2=0000000000000000 error=               0
+rax 0000000000000000 rbx 0000000000000000 rcx 0000000000000000 rdx 0000000000000000
+rsp 0000008004242f7f rbp 0000000000000000 rsi 000000004747ffe0 rdi 0000000000000001
+rip 0000008004207c6d r8 0000000000000000  r9 0000000000000000 r10 0000000000000000
+r11 0000000000000000 r12 0000000000000000 r13 0000000000000000 r14 0000000000000000
+r15 0000000000000000 rflags 00000202
+es: 0000 ds: 0000 cs: 0008 ss: 0010
+Kernel PANIC at ../../userprog/exception.c:97 in kill(): Kernel bug - unexpected interrupt in kernel
+Call stack: 0x8004217f38 0x800421ce63 0x8004208fd7.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 71 ticks
+Thread: 30 idle ticks, 30 kernel ticks, 11 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 34 reads, 232 writes
+hd0:1: 41 reads, 232 writes
 hd1:0: 102 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 914 characters output
-Keyboard: 0 keys pressed
-Exception: 0 page faults
-Powering off...
+Console: 2467 characters output
+Key
