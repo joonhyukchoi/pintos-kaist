@@ -204,7 +204,7 @@ process_exec (void *f_name) {
 	bool success;
 
 	/* pintos project3 */
-	vm_init();
+	// vm_init();
 	
 	/* We cannot use the intr_frame in the thread structure.
 	 * This is because when current thread rescheduled,
@@ -704,7 +704,12 @@ setup_stack (struct intr_frame *if_) {
  * KPAGE should probably be a page obtained from the user pool
  * with palloc_get_page().
  * Returns true on success, false if UPAGE is already mapped or
- * if memory allocation fails. */
+ * if memory allocation fails.
+ * 사용자 가상 주소 UPAGE에서 커널 가상 주소 KPAGE로의 매핑을 페이지 테이블에 추가합니다.
+ * WRITABLE이 true이면 사용자 프로세스가 페이지를 수정할 수 있습니다. 그렇지 않으면 읽기 전용입니다.
+ * UPAGE는 이미 매핑되어 있지 않아야 합니다.
+ * KPAGE는 아마도 palloc_get_page()를 사용하여 사용자 풀에서 얻은 페이지여야 합니다.
+ * 성공하면 true, UPAGE가 이미 매핑되어 있거나 메모리 할당에 실패하면 false를 반환합니다.*/
 static bool
 install_page (void *upage, void *kpage, bool writable) {
 	struct thread *t = thread_current ();
@@ -725,6 +730,7 @@ lazy_load_segment (struct page *page, void *aux) {
 	/* TODO: This called when the first page fault occurs on address VA. */
 	/* TODO: VA is available when calling this function. */
 
+	/* pintos project3 */
 	if (!vm_claim_page(page->va)){
 		return false;
 	}
@@ -763,16 +769,17 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
 		size_t page_zero_bytes = PGSIZE - page_read_bytes;
 
-		struct aux_struct temp_aux = {
-			.vmfile = file,
-			.ofs = ofs,
-			.read_bytes = read_bytes,
-			.zero_bytes = zero_bytes,
-			.is_loaded = false
-		};
+		/* pintos project3 */
+		struct aux_struct *temp_aux = malloc(sizeof(struct aux_struct));
+
+		temp_aux->vmfile = file;
+		temp_aux->ofs = ofs;
+		temp_aux->read_bytes = read_bytes;
+		temp_aux->zero_bytes = zero_bytes;
+		temp_aux->is_loaded = false;
 
 		/* TODO: Set up aux to pass information to the lazy_load_segment. */
-		void *aux = &temp_aux;
+		void *aux = temp_aux;
 		if (!vm_alloc_page_with_initializer (VM_ANON, upage,
 					writable, lazy_load_segment, aux))
 			return false;
@@ -785,23 +792,47 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 	return true;
 }
 
-/* Create a PAGE of stack at the USER_STACK. Return true on success. */
+/* Create a PAGE of stack at the USER_STACK. Return true on success.
+   USER_STACK에서 스택의 PAGE를 만듭니다. 성공하면 true를 반환합니다.*/
 static bool
 setup_stack (struct intr_frame *if_) {
 	void *stack_bottom = (void *) (((uint8_t *) USER_STACK) - PGSIZE);
 
 	/* TODO: Map the stack on stack_bottom and claim the page immediately.
 	 * TODO: If success, set the rsp accordingly.
-	 * TODO: You should mark the page is stack. */
-	/* TODO: Your code goes here */
+	 * TODO: You should mark the page is stack.
+	 * TODO: Your code goes here
+	 * stack_bottom에 스택을 매핑하고 즉시 페이지를 요청하십시오.
+	 * 성공하면 그에 따라 rsp를 설정하십시오.
+	 * 페이지가 스택임을 표시해야 합니다. */
+
+	/* pintos project3 */
+
+	struct frame *frame = NULL;
+
+	frame = malloc(sizeof(struct frame));
+	frame->kva = palloc_get_page(PAL_USER);
+
+	if (!frame->kva){
+		free(frame);
+		PANIC("todo");
+	}
 
 	struct page *setup_page = malloc(sizeof(struct page));
+
+	setup_page->type = VM_MARKER_0;
 	setup_page->va = stack_bottom;
-	setup_page->type = VM_ANON;
+	// setup_page->type = VM_ANON;
+	setup_page->is_loaded = true;
+	frame->page = setup_page;
+	setup_page->frame = frame;
+
+	pml4_set_page(thread_current()->pml4, setup_page->va, frame->kva, setup_page->writable);
 
 	if (spt_insert_page(&thread_current()->spt, setup_page)){
 		return false;
 	}
+	if_->rsp = USER_STACK;
 
 	return anon_initializer(setup_page, VM_ANON, stack_bottom);
 }
