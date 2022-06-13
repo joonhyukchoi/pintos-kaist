@@ -1,7 +1,78 @@
 FAIL
-Kernel panic in run: PANIC at ../../userprog/exception.c:97 in kill(): Kernel bug - unexpected interrupt in kernel
-Call stack: 0x8004217f38 0x800421ce63 0x8004208fd7
-Translation of call stack:
-0x0000008004217f38: debug_panic (lib/kernel/debug.c:32)
-0x000000800421ce63: kill (userprog/exception.c:103)
-0x0000008004208fd7: intr_handler (threads/interrupt.c:352)
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (args) begin
+  (args) argc = 23
+  (args) argv[0] = 'args-many'
+  (args) argv[1] = 'a'
+  (args) argv[2] = 'b'
+  (args) argv[3] = 'c'
+  (args) argv[4] = 'd'
+  (args) argv[5] = 'e'
+  (args) argv[6] = 'f'
+  (args) argv[7] = 'g'
+  (args) argv[8] = 'h'
+  (args) argv[9] = 'i'
+  (args) argv[10] = 'j'
+  (args) argv[11] = 'k'
+  (args) argv[12] = 'l'
+  (args) argv[13] = 'm'
+  (args) argv[14] = 'n'
+  (args) argv[15] = 'o'
+  (args) argv[16] = 'p'
+  (args) argv[17] = 'q'
+  (args) argv[18] = 'r'
+  (args) argv[19] = 's'
+  (args) argv[20] = 't'
+  (args) argv[21] = 'u'
+  (args) argv[22] = 'v'
+  (args) argv[23] = null
+  (args) end
+  args-many: exit(0)
+Differences in `diff -u' format:
++ ***************load_segment, id: 3
++ ***************load_segment, id: 3
++ ***********setupstack
++ ##### vm_try_handle_fault!!
++ ***************lazy_load_segment
++ ##### vm_try_handle_fault!!
++ ***************lazy_load_segment
++ ##### vm_try_handle_fault!!
++ ***************lazy_load_segment
++ ##### vm_try_handle_fault!!
++ ***************lazy_load_segment
++ ##### vm_try_handle_fault!!
++ ***************lazy_load_segment
++ ##### vm_try_handle_fault!!
++ ***************lazy_load_segment
++ ##### vm_try_handle_fault!!
++ ***************lazy_load_segment
+  (args) begin
+  (args) argc = 23
+  (args) argv[0] = 'args-many'
+  (args) argv[1] = 'a'
+  (args) argv[2] = 'b'
+  (args) argv[3] = 'c'
+  (args) argv[4] = 'd'
+  (args) argv[5] = 'e'
+  (args) argv[6] = 'f'
+  (args) argv[7] = 'g'
+  (args) argv[8] = 'h'
+  (args) argv[9] = 'i'
+  (args) argv[10] = 'j'
+  (args) argv[11] = 'k'
+  (args) argv[12] = 'l'
+  (args) argv[13] = 'm'
+  (args) argv[14] = 'n'
+  (args) argv[15] = 'o'
+  (args) argv[16] = 'p'
+  (args) argv[17] = 'q'
+  (args) argv[18] = 'r'
+  (args) argv[19] = 's'
+  (args) argv[20] = 't'
+  (args) argv[21] = 'u'
+  (args) argv[22] = 'v'
+  (args) argv[23] = null
+  (args) end
+  args-many: exit(0)

@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/home/ubuntu/pintos-kaist/utils/pintos", line 225, in <module>
-    guestfns=[f[0].split(':') for f in args.GUESTFNS]).run()
-  File "/home/ubuntu/pintos-kaist/utils/pintos", line 156, in run
-    self.bdevs = self.__scan_dir()
-  File "/home/ubuntu/pintos-kaist/utils/pintos", line 50, in __scan_dir
-    f.write(bytes('\0' * (0xfc000 * size), 'utf-8'))
-KeyboardInterrupt

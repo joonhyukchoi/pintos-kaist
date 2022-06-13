@@ -27,7 +27,7 @@ void
 uninit_new (struct page *page, void *va, vm_initializer *init,
 		enum vm_type type, void *aux,
 		bool (*initializer)(struct page *, enum vm_type, void *)) {
-			printf("uninit_new page: %d\n", page);
+			// printf("uninit_new page: %d\n", page);
 	ASSERT (page != NULL);
 	*page = (struct page) {
 		.operations = &uninit_ops,
