@@ -92,7 +92,10 @@ kill (struct intr_frame *f) {
 			/* Kernel's code segment, which indicates a kernel bug.
 			   Kernel code shouldn't throw exceptions.  (Page faults
 			   may cause kernel exceptions--but they shouldn't arrive
-			   here.)  Panic the kernel to make the point.  */
+			   here.)  Panic the kernel to make the point. 
+			   커널 버그를 나타내는 커널의 코드 세그먼트.
+			   커널 코드는 예외를 발생시키지 않아야 합니다.
+			   (페이지 오류로 인해 커널 예외가 발생할 수 있지만 여기에 도착해서는 안 됩니다.) */
 			intr_dump_frame (f);
 			PANIC ("Kernel bug - unexpected interrupt in kernel");
 
@@ -153,11 +156,12 @@ page_fault (struct intr_frame *f) {
 	page_fault_cnt++;
 
 	/* If the fault is true fault, show info and exit. */
-	printf ("Page fault at %p: %s error %s page in %s context.\n",
-			fault_addr,
-			not_present ? "not present" : "rights violation",
-			write ? "writing" : "reading",
-			user ? "user" : "kernel");
-	kill (f);
+	// printf ("Page fault at %p: %s error %s page in %s context.\n",
+	// 		fault_addr,
+	// 		not_present ? "not present" : "rights violation",
+	// 		write ? "writing" : "reading",
+	// 		user ? "user" : "kernel");
+	// kill (f);
+	exit(-1);
 }
 

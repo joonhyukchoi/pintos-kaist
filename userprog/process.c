@@ -71,7 +71,9 @@ static void
 initd (void *f_name) {
 #ifdef VM
 	supplemental_page_table_init (&thread_current()->spt);
+	printf("supplemental_page_table_init ***\n");
 #endif
+	printf("initd's process_init**\n");
 	process_init ();
 	if (process_exec (f_name) < 0)
 		PANIC("Fail to launch initd\n");
@@ -303,6 +305,7 @@ process_cleanup (void) {
 printf("***************process clean up\n");
 #ifdef VM
 	supplemental_page_table_kill (&curr->spt);
+	printf("---supplemental_page_table_kill\n");
 #endif
 
 	uint64_t *pml4;
@@ -493,8 +496,11 @@ load (const char *file_name, struct intr_frame *if_) {
 	}
 	
 	/* Set up stack. */
-	if (!setup_stack (if_))
+	if (!setup_stack (if_)){
+		printf("connnnnnieya -_-^\n");
 		goto done;
+
+	}
 
 	/* Start address. */
 	if_->rip = ehdr.e_entry;
@@ -515,6 +521,7 @@ load (const char *file_name, struct intr_frame *if_) {
   printf("load function check !!: success: %d\n", success);
 
 done:
+	printf("conniya -_-\n");
 	/* We arrive here whether the load is successful or not. */
 	return success;
 }
@@ -737,9 +744,9 @@ lazy_load_segment (struct page *page, void *aux) {
 	/* TODO: VA is available when calling this function. */
 
 	/* pintos project3 */
-	if (!vm_claim_page(page->va)){
-		return false;
-	}
+	// if (!vm_claim_page(page->va)){
+	// 	return false;
+	// }
 	off_t read_buf = file_read_at(page->vmfile, page->frame->kva, page->read_bytes, page->offset);
 	off_t remain_buf = (page->read_bytes + page->zero_bytes - read_buf);
 	memset((uint8_t *)page->frame->kva + page->read_bytes, 0, page->zero_bytes);
@@ -777,22 +784,24 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
 		size_t page_zero_bytes = PGSIZE - page_read_bytes;
 
-		struct aux_struct *temp_aux = malloc(sizeof(struct aux_struct));
+		struct aux_struct *temp_aux = calloc(1, sizeof(struct aux_struct));
 		temp_aux->vmfile = file;
 		temp_aux->ofs = ofs;
 		temp_aux->read_bytes = read_bytes;
 		temp_aux->zero_bytes = zero_bytes;
 		temp_aux->is_loaded = false;
+		temp_aux->writable = writable;
 		// printf("check!");
 		/* TODO: Set up aux to pass information to the lazy_load_segment. */
-		void *aux = temp_aux;
+		// void *aux = temp_aux;
 		if (!vm_alloc_page_with_initializer (VM_ANON, upage,
-					writable, lazy_load_segment, aux))
+					writable, lazy_load_segment, temp_aux))
 			return false;
 		printf("check loop\n");
 		/* Advance. */
 		read_bytes -= page_read_bytes;
 		zero_bytes -= page_zero_bytes;
+		ofs += page_read_bytes;
 		upage += PGSIZE;
 	}
 	return true;
@@ -812,72 +821,16 @@ setup_stack (struct intr_frame *if_) {
 	 * 페이지가 스택임을 표시해야 합니다. */
 
 	/* pintos project3 */
-	
-	// struct frame *frame = (struct frame*)malloc(sizeof(struct frame));
-	// frame->kva = palloc_get_page(PAL_USER | PAL_ZERO);
+	printf("check setup_stack vm_type: %d\n",VM_TYPE(VM_MARKER_0+VM_ANON));
 
-	// struct page *setup_page = (struct page*)malloc(sizeof(struct page));
-
-	// setup_page->va = pg_round_down(stack_bottom);
-	// // VM_MARKER means stack marker
-	// setup_page->type = VM_MARKER_0;
-	// setup_page->is_loaded = true;
-	// frame->page = setup_page;
-	// setup_page->frame = frame;
-	// setup_page->writable = true;
-	// ASSERT(frame->kva != NULL);
-	// if (!frame->kva){
-	// 	free(frame);
-	// 	PANIC("todo");
-	// }
-	printf("check %d",VM_TYPE(VM_MARKER_0+VM_ANON));
-	bool alloc_success = vm_alloc_page(VM_MARKER_0+VM_ANON, stack_bottom, true);
-	if (alloc_success) {
-		if (!vm_claim_page(stack_bottom)) {
-			return false;
-		}
-	} else {
-		return false;
-	}
-	// struct thread *t = thread_current ();
-	// pml4_set_page(thread_current()->pml4, setup_page->va, frame->kva, setup_page->writable);
-	// ASSERT(pml4_get_page (t->pml4, setup_page->va) == NULL);
-	// ASSERT(pml4_set_page (t->pml4, setup_page->va, frame->kva, setup_page->writable) == true);
-	struct page *setup_page = spt_find_page (&thread_current()->spt, USER_STACK);
-	struct frame *frame = setup_page->frame;
-	bool success = install_page((uint8_t*)setup_page->va, (uint8_t*)frame->kva, setup_page->writable);
-	
-	// if (!spt_insert_page(&thread_current()->spt, setup_page)){
-	// 	return false;
-	// }
-	if (success){
-		printf("success check: %d\n", success);
-		// if_->rsp = (uintptr_t)stack_bottom;
+	bool alloc_success = vm_alloc_page(VM_MARKER_0 || VM_ANON, stack_bottom, true);
+	if (alloc_success ) {
+		vm_claim_page(stack_bottom);
 		if_->rsp = USER_STACK;
-		printf("#############rsp = %016llx\n", if_->rsp);
-	} else {
-		palloc_free_page(frame->kva);
+		printf("check^^^^^^^^^^^^^^^^^\n");
+		// thread_current()->stack_bottom = stack_bottom;
+		return true;
 	}
-	return success;
+	return false;
 }
 #endif /* VM */
-// static bool
-// setup_stack (struct intr_frame *if_) {
-// 	uint8_t *kpage;
-// 	bool success = false;
-
-// 	kpage = palloc_get_page (PAL_USER | PAL_ZERO);
-// 	if (kpage != NULL) {
-// 		success = install_page (((uint8_t *) USER_STACK) - PGSIZE, kpage, true);
-// 		if (success)
-// 			if_->rsp = USER_STACK;
-// 		else
-// 			palloc_free_page (kpage);
-// 	}
-// 	return success;
-// }
-
-// /* Verify that there's not already a page at that virtual
-// 	* address, then map our page there. */
-// return (pml4_get_page (t->pml4, upage) == NULL
-// 		&& pml4_set_page (t->pml4, upage, kpage, writable));

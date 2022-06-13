@@ -104,6 +104,7 @@ struct thread {
 	/* Shared between thread.c and synch.c. */
 	struct list_elem elem;              /* List element. */
 
+	void *stack_bottom;
 	// struct hash vm; /* pintos project3 - 스레드가 가진 가상 주소 공간을 관리하는 해시테이블 */
 
   // * USERPROG 추가 

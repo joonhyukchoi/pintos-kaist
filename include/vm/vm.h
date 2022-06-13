@@ -113,6 +113,7 @@ struct aux_struct {
 	uint32_t read_bytes;
 	uint32_t zero_bytes;
 	bool is_loaded;
+	bool writable;
 };
 
 /* The function table for page operations.
