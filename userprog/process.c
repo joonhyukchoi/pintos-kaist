@@ -22,7 +22,7 @@
 
 #ifdef VM
 #include "vm/vm.h"
-static bool lazy_load_segment (struct page *page, void *aux);
+// static bool lazy_load_segment (struct page *page, void *aux);
 #endif
 
 static void process_cleanup (void);
@@ -216,7 +216,7 @@ process_exec (void *f_name) {
 
 	/* pintos project3 */
 	/* Initialize interrupt frame and load executable */
-	memset(&_if, 0, sizeof _if);
+	// memset(&_if, 0, sizeof _if);
 
 	/* We first kill the current context */
 	process_cleanup ();
@@ -272,7 +272,7 @@ process_exit (void) {
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
   /* pintos project3 */
-  uint32_t *pd;
+//   uint32_t *pd;
   
   if (curr->run_file)
     file_close(curr->run_file);
@@ -293,7 +293,7 @@ process_exit (void) {
 
   palloc_free_page(table);
   palloc_free_page(curr->next_fd);
-  pd = curr->pml4;
+//   pd = curr->pml4;
   process_cleanup();
 }
 
@@ -725,19 +725,28 @@ install_page (void *upage, void *kpage, bool writable) {
  * upper block. */
 
 static bool
-lazy_load_segment (struct page *page, void *aux) {
+lazy_load_segment(struct page *page, struct aux_struct *aux)
+{
 	/* TODO: Load the segment from the file */
 	/* TODO: This called when the first page fault occurs on address VA. */
 	/* TODO: VA is available when calling this function. */
 
 	/* pintos project3 */
-	if (!vm_claim_page(page->va)){
+	// if (!vm_claim_page(page->va)){
+	// 	return false;
+	// }
+	// off_t read_buf = file_read_at(page->vmfile, page->frame->kva, page->read_bytes, page->offset);
+	// off_t remain_buf = (page->read_bytes + page->zero_bytes - read_buf);
+	// memset((uint8_t *)page->frame->kva + read_buf, 0, remain_buf);
+
+	if (file_read_at(aux->vmfile, page->frame->kva, aux->read_bytes, aux->ofs) != (int)aux->read_bytes)
+	{
+		palloc_free_page(page->frame->kva);
+		free(aux);
 		return false;
 	}
-	off_t read_buf = file_read_at(page->vmfile, page->frame->kva, page->read_bytes, page->offset);
-	off_t remain_buf = (page->read_bytes + page->zero_bytes - read_buf);
-	memset((uint8_t *)page->frame->kva + read_buf, 0, remain_buf);
-
+	memset(page->frame->kva + aux->read_bytes, 0, aux->zero_bytes);
+	free(aux);
 	return true;
 }
 
@@ -770,12 +779,12 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		size_t page_zero_bytes = PGSIZE - page_read_bytes;
 
 		/* pintos project3 */
-		struct aux_struct *temp_aux = malloc(sizeof(struct aux_struct));
+		struct aux_struct *temp_aux = (struct aux_struct * )malloc(sizeof(struct aux_struct));
 
 		temp_aux->vmfile = file;
 		temp_aux->ofs = ofs;
-		temp_aux->read_bytes = read_bytes;
-		temp_aux->zero_bytes = zero_bytes;
+		temp_aux->read_bytes = page_read_bytes;
+		temp_aux->zero_bytes = page_zero_bytes;
 		temp_aux->is_loaded = false;
 
 		/* TODO: Set up aux to pass information to the lazy_load_segment. */
@@ -788,6 +797,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		read_bytes -= page_read_bytes;
 		zero_bytes -= page_zero_bytes;
 		upage += PGSIZE;
+		ofs += page_read_bytes;
 	}
 	return true;
 }
@@ -808,32 +818,40 @@ setup_stack (struct intr_frame *if_) {
 
 	/* pintos project3 */
 
-	struct frame *frame = NULL;
+	// struct frame *frame = NULL;
 
-	frame = malloc(sizeof(struct frame));
-	frame->kva = palloc_get_page(PAL_USER);
+	// frame = malloc(sizeof(struct frame));
+	// frame->kva = palloc_get_page(PAL_USER);
 
-	if (!frame->kva){
-		free(frame);
-		PANIC("todo");
+	// if (!frame->kva){
+	// 	free(frame);
+	// 	PANIC("todo");
+	// }
+
+	// struct page *setup_page = malloc(sizeof(struct page));
+
+	// setup_page->type = VM_MARKER_0;
+	// setup_page->va = stack_bottom;
+	// // setup_page->type = VM_ANON;
+	// setup_page->is_loaded = true;
+	// frame->page = setup_page;
+	// setup_page->frame = frame;
+
+	// pml4_set_page(thread_current()->pml4, setup_page->va, frame->kva, setup_page->writable);
+
+	// if (spt_insert_page(&thread_current()->spt, setup_page)){
+	// 	return false;
+	// }
+	// if_->rsp = USER_STACK;
+
+	// return anon_initializer(setup_page, VM_ANON, stack_bottom);
+
+	if (vm_alloc_page_with_initializer(VM_ANON || VM_MARKER_0, stack_bottom, true, NULL, NULL))
+	{
+		vm_claim_page(stack_bottom);
+		if_->rsp = USER_STACK;
+		return true;
 	}
-
-	struct page *setup_page = malloc(sizeof(struct page));
-
-	setup_page->type = VM_MARKER_0;
-	setup_page->va = stack_bottom;
-	// setup_page->type = VM_ANON;
-	setup_page->is_loaded = true;
-	frame->page = setup_page;
-	setup_page->frame = frame;
-
-	pml4_set_page(thread_current()->pml4, setup_page->va, frame->kva, setup_page->writable);
-
-	if (spt_insert_page(&thread_current()->spt, setup_page)){
-		return false;
-	}
-	if_->rsp = USER_STACK;
-
-	return anon_initializer(setup_page, VM_ANON, stack_bottom);
+	return false;
 }
 #endif /* VM */

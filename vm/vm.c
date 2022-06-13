@@ -123,17 +123,17 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
 		struct page *newpage = malloc(sizeof(struct page));
 		// newpage->va = pg_round_down(upage);
 
-		if (type == 1) {
-			uninit_new(newpage, upage, init, type, aux, anon_initializer);
-		} else if (type == 2) {
-			uninit_new(newpage, upage, init, type, aux, file_backed_initializer);
-			newpage->vmfile = ((struct aux_struct *)aux)->vmfile;
-			newpage->offset = ((struct aux_struct *)aux)->ofs;
-			newpage->read_bytes = ((struct aux_struct *)aux)->read_bytes;
-			newpage->zero_bytes = ((struct aux_struct *)aux)->zero_bytes;
-			newpage->is_loaded = ((struct aux_struct *)aux)->is_loaded;
+		if (type == VM_ANON) {
+            uninit_new(newpage, pg_round_down(upage), init, type, aux, anon_initializer);
+        } else if (type == VM_FILE) {
+            uninit_new(newpage, pg_round_down(upage), init, type, aux, file_backed_initializer);
+            // newpage->vmfile = ((struct aux_struct *)aux)->vmfile;
+			// newpage->offset = ((struct aux_struct *)aux)->ofs;
+			// newpage->read_bytes = ((struct aux_struct *)aux)->read_bytes;
+			// newpage->zero_bytes = ((struct aux_struct *)aux)->zero_bytes;
+			// newpage->is_loaded = ((struct aux_struct *)aux)->is_loaded;
 		}
-		newpage->is_loaded = false;
+		// newpage->is_loaded = false;
 		// newpage->type = type;
 		newpage->writable = writable;
 		/* 오프셋 애매함 */
@@ -154,7 +154,7 @@ spt_find_page (struct supplemental_page_table *spt UNUSED, void *va UNUSED) {
 	/* TODO: Fill this function. */
 	/* pintos project3 */
 	struct page page;
-	struct thread *curr = thread_current();
+	// struct thread *curr = thread_current();
 	page.va = pg_round_down(va);
 	struct hash_elem *found_elem = hash_find(spt->hash, &page.elem);
 
@@ -218,6 +218,7 @@ vm_get_frame (void) {
 	/* pintos project3 */
 	frame = malloc(sizeof(struct frame));
 	frame->kva = palloc_get_page(PAL_USER);
+    frame->page = NULL;
 
 	ASSERT (frame != NULL);
 	ASSERT (frame->page == NULL);
@@ -253,37 +254,25 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	/* TODO: Your code goes here */
 
 	/* pintos project3 */
-	if (page == NULL){
-		return false;
-	}
+	// if (page == NULL){
+	// 	return false;
+	// }
 
-	if (user || !write || not_present){
-		vm_dealloc_page(page);
-		process_exit();
-	}
+	// if (user || !write || not_present){
+	// 	vm_dealloc_page(page);
+	// 	process_exit();
+	// }
+
+    if(page && not_present) {
+        return vm_do_claim_page(page);
+    }
 
 	/* add: you load some contents into the page and return control to the user program. */
-	bool check = vm_do_claim_page (page);
-
 	/* add: Finally, modify 'vm_try_handle_fault' function to resolve
 	 * the page struct corresponding to the faulted address by consulting
 	 * to the supplemental page table through 'spt_find_page'. */
 
-	// switch (page->type)
-	// {
-	// case VM_ANON:
-	// 	lazy_load_segment(page, NULL);
-	// 	break;
-	// case VM_FILE:
-	// 	lazy_load_segment(page, NULL);
-	// 	break;
-	
-	// default:
-	// 	break;
-	// }
-	
-	// f->rsp = addr;
-	return check;
+	return false;
 }
 
 /* Free the page.
@@ -323,16 +312,16 @@ vm_do_claim_page (struct page *page) {
 	
 	/* TODO: Insert page table entry to map page's VA to frame's PA. */
 	/* pintos project3 */
-	pml4_get_page(thread_current()->pml4, page->va);
+	// pml4_get_page(thread_current()->pml4, page->va);
 	pml4_set_page(thread_current()->pml4, page->va, frame->kva, page->writable);
+    return swap_in(page, frame->kva);
+    // if (spt_insert_page(&thread_current()->spt, page)){
+	// 	return swap_in (page, frame->kva);
+	// }
+	// free(page);
+	// free(frame);
 
-	if (spt_insert_page(&thread_current()->spt, page)){
-		return swap_in (page, frame->kva);
-	}
-	free(page);
-	free(frame);
-
-	return false;
+	// return false;
 }
 
 /* Initialize new supplemental page table */
