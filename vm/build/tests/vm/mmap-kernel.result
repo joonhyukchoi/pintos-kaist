@@ -1,0 +1,20 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (mmap-kernel) begin
+  (mmap-kernel) open "sample.txt"
+  (mmap-kernel) try to mmap over kernel 0
+  (mmap-kernel) try to mmap over kernel 1
+  (mmap-kernel) try to mmap over kernel 2
+  (mmap-kernel) end
+  mmap-kernel: exit(0)
+Differences in `diff -u' format:
+  (mmap-kernel) begin
+  (mmap-kernel) open "sample.txt"
+  (mmap-kernel) try to mmap over kernel 0
+- (mmap-kernel) try to mmap over kernel 1
+- (mmap-kernel) try to mmap over kernel 2
+- (mmap-kernel) end
+- mmap-kernel: exit(0)
++ mmap-kernel: exit(-1)

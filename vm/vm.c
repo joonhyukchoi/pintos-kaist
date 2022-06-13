@@ -20,16 +20,13 @@ vm_init (void) {
 	register_inspect_intr ();
 	/* DO NOT MODIFY UPPER LINES. */
 	/* TODO: Your code goes here. */
-
-	/* pintos project3 */
-	// hash_init(vm, vm_hash_func, vm_less_func, NULL);
 }
 
 /* pintos project3 */
 static unsigned vm_hash_func (const struct hash_elem *e, void *aux){
     struct page *entry = hash_entry(e, struct page, elem);
 
-    return hash_int(entry->va);
+    return hash_bytes(&entry->va, sizeof(entry->va));
 }
 
 /* pintos project3 */
@@ -38,47 +35,6 @@ static bool vm_less_func (const struct hash_elem *a, const struct hash_elem *b){
     struct page *b_entry = hash_entry(b, struct page, elem);
 
     return a_entry->va < b_entry->va;
-}
-
-
-// /* pintos project3 */
-// struct page *find_vme (void *vaddr){
-// 	// struct hash *hash_table = &((struct thread *)pg_round_down(vaddr))->vm;
-// 	struct hash_elem search_elem = ((struct page *)pg_round_down(vaddr))->elem;
-// 	struct thread *curr = thread_current();
-
-// 	struct hash_elem *found_elem = hash_find(&curr->vm, &search_elem);
-
-// 	if (!found_elem){
-// 		return NULL;
-// 	}
-
-// 	return hash_entry(found_elem, struct vm_entry, elem);
-// }
-
-/* pintos project3 */
-void vm_destroy (struct hash *vm){
-	// switch (expression)
-	// {
-	// case /* constant-expression */:
-	// 	/* code */
-	// 	break;
-	// // vm_dealloc_page();
-	// default:
-	// 	break;
-	// }
-	// hash_destroy(vm, );
-}
-
-/* pintos project3 */
-void vm_destroy_func (struct hash_elem *e, void *aux){
-	// struct vm_entry *vm_entry_destroy = hash_entry(e, struct vm_entry, elem);
-
-	// if (vm_entry_destroy->is_loaded){
-	// 	palloc_free_page(vm_entry_destroy);
-	// 	pml4_clear_page();
-	// }
-	// palloc_free_page(vm_entry_destroy);
 }
 
 /* Get the type of the page. This function is useful if you want to know the
@@ -109,42 +65,34 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
 
 	ASSERT (VM_TYPE(type) != VM_UNINIT)
 
-	struct supplemental_page_table *spt = &thread_current ()->spt;
+    bool success = false;
+	struct supplemental_page_table *spt = &thread_current()->spt;
 
-	/* Check wheter the upage is already occupied or not. */
-	if (spt_find_page (spt, upage) == NULL) {
-		/* TODO: Create the page, fetch the initialier according to the VM type,
-		 * TODO: and then create "uninit" page struct by calling uninit_new. You
-		 * TODO: should modify the field after calling the uninit_new.
-		 * 페이지를 생성하고 VM type에 따라 이니셜을 가져온 다음 uninit_new를 호출하여
-		 * "uninit" 페이지 구조체를 생성합니다. unitit_new를 호출한 후 필드를 수정해야 합니다. */
-		
-		/* pintos project3 */
-		struct page *newpage = malloc(sizeof(struct page));
-		// newpage->va = pg_round_down(upage);
+    /* Check wheter the upage is already occupied or not. */
+    if (spt_find_page(spt, upage) == NULL)
+    {
+        /* TODO: Create the page, fetch the initialier according to the VM type,
+         * TODO: and then create "uninit" page struct by calling uninit_new. You
+         * TODO: should modify the field after calling the uninit_new.
+         * 페이지를 생성하고 VM type에 따라 이니셜을 가져온 다음 uninit_new를 호출하여
+         * "uninit" 페이지 구조체를 생성합니다. unitit_new를 호출한 후 필드를 수정해야 합니다. */
 
-		if (type == 1) {
-			uninit_new(newpage, upage, init, type, aux, anon_initializer);
-		} else if (type == 2) {
-			uninit_new(newpage, upage, init, type, aux, file_backed_initializer);
-			newpage->vmfile = ((struct aux_struct *)aux)->vmfile;
-			newpage->offset = ((struct aux_struct *)aux)->ofs;
-			newpage->read_bytes = ((struct aux_struct *)aux)->read_bytes;
-			newpage->zero_bytes = ((struct aux_struct *)aux)->zero_bytes;
-			newpage->is_loaded = ((struct aux_struct *)aux)->is_loaded;
-		}
-		newpage->is_loaded = false;
-		// newpage->type = type;
-		newpage->writable = writable;
-		/* 오프셋 애매함 */
-		// upage - pg_round_down(upage)
-		
-		/* TODO: Insert the page into the spt.
-		 * 페이지를 spt에 삽입하십시오. */
-		return spt_insert_page(spt, newpage);
-	}
+        /* pintos project3 */
+        struct page *p = (struct page *)malloc(sizeof(struct page));
+
+        if (type == VM_ANON)
+            uninit_new(p, pg_round_down(upage), init, type, aux, anon_initializer);
+        else if (type == VM_FILE)
+            uninit_new(p, pg_round_down(upage), init, type, aux, file_backed_initializer);
+
+        p->writable = writable;
+        /* TODO: Insert the page into the spt. */
+        success = spt_insert_page(spt, p);
+    }
+    return success;
 err:
-	return false;
+    return success;
+    // return false;
 }
 
 /* Find VA from spt and return page. On error, return NULL. */
@@ -154,17 +102,14 @@ spt_find_page (struct supplemental_page_table *spt UNUSED, void *va UNUSED) {
 	/* TODO: Fill this function. */
 	/* pintos project3 */
 	struct page page;
-	struct thread *curr = thread_current();
 	page.va = pg_round_down(va);
-	struct hash_elem *found_elem = hash_find(spt->hash, &page.elem);
+	struct hash_elem *found_elem = hash_find(&spt->hash, &(page.elem));
 
 	if (!found_elem){
 		return NULL;
 	}
 
 	return hash_entry(found_elem, struct page, elem);
-	
-	// return page;
 }
 
 
@@ -173,10 +118,12 @@ bool
 spt_insert_page (struct supplemental_page_table *spt UNUSED,
 		struct page *page UNUSED) {
 	/* pintos project3 */
-	if (hash_insert(spt->hash, &page->elem)){
-		return false;
+    int success = false;
+	/* TODO: Fillthis function. */
+	if(hash_insert (&(spt->hash), &(page->elem)) == NULL){
+		success = true;
 	}
-	return true;
+	return success;
 }
 
 void
@@ -213,21 +160,22 @@ vm_evict_frame (void) {
  * 즉, 사용자 풀 메모리가 가득 차면 이 함수는 사용 가능한 메모리 공간을 얻기 위해 프레임을 축출합니다. */
 static struct frame *
 vm_get_frame (void) {
-	struct frame *frame = NULL;
+    struct frame *frame = (struct frame*)malloc(sizeof(struct frame));
+
 	/* TODO: Fill this function. */
 	/* pintos project3 */
-	frame = malloc(sizeof(struct frame));
-	frame->kva = palloc_get_page(PAL_USER);
+    frame->kva = palloc_get_page(PAL_USER);
+	frame->page = NULL;
+
+    if (frame->kva == NULL){
+        frame = NULL;
+		PANIC("todo");
+	}
 
 	ASSERT (frame != NULL);
 	ASSERT (frame->page == NULL);
 
-	if (!frame->kva){
-		free(frame);
-		PANIC("todo");
-	}
-
-	return frame;
+    return frame;
 }
 
 /* Growing the stack. */
@@ -257,33 +205,11 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 		return false;
 	}
 
-	if (user || !write || not_present){
-		vm_dealloc_page(page);
-		process_exit();
-	}
-
-	/* add: you load some contents into the page and return control to the user program. */
-	bool check = vm_do_claim_page (page);
-
-	/* add: Finally, modify 'vm_try_handle_fault' function to resolve
-	 * the page struct corresponding to the faulted address by consulting
-	 * to the supplemental page table through 'spt_find_page'. */
-
-	// switch (page->type)
-	// {
-	// case VM_ANON:
-	// 	lazy_load_segment(page, NULL);
-	// 	break;
-	// case VM_FILE:
-	// 	lazy_load_segment(page, NULL);
-	// 	break;
-	
-	// default:
-	// 	break;
-	// }
-	
-	// f->rsp = addr;
-	return check;
+	if (page && not_present){
+		return vm_do_claim_page(page);
+	} else {
+        return false;
+    }
 }
 
 /* Free the page.
@@ -300,10 +226,13 @@ vm_dealloc_page (struct page *page) {
 /* 애매함 */
 bool
 vm_claim_page (void *va UNUSED) {
-	struct page *page = malloc(sizeof(struct page));
+	struct page *page = spt_find_page(&thread_current()->spt, va);
 	/* TODO: Fill this function */
 	/* pintos project3 */
-	page->va = pg_round_down(va);
+
+    if (page == NULL){
+        return false;
+    }
 	return vm_do_claim_page (page);
 }
 
@@ -323,24 +252,16 @@ vm_do_claim_page (struct page *page) {
 	
 	/* TODO: Insert page table entry to map page's VA to frame's PA. */
 	/* pintos project3 */
-	pml4_get_page(thread_current()->pml4, page->va);
 	pml4_set_page(thread_current()->pml4, page->va, frame->kva, page->writable);
 
-	if (spt_insert_page(&thread_current()->spt, page)){
-		return swap_in (page, frame->kva);
-	}
-	free(page);
-	free(frame);
-
-	return false;
+    return swap_in(page, frame->kva);
 }
 
 /* Initialize new supplemental page table */
 void
 supplemental_page_table_init (struct supplemental_page_table *spt UNUSED) {
 	/* pintos project3 */
-	spt->hash = malloc(sizeof(struct hash));
-	hash_init(spt->hash, vm_hash_func, vm_less_func, NULL);
+	hash_init(&spt->hash, vm_hash_func, vm_less_func, NULL);
 }
 
 /* Copy supplemental page table from src to dst */

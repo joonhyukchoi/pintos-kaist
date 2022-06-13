@@ -22,7 +22,6 @@
 
 #ifdef VM
 #include "vm/vm.h"
-static bool lazy_load_segment (struct page *page, void *aux);
 #endif
 
 static void process_cleanup (void);
@@ -45,8 +44,6 @@ tid_t
 process_create_initd (const char *file_name) {
 	char *fn_copy;
 	tid_t tid;
-
-  // puts("debug choi create initd");
 
 	/* Make a copy of FILE_NAME.
 	 * Otherwise there's a race between the caller and load(). */
@@ -90,7 +87,7 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
   tid_t ctid = thread_create (name, PRI_DEFAULT, __do_fork, cur);
   if (ctid == TID_ERROR)
     return TID_ERROR;
-  struct thread *child = get_child_process(ctid);
+//   struct thread *child = get_child_process(ctid);
   sema_down(&cur->fork_sema);
   return ctid;
 }
@@ -183,7 +180,7 @@ __do_fork (void *aux) {
     }
     cnt++;
   }
-  current->next_fd = parent->next_fd;
+//   current->next_fd = parent->next_fd;
 
   sema_up(&parent->fork_sema);
 
@@ -203,9 +200,6 @@ process_exec (void *f_name) {
 	char *file_name = f_name;
 	bool success;
 
-	/* pintos project3 */
-	// vm_init();
-	
 	/* We cannot use the intr_frame in the thread structure.
 	 * This is because when current thread rescheduled,
 	 * it stores the execution information to the member. */
@@ -213,10 +207,6 @@ process_exec (void *f_name) {
 	_if.ds = _if.es = _if.ss = SEL_UDSEG;
 	_if.cs = SEL_UCSEG;
 	_if.eflags = FLAG_IF | FLAG_MBS;
-
-	/* pintos project3 */
-	/* Initialize interrupt frame and load executable */
-	memset(&_if, 0, sizeof _if);
 
 	/* We first kill the current context */
 	process_cleanup ();
@@ -271,8 +261,6 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-  /* pintos project3 */
-  uint32_t *pd;
   
   if (curr->run_file)
     file_close(curr->run_file);
@@ -292,8 +280,8 @@ process_exit (void) {
   sema_down(&curr->exit_sema);
 
   palloc_free_page(table);
-  palloc_free_page(curr->next_fd);
-  pd = curr->pml4;
+//   palloc_free_page(curr->next_fd);
+
   process_cleanup();
 }
 
@@ -556,17 +544,19 @@ void argument_stack(char **parse, int count, void **esp) {
   }
 
   *esp -= 8;
-  **(char **)esp = 0;
+  memset(*esp, 0, sizeof(char *));
+//   **(char **)esp = 0;
 
   // * argv[i] 주소
 	for (int i = count - 1; -1 < i; i--) {
 		*esp = *esp - 8;
-		memcpy(*esp, &argv_address[i], strlen(&argv_address[i]));
+		memcpy(*esp, &argv_address[i], sizeof(char *));
+		// memcpy(*esp, &argv_address[i], strlen(&argv_address[i]));
 	}
 
 	// * return address(fake)
-	*esp = *esp - 8;
-	**(char **)esp = 0;
+	*esp -= 8;
+  	memset(*esp, 0, sizeof(char *));
 
 }
 
@@ -725,18 +715,19 @@ install_page (void *upage, void *kpage, bool writable) {
  * upper block. */
 
 static bool
-lazy_load_segment (struct page *page, void *aux) {
+lazy_load_segment (struct page *page, struct aux_struct *aux) {
 	/* TODO: Load the segment from the file */
 	/* TODO: This called when the first page fault occurs on address VA. */
 	/* TODO: VA is available when calling this function. */
 
 	/* pintos project3 */
-	if (!vm_claim_page(page->va)){
+	if (file_read_at(aux->vmfile, page->frame->kva, aux->read_bytes, aux->ofs) != (int) aux->read_bytes) {
+	    palloc_free_page (page->frame->kva);
+		free(aux);
 		return false;
 	}
-	off_t read_buf = file_read_at(page->vmfile, page->frame->kva, page->read_bytes, page->offset);
-	off_t remain_buf = (page->read_bytes + page->zero_bytes - read_buf);
-	memset((uint8_t *)page->frame->kva + read_buf, 0, remain_buf);
+	memset (page->frame->kva + aux->read_bytes, 0, aux->zero_bytes);
+	free(aux);
 
 	return true;
 }
@@ -770,13 +761,14 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		size_t page_zero_bytes = PGSIZE - page_read_bytes;
 
 		/* pintos project3 */
-		struct aux_struct *temp_aux = malloc(sizeof(struct aux_struct));
+		struct aux_struct *temp_aux = (struct aux_struct*)malloc(sizeof(struct aux_struct));
 
 		temp_aux->vmfile = file;
 		temp_aux->ofs = ofs;
-		temp_aux->read_bytes = read_bytes;
-		temp_aux->zero_bytes = zero_bytes;
-		temp_aux->is_loaded = false;
+		temp_aux->read_bytes = page_read_bytes;
+		temp_aux->zero_bytes = page_zero_bytes;
+		temp_aux->writable = writable;
+		temp_aux->upage = upage;
 
 		/* TODO: Set up aux to pass information to the lazy_load_segment. */
 		void *aux = temp_aux;
@@ -788,6 +780,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		read_bytes -= page_read_bytes;
 		zero_bytes -= page_zero_bytes;
 		upage += PGSIZE;
+		ofs += page_read_bytes;
 	}
 	return true;
 }
@@ -796,6 +789,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
    USER_STACK에서 스택의 PAGE를 만듭니다. 성공하면 true를 반환합니다.*/
 static bool
 setup_stack (struct intr_frame *if_) {
+	bool success = false;
 	void *stack_bottom = (void *) (((uint8_t *) USER_STACK) - PGSIZE);
 
 	/* TODO: Map the stack on stack_bottom and claim the page immediately.
@@ -808,32 +802,10 @@ setup_stack (struct intr_frame *if_) {
 
 	/* pintos project3 */
 
-	struct frame *frame = NULL;
-
-	frame = malloc(sizeof(struct frame));
-	frame->kva = palloc_get_page(PAL_USER);
-
-	if (!frame->kva){
-		free(frame);
-		PANIC("todo");
+	if (vm_alloc_page_with_initializer (VM_ANON||VM_MARKER_0, stack_bottom, true, NULL, NULL)){
+		success = vm_claim_page(stack_bottom);
+		if_->rsp = USER_STACK;
 	}
-
-	struct page *setup_page = malloc(sizeof(struct page));
-
-	setup_page->type = VM_MARKER_0;
-	setup_page->va = stack_bottom;
-	// setup_page->type = VM_ANON;
-	setup_page->is_loaded = true;
-	frame->page = setup_page;
-	setup_page->frame = frame;
-
-	pml4_set_page(thread_current()->pml4, setup_page->va, frame->kva, setup_page->writable);
-
-	if (spt_insert_page(&thread_current()->spt, setup_page)){
-		return false;
-	}
-	if_->rsp = USER_STACK;
-
-	return anon_initializer(setup_page, VM_ANON, stack_bottom);
+	return success;
 }
 #endif /* VM */

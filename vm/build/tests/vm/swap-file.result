@@ -1,0 +1,15 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (swap-file) begin
+  (swap-file) open "large.txt"
+  (swap-file) mmap "large.txt"
+  (swap-file) end
+Differences in `diff -u' format:
+  (swap-file) begin
+  (swap-file) open "large.txt"
+  (swap-file) mmap "large.txt"
+- (swap-file) end
+
+(Process exit codes are excluded for matching purposes.)

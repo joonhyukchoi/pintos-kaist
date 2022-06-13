@@ -1,0 +1,27 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (cow-simple) begin
+  (cow-simple) check data consistency
+  (cow-simple) check data consistency
+  (cow-simple) two phys addrs should be the same.
+  (cow-simple) check data change
+  (cow-simple) two phys addrs should not be the same.
+  (cow-simple) end
+  (cow-simple) two phys addrs should be the same.
+  (cow-simple) check data consistency
+  (cow-simple) end
+Differences in `diff -u' format:
+  (cow-simple) begin
+  (cow-simple) check data consistency
+- (cow-simple) check data consistency
+- (cow-simple) two phys addrs should be the same.
+- (cow-simple) check data change
+- (cow-simple) two phys addrs should not be the same.
+- (cow-simple) end
+  (cow-simple) two phys addrs should be the same.
+  (cow-simple) check data consistency
+  (cow-simple) end
+
+(Process exit codes are excluded for matching purposes.)

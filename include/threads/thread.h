@@ -104,8 +104,6 @@ struct thread {
 	/* Shared between thread.c and synch.c. */
 	struct list_elem elem;              /* List element. */
 
-	struct hash vm; /* pintos project3 - 스레드가 가진 가상 주소 공간을 관리하는 해시테이블 */
-
   // * USERPROG 추가 
   int exit_status; /* 프로세스의 종료 상태를 확인하는 필드 추가 */
   struct semaphore load_sema; /* 자식 프로세스의 생성 대기를 위한 세마포어 */
