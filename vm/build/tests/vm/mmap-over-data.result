@@ -1,0 +1,15 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (mmap-over-data) begin
+  (mmap-over-data) open "sample.txt"
+  (mmap-over-data) try to mmap over data segment
+  (mmap-over-data) end
+Differences in `diff -u' format:
+  (mmap-over-data) begin
+  (mmap-over-data) open "sample.txt"
+  (mmap-over-data) try to mmap over data segment
+- (mmap-over-data) end
+
+(Process exit codes are excluded for matching purposes.)

@@ -213,7 +213,7 @@ process_exec (void *f_name) {
 	if (!success) {
 		return -1; 
   }
-
+	printf("befdoiret check\n");
 	/* Start switched process. */
 	do_iret (&_if);
 	NOT_REACHED ();
@@ -382,6 +382,7 @@ static bool load_segment (struct file *file, off_t ofs, uint8_t *upage,
  * Returns true if successful, false otherwise. */
 static bool
 load (const char *file_name, struct intr_frame *if_) {
+	printf("load 실행\n");
 	struct thread *t = thread_current ();
 	struct ELF ehdr;
 	struct file *file = NULL;
@@ -714,17 +715,20 @@ lazy_load_segment (struct page *page, struct aux_struct *aux) {
 	// if (!vm_claim_page(page->va)){
 	// 	return false;
 	// }
-	// off_t read_buf = file_read_at(page->vmfile, page->frame->kva, page->read_bytes, page->offset);
-	// off_t remain_buf = (page->read_bytes + page->zero_bytes - read_buf);
-	// memset((uint8_t *)page->frame->kva + page->read_bytes, 0, page->zero_bytes);
 
-	if (file_read_at(aux->vmfile, page->frame->kva, aux->read_bytes, aux->ofs) != (int) aux->read_bytes) {
-    palloc_free_page (page->frame->kva);
-    free(aux);
+	printf("<1. page info> vmfile: %d read_bytes: %d offset: %d\n", page->vmfile,page->read_bytes,page->offset);
+	printf("<2. aux  info> vmfile: %d read_bytes: %d offset: %d\n", aux->vmfile,aux->read_bytes,aux->ofs);
+	printf(" page kva = %016llx page va = %016llx\n", page->frame->kva, page->va);
+	off_t read_buf = file_read_at(aux->vmfile, page->frame->kva, aux->read_bytes, aux->ofs);
+	off_t remain_buf = (page->read_bytes + page->zero_bytes - read_buf);
+	
+	if (read_buf != (int)aux->read_bytes) {
+		palloc_free_page (page->frame->kva);
+		free(aux);
 		return false;
 	}
-	memset (page->frame->kva + aux->read_bytes, 0, aux->zero_bytes);
-  	free(aux);
+	memset((uint8_t *)page->frame->kva + aux->read_bytes, 0, aux->zero_bytes);
+	free(aux);
 
 	return true;
 }
@@ -764,7 +768,7 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		temp_aux->ofs = ofs;
 		temp_aux->read_bytes = page_read_bytes;
 		temp_aux->zero_bytes = page_zero_bytes;
-		// temp_aux->is_loaded = false;
+		temp_aux->is_loaded = false;
 		temp_aux->writable = writable;
 		temp_aux->upage = upage;
 		// printf("check!");
@@ -814,8 +818,9 @@ setup_stack (struct intr_frame *if_) {
 	// } else {
 	// 	return false;
 	// }
-	if (vm_alloc_page_with_initializer (VM_ANON||VM_MARKER_0, stack_bottom, true, NULL, NULL)) {
+	if (vm_alloc_page_with_initializer (VM_ANON, stack_bottom, true, NULL, NULL)) {
     success = vm_claim_page(stack_bottom);
+	printf("stack botom: %016llx \n", stack_bottom);
     if_->rsp = USER_STACK;
   }
 	return success;

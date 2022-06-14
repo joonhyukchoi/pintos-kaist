@@ -1,0 +1,33 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (pt-grow-stk-sc) begin
+  (pt-grow-stk-sc) create "sample.txt"
+  (pt-grow-stk-sc) open "sample.txt"
+  (pt-grow-stk-sc) write "sample.txt"
+  (pt-grow-stk-sc) 2nd open "sample.txt"
+  (pt-grow-stk-sc) read "sample.txt"
+  (pt-grow-stk-sc) compare written data against read data
+  (pt-grow-stk-sc) end
+Differences in `diff -u' format:
+  (pt-grow-stk-sc) begin
+- (pt-grow-stk-sc) create "sample.txt"
+- (pt-grow-stk-sc) open "sample.txt"
+- (pt-grow-stk-sc) write "sample.txt"
+- (pt-grow-stk-sc) 2nd open "sample.txt"
+- (pt-grow-stk-sc) read "sample.txt"
+- (pt-grow-stk-sc) compare written data against read data
+- (pt-grow-stk-sc) end
++ Page fault at 0x4746ff78: not present error writing page in user context.
++ pt-grow-stk-sc: dying due to interrupt 0x0e (#PF Page-Fault Exception).
++ Interrupt 0x0e (#PF Page-Fault Exception) at rip=400107
++  cr2=000000004746ff78 error=               6
++ rax 0000000000402f99 rbx 0000800424307800 rcx 00000000000000ff rdx 0000000000000000
++ rsp 000000004746ff80 rbp 000000004747ff90 rsi 000000000060564e rdi 0000000000604f00
++ rip 0000000000400107 r8 0000000000000000  r9 0000000000000000 r10 0000000000000000
++ r11 0000000000000206 r12 00008004243f1800 r13 0000800420a7c000 r14 00008004241f1000
++ r15 0000010000000000 rflags 00000202
++ es: 001b ds: 001b cs: 0023 ss: 001b
+
+(Process exit codes are excluded for matching purposes.)

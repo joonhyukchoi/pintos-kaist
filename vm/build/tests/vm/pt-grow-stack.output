@@ -1,0 +1,37 @@
+Kernel command line: -q -f put pt-grow-stack run pt-grow-stack
+0 ~ 9fc00 1
+100000 ~ 13e0000 1
+Pintos booting with: 
+	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
+	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
+Calibrating timer...  157,081,600 loops/s.
+hd0:0: detected 321 sector (160 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 113 sector (56 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+hd1:1: detected 8,064 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00004"
+Formatting file system...done.
+Boot complete.
+Putting 'pt-grow-stack' into the file system...
+Executing 'pt-grow-stack':
+(pt-grow-stack) begin
+Page fault at 0x4747ee78: not present error writing page in user context.
+pt-grow-stack: dying due to interrupt 0x0e (#PF Page-Fault Exception).
+Interrupt 0x0e (#PF Page-Fault Exception) at rip=400116
+ cr2=000000004747ee78 error=               6
+rax 00000000004001cd rbx 0000800424307800 rcx 00000000000000ff rdx 0000000000000006
+rsp 000000004747ee80 rbp 000000004747ff90 rsi 0000000000404690 rdi 000000004747ee8e
+rip 0000000000400116 r8 0000000000000000  r9 0000000000000000 r10 0000000000000000
+r11 0000000000000206 r12 00008004243f1800 r13 0000800420a7c000 r14 00008004241f1000
+r15 0000010000000000 rflags 00000202
+es: 001b ds: 001b cs: 0023 ss: 001b
+Execution of 'pt-grow-stack' complete.
+Timer: 64 ticks
+Thread: 30 idle ticks, 29 kernel ticks, 5 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 85 reads, 254 writes
+hd1:0: 113 reads, 0 writes
+hd1:1: 0 reads, 0 writes
+Console: 1590 characters output
+Keyboard: 0 keys pressed
+Exception: 1 page faults
+Powering off...

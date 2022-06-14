@@ -1,0 +1,26 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (mmap-inherit) begin
+  (mmap-inherit) open "sample.txt"
+  (mmap-inherit) mmap "sample.txt"
+  (mmap-inherit) exec "child-inherit"
+  (child-inherit) begin
+  child-inherit: exit(-1)
+  (mmap-inherit) checking that mmap'd file still has same data
+  (mmap-inherit) end
+  mmap-inherit: exit(0)
+Differences in `diff -u' format:
+  (mmap-inherit) begin
+  (mmap-inherit) open "sample.txt"
+  (mmap-inherit) mmap "sample.txt"
+- (mmap-inherit) exec "child-inherit"
+- (child-inherit) begin
+- child-inherit: exit(-1)
+- (mmap-inherit) checking that mmap'd file still has same data
+- (mmap-inherit) end
+- mmap-inherit: exit(0)
++ mmap-inherit: exit(-1)
+
+(User fault messages are excluded for matching purposes.)

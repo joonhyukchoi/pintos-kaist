@@ -1,0 +1,37 @@
+Kernel command line: -q -f put pt-grow-bad run pt-grow-bad
+0 ~ 9fc00 1
+100000 ~ 13e0000 1
+Pintos booting with: 
+	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
+	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
+Calibrating timer...  157,081,600 loops/s.
+hd0:0: detected 321 sector (160 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 102 sector (51 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+hd1:1: detected 8,064 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00004"
+Formatting file system...done.
+Boot complete.
+Putting 'pt-grow-bad' into the file system...
+Executing 'pt-grow-bad':
+(pt-grow-bad) begin
+Page fault at 0x4747ef90: not present error reading page in user context.
+pt-grow-bad: dying due to interrupt 0x0e (#PF Page-Fault Exception).
+Interrupt 0x0e (#PF Page-Fault Exception) at rip=4000ec
+ cr2=000000004747ef90 error=               4
+rax 00000000004000e8 rbx 0000800424307800 rcx 00000000000000ff rdx 0000000000000000
+rsp 000000004747ff90 rbp 000000004747ff90 rsi 000000000060504e rdi 000000000060513f
+rip 00000000004000ec r8 0000000000000000  r9 0000000000000000 r10 0000000000000000
+r11 0000000000000206 r12 00008004243f1800 r13 0000800420a7c000 r14 00008004241f1000
+r15 0000010000000000 rflags 00000212
+es: 001b ds: 001b cs: 0023 ss: 001b
+Execution of 'pt-grow-bad' complete.
+Timer: 64 ticks
+Thread: 30 idle ticks, 28 kernel ticks, 6 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 80 reads, 232 writes
+hd1:0: 102 reads, 0 writes
+hd1:1: 0 reads, 0 writes
+Console: 1576 characters output
+Keyboard: 0 keys pressed
+Exception: 1 page faults
+Powering off...

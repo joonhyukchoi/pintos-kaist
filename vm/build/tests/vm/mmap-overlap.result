@@ -1,0 +1,19 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (mmap-overlap) begin
+  (mmap-overlap) open "zeros" once
+  (mmap-overlap) mmap "zeros"
+  (mmap-overlap) open "zeros" again
+  (mmap-overlap) try to mmap "zeros" again
+  (mmap-overlap) end
+Differences in `diff -u' format:
+  (mmap-overlap) begin
+  (mmap-overlap) open "zeros" once
+  (mmap-overlap) mmap "zeros"
+- (mmap-overlap) open "zeros" again
+- (mmap-overlap) try to mmap "zeros" again
+- (mmap-overlap) end
+
+(Process exit codes are excluded for matching purposes.)

@@ -1,0 +1,49 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (mmap-off) begin
+  (mmap-off) open "large.txt"
+  (mmap-off) try to mmap with offset 0x1000
+  (mmap-off) validate mmap.
+  (mmap-off) validated.
+  (mmap-off) write to mmap
+  (mmap-off) validate contents.
+  (mmap-off) open "large.txt"
+  (mmap-off) read "large.txt" Page 0
+  (mmap-off) validate page 0.
+  (mmap-off) validated.
+  (mmap-off) read "large.txt" Page 1
+  (mmap-off) validate page 1.
+  (mmap-off) validated.
+  (mmap-off) success
+  (mmap-off) end
+  mmap-off: exit(0)
+Differences in `diff -u' format:
+  (mmap-off) begin
+- (mmap-off) open "large.txt"
+- (mmap-off) try to mmap with offset 0x1000
+- (mmap-off) validate mmap.
+- (mmap-off) validated.
+- (mmap-off) write to mmap
+- (mmap-off) validate contents.
+- (mmap-off) open "large.txt"
+- (mmap-off) read "large.txt" Page 0
+- (mmap-off) validate page 0.
+- (mmap-off) validated.
+- (mmap-off) read "large.txt" Page 1
+- (mmap-off) validate page 1.
+- (mmap-off) validated.
+- (mmap-off) success
+- (mmap-off) end
+- mmap-off: exit(0)
++ Page fault at 0x4747ef78: not present error writing page in user context.
++ mmap-off: dying due to interrupt 0x0e (#PF Page-Fault Exception).
++ Interrupt 0x0e (#PF Page-Fault Exception) at rip=40010c
++  cr2=000000004747ef78 error=               6
++ rax 0000000000000000 rbx 0000800424307800 rcx 00000000000000ff rdx 0000000000400646
++ rsp 000000004747ef80 rbp 000000004747ff90 rsi 00000000007ef56e rdi 00000000004046f0
++ rip 000000000040010c r8 0000000000000000  r9 0000000000000000 r10 0000000000000000
++ r11 0000000000000206 r12 00008004243f1800 r13 0000800420a7c000 r14 00008004241f1000
++ r15 0000010000000000 rflags 00000202
++ es: 001b ds: 001b cs: 0023 ss: 001b

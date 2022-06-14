@@ -1,0 +1,23 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (pt-grow-stack) begin
+  (pt-grow-stack) cksum: 3424492700
+  (pt-grow-stack) end
+Differences in `diff -u' format:
+  (pt-grow-stack) begin
+- (pt-grow-stack) cksum: 3424492700
+- (pt-grow-stack) end
++ Page fault at 0x4747ee78: not present error writing page in user context.
++ pt-grow-stack: dying due to interrupt 0x0e (#PF Page-Fault Exception).
++ Interrupt 0x0e (#PF Page-Fault Exception) at rip=400116
++  cr2=000000004747ee78 error=               6
++ rax 00000000004001cd rbx 0000800424307800 rcx 00000000000000ff rdx 0000000000000006
++ rsp 000000004747ee80 rbp 000000004747ff90 rsi 0000000000404690 rdi 000000004747ee8e
++ rip 0000000000400116 r8 0000000000000000  r9 0000000000000000 r10 0000000000000000
++ r11 0000000000000206 r12 00008004243f1800 r13 0000800420a7c000 r14 00008004241f1000
++ r15 0000010000000000 rflags 00000202
++ es: 001b ds: 001b cs: 0023 ss: 001b
+
+(Process exit codes are excluded for matching purposes.)

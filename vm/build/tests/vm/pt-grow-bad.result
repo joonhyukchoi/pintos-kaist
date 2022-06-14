@@ -1,0 +1,18 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (pt-grow-bad) begin
+  pt-grow-bad: exit(-1)
+Differences in `diff -u' format:
+  (pt-grow-bad) begin
+- pt-grow-bad: exit(-1)
++ Interrupt 0x0e (#PF Page-Fault Exception) at rip=4000ec
++ rax 00000000004000e8 rbx 0000800424307800 rcx 00000000000000ff rdx 0000000000000000
++ rsp 000000004747ff90 rbp 000000004747ff90 rsi 000000000060504e rdi 000000000060513f
++ rip 00000000004000ec r8 0000000000000000  r9 0000000000000000 r10 0000000000000000
++ r11 0000000000000206 r12 00008004243f1800 r13 0000800420a7c000 r14 00008004241f1000
++ r15 0000010000000000 rflags 00000212
++ es: 001b ds: 001b cs: 0023 ss: 001b
+
+(User fault messages are excluded for matching purposes.)
