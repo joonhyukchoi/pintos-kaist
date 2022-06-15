@@ -18,7 +18,7 @@ Executing 'fork-read':
 (fork-read) open "sample.txt"
 fork-read: exit(-1)
 Execution of 'fork-read' complete.
-Timer: 62 ticks
+Timer: 63 ticks
 Thread: 30 idle ticks, 31 kernel ticks, 2 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 112 reads, 260 writes

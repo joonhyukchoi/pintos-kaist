@@ -12,6 +12,7 @@
 #include "threads/palloc.h"
 #include "filesys/filesys.h"
 #include "filesys/file.h"
+#include "include/vm/vm.h"
 
 void syscall_entry (void);
 void syscall_handler (struct intr_frame *);
@@ -76,10 +77,10 @@ syscall_handler (struct intr_frame *f UNUSED) {
       f->R.rax = (uint64_t)filesize(f->R.rdi);
       break;
     case SYS_READ:
-      f->R.rax = (uint64_t)read(f->R.rdi, f->R.rsi, f->R.rdx);
+      f->R.rax = (uint64_t)read(f->R.rdi, f->R.rsi, f->R.rdx, f->rsp);
       break;  
     case SYS_WRITE:      
-      f->R.rax = (uint64_t)write(f->R.rdi, f->R.rsi, f->R.rdx);
+      f->R.rax = (uint64_t)write(f->R.rdi, f->R.rsi, f->R.rdx, f->rsp);
       break;
     case SYS_EXEC:
       exec(f->R.rdi);
@@ -187,8 +188,10 @@ int filesize (int fd) {
   return -1;
 }
 
-int read (int fd, void *buffer, unsigned size) {
-  check_address(buffer);
+int read (int fd, void *buffer, unsigned size, void* rsp) {
+  // check_address(buffer);
+  
+  check_valid_buffer (buffer, size, rsp, true);
   if (fd == 1) {
     return -1;
   }
@@ -209,8 +212,9 @@ int read (int fd, void *buffer, unsigned size) {
   return -1;
 }
 
-int write (int fd UNUSED, const void *buffer, unsigned size) {
-  check_address(buffer);
+int write (int fd UNUSED, const void *buffer, unsigned size, void* rsp) {
+  // check_address(buffer);
+  check_valid_string(buffer, size, rsp);
 
   if (fd == 0) // STDIN일 때 -1
     return -1;
@@ -253,8 +257,43 @@ void close (int fd) {
   }
 }
 
-void check_address(void *addr) {
+struct page *check_address(void *addr) {
   struct thread *cur = thread_current();
+
+#ifdef VM
+  if (addr == NULL || is_kernel_vaddr(addr) || spt_find_page(&cur->spt, addr))
+    exit(-1);
+
+  return spt_find_page(&cur->spt, addr);
+#else
   if (addr == NULL || is_kernel_vaddr(addr) || pml4_get_page(cur->pml4, addr) == NULL)
     exit(-1);
+
+#endif
 }
+
+void check_valid_string (const void *str, unsigned size, void *rsp) {
+  check_address(str);
+  int init = 0;
+  while (init < size){
+    struct page *page = spt_find_page(&thread_current()->spt, str + init);
+    init += PGSIZE;
+    if (page == NULL) {
+      exit(-1);
+    }
+  }
+}
+
+void check_valid_buffer (void *buffer, unsigned size, void *rsp, bool to_write) {
+  // size PGSIZE
+  check_address(buffer);
+  int init = 0;
+  while (init < size){
+    struct page *page = spt_find_page(&thread_current()->spt, buffer + init);
+    init += PGSIZE;
+    if (page->writable == false) {
+      exit(-1);
+    }
+  }
+}
+

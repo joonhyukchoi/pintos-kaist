@@ -10,7 +10,6 @@ test_main (void)
   int pid;
 
   if ((pid = fork("child"))){
-    // printf("@@@ %d \n",pid);
     int status = wait (pid);
     msg ("Parent: child exit status is %d", status);
   } else {

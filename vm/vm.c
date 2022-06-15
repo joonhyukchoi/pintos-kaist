@@ -271,6 +271,15 @@ supplemental_page_table_init (struct supplemental_page_table *spt UNUSED) {
 void copy_page (struct hash_elem *e, void *aux)
 {
 	struct page* page = hash_entry(e, struct page , elem);
+
+	vm_alloc_page(page->uninit.type , page->va , page->writable);
+	if(page->frame){
+		struct page *child = spt_find_page(&thread_current()->spt ,page->va);
+		child->frame = vm_get_frame();
+		memcpy(child->frame->kva, page->frame->kva, PGSIZE);
+		child->frame->page = child;
+		pml4_set_page(thread_current()->pml4, child->va, child->frame->kva, child->writable);
+	}
 	
 	// vm_alloc_page_with_initializer(page_get_type(page) | VM_MARKER_1, page->va , page->writable,NULL,page);
 
@@ -297,13 +306,6 @@ void copy_page (struct hash_elem *e, void *aux)
 	// 	printf("wgrgergegre -2 \n");
 	// }
 	// vm_alloc_page_with_initializer(page->type , page->va , page->writable, NULL , NULL);
-	
-	vm_alloc_page(page->operations->type , page->va , page->writable);
-	struct page *child = spt_find_page(&thread_current()->spt ,page->va);
-	child->frame = vm_get_frame();
-	memcpy(child->frame->kva, page->frame->kva, PGSIZE);
-	child->frame->page = child;
-	pml4_set_page(thread_current()->pml4, child->va, child->frame->kva, child->writable);
 }
 
 /* Copy supplemental page table from src to dst.
@@ -314,6 +316,8 @@ void copy_page (struct hash_elem *e, void *aux)
 bool
 supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED,
 		struct supplemental_page_table *src UNUSED) {
+
+			printf("퇴 근 시 켜 줘\n");
 
 	// hash_first(&init, src->hash);
 	/* src  테이블에서 모든 page 구조체를  dst 테이블로 복사*/

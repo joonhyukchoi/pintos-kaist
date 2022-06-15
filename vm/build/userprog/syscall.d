@@ -14,4 +14,5 @@ userprog/syscall.o: ../../userprog/syscall.c \
  ../../include/lib/stdarg.h ../../include/lib/kernel/stdio.h \
  ../../include/lib/syscall-nr.h ../../include/userprog/gdt.h \
  ../../include/threads/flags.h ../../include/intrinsic.h \
- ../../include/threads/mmu.h ../../include/filesys/filesys.h
+ ../../include/threads/mmu.h ../../include/filesys/filesys.h \
+ ../../include/vm/vm.h
