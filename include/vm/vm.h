@@ -121,7 +121,7 @@ struct page_operations {
  * All designs up to you for this. */
 struct supplemental_page_table {
 	/* pintos project3 */
-	struct hash *hash;
+	struct hash hash;
 };
 
 #include "threads/thread.h"

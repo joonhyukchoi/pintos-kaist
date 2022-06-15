@@ -4,7 +4,7 @@ Kernel command line: -q -f put swap-anon run swap-anon
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x9e0000 (Usable: 9,088 kB)
-Calibrating timer...  91,648,000 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 321 sector (160 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 104 sector (52 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -27,11 +27,11 @@ r11 0000000000000202 r12 0000800423ef1800 r13 0000800420a7c000 r14 0000800423cf1
 r15 0000010000000000 rflags 00000006
 es: 0010 ds: 0010 cs: 0008 ss: 0010
 Kernel PANIC recursion at ../../userprog/exception.c:97 in kill().
-Timer: 91 ticks
-Thread: 30 idle ticks, 26 kernel ticks, 35 user ticks
+Timer: 95 ticks
+Thread: 30 idle ticks, 29 kernel ticks, 36 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 80 reads, 236 writes
 hd1:0: 104 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1766 characters output
+Console: 1767 characters output
 Key

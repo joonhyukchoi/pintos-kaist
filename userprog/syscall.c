@@ -58,6 +58,7 @@ syscall_handler (struct intr_frame *f UNUSED) {
       exit(f->R.rdi);
       break;
     case SYS_FORK:
+      printf("folk check\n");
       memcpy(&thread_current()->ptf, f, sizeof(struct intr_frame));
       f->R.rax = (uint64_t)fork(f->R.rdi);
       break;

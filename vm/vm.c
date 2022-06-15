@@ -264,10 +264,70 @@ supplemental_page_table_init (struct supplemental_page_table *spt UNUSED) {
 	hash_init(&spt->hash, vm_hash_func, vm_less_func, NULL);
 }
 
-/* Copy supplemental page table from src to dst */
+void copy_page (struct hash_elem *e, void *aux)
+{
+	struct page* page = hash_entry(e,struct page , elem);
+	// struct page *child = (struct page*) malloc(sizeof page);
+	// memcpy(child , page, sizeof page);
+	// spt_insert_page(thread_current()->spt, child);
+	// struct aux_struct *temp_aux = (struct aux_struct*)malloc(sizeof(struct aux_struct));
+
+	// 	temp_aux->vmfile = page->vmfile;
+	// 	temp_aux->ofs = page->offset;
+	// 	temp_aux->read_bytes = page->read_bytes;
+	// 	temp_aux->zero_bytes = page->zero_bytes;
+	// 	temp_aux->writable = page->writable;
+	// 	temp_aux->upage = page->va;
+	if (page->type == VM_UNINIT) {
+		printf("un\n");
+		struct page *p = (struct page *)malloc(sizeof(struct page));
+		memcpy(p, page, sizeof page);
+		// uninit_new();
+		spt_insert_page(&thread_current()->spt, p);
+	} else {
+		printf("non un\n");
+		vm_alloc_page(page->type , page->va , page->writable);
+	}
+	// vm_alloc_page_with_initializer(page->type , page->va , page->writable, NULL , NULL);
+	struct page *child = spt_find_page(&thread_current()->spt ,page->va);
+	vm_do_claim_page(child);
+
+}
+
+/* Copy supplemental page table from src to dst.
+ * src에서 dst로 보조 페이지 테이블을 복사합니다.
+ * 이것은 자식이 부모의 실행 context를 상속해야 할 때 사용됩니다(예: fork()).
+ * src의 추가 페이지 테이블에 있는 각 페이지를 반복하고 dst의 추가 페이지 테이블에 있는
+ * 항목의 정확한 복사본을 만듭니다. unitit page를 할당하고 즉시 claim 해야 합니다. */
 bool
 supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED,
 		struct supplemental_page_table *src UNUSED) {
+
+			printf("supplimental page table copy fcall\n");
+	// hash_first(&init, src->hash);
+	/* src  테이블에서 모든 page 구조체를  dst 테이블로 복사*/
+	/* 타입이 uninit, anon, file 얘네를 다 uninit으로 할당 */
+	hash_apply(&src->hash, copy_page);
+	return true;
+
+	// while (hash_next(&init)){
+	// 	struct page *find_page = hash_entry(hash_cur(&init), struct page, elem);
+	// 	struct page *p = (struct page *)malloc(sizeof(struct page));
+	// 	memcpy(p, find_page, sizeof(struct page));
+
+	// 	if (find_page->type == VM_ANON)
+    //         uninit_new(p, find_page->va, lazy_load_segment, find_page->type, aux, anon_initializer);
+    //     else if (find_page->type == VM_FILE)
+    //         uninit_new(p, find_page->va, lazy_load_segment, find_page->type, aux, file_backed_initializer);
+
+	// 	spt_insert_page(dst, p);
+	// 	struct frame *frame = vm_get_frame ();
+
+	// 	/* Set links */
+	// 	frame->page = find_page;
+	// 	find_page->frame = frame;
+	// }
+
 }
 
 /* Free the resource hold by the supplemental page table */
@@ -275,4 +335,12 @@ void
 supplemental_page_table_kill (struct supplemental_page_table *spt UNUSED) {
 	/* TODO: Destroy all the supplemental_page_table hold by thread and
 	 * TODO: writeback all the modified contents to the storage. */
+	
+	struct hash_iterator init;
+	hash_first(&init, &spt->hash);
+	while(hash_next(&init)) {
+		struct page *page = hash_entry(hash_cur(&init), struct page , elem);
+		destroy(page);
+		
+	}
 }
