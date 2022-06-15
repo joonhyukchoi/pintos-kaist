@@ -264,6 +264,7 @@ process_exit (void) {
   if (curr->run_file)
     file_close(curr->run_file);
 
+  printf("process exit>222222?\n");
   int cnt = 2;
   while (cnt < 128) {
     if (table[cnt]) { // != 0 && table[cnt] != NULL
@@ -278,10 +279,11 @@ process_exit (void) {
   sema_up(&curr->load_sema);
   sema_down(&curr->exit_sema);
 
+  printf("process exit>55555?\n");
   palloc_free_page(table);
-//   palloc_free_page(curr->next_fd);
-
+  printf("process exit>6666?\n");
   process_cleanup();
+  printf("process exit>7777?\n");
 }
 
 /* Free the current process's resources. */

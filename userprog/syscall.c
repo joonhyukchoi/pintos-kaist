@@ -192,7 +192,7 @@ int filesize (int fd) {
 
 int read (int fd, void *buffer, unsigned size) {
   // check_address(buffer);
-  
+
   check_valid_buffer (buffer, size, true);
   if (fd == 1) {
     return -1;
