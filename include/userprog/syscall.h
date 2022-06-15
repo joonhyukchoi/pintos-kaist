@@ -10,7 +10,7 @@ struct lock filesys_lock;
 void syscall_init (void);
 
 // * 추가
-struct page* check_address(void *addr);
+void check_address(void *addr);
 
 // * syscall 추가
 void halt(void);
@@ -22,13 +22,13 @@ bool create(const char *file, unsigned initial_size);
 bool remove(const char *file);
 int open (const char *file);
 int filesize (int fd);
-int read (int fd, void *buffer, unsigned size, void* rsp);
-int write(int fd, const void *buffer, unsigned size, void* rsp);
+int read (int fd, void *buffer, unsigned size);
+int write(int fd, const void *buffer, unsigned size);
 void seek (int fd, unsigned position);
 unsigned tell (int fd);
 void close (int fd);
-void check_valid_string (const void *str, unsigned size, void *rsp);
-void check_valid_buffer (void *buffer, unsigned size, void *rsp, bool to_write);
+void check_valid_string (const void *str, unsigned size);
+void check_valid_buffer (void *buffer, unsigned size, bool to_write);
 
 
 
