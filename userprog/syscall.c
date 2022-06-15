@@ -49,7 +49,6 @@ syscall_init (void) {
 void
 syscall_handler (struct intr_frame *f UNUSED) {
 	// TODO: Your implementation goes here.
-  
   switch (f->R.rax) {
     case SYS_HALT:
       halt();
@@ -58,9 +57,9 @@ syscall_handler (struct intr_frame *f UNUSED) {
       exit(f->R.rdi);
       break;
     case SYS_FORK:
-      printf("folk check\n");
       memcpy(&thread_current()->ptf, f, sizeof(struct intr_frame));
       f->R.rax = (uint64_t)fork(f->R.rdi);
+      printf("call fork !!!!! \n");
       break;
     case SYS_CREATE:
       f->R.rax = (uint64_t)create(f->R.rdi, f->R.rsi);

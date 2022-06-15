@@ -231,10 +231,8 @@ thread_create (const char *name, int priority,
 
 	/* Add to run queue. */
 	thread_unblock (t);
-	printf("fuck\n");
   // * 추가 코드
   test_max_priority();
-	printf("thread create check, %d\n", thread_current()->tid);
 	return tid;
 }
 

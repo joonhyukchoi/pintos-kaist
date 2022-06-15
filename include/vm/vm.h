@@ -53,7 +53,6 @@ struct page {
 
 	/* Your implementation */
 	/* pintos project3 */
-    uint8_t type;      /* VM_BIN, VM_FILE, VM_ANON의 타입 */
 	bool writable;     /* True일 경우 해당 주소에 write 가능
                           False일 경우 해당 주소에 write 불가능 */
     bool is_loaded;    /* 물리메모리의 탑재 여부를 알려주는 플래그 */

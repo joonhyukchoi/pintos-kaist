@@ -253,6 +253,10 @@ vm_do_claim_page (struct page *page) {
 	/* TODO: Insert page table entry to map page's VA to frame's PA. */
 	/* pintos project3 */
 	pml4_set_page(thread_current()->pml4, page->va, frame->kva, page->writable);
+	// if(page_get_type(page) && VM_MARKER_0)
+	// {
+	// 	return true;
+	// }
 
     return swap_in(page, frame->kva);
 }
@@ -266,7 +270,10 @@ supplemental_page_table_init (struct supplemental_page_table *spt UNUSED) {
 
 void copy_page (struct hash_elem *e, void *aux)
 {
-	struct page* page = hash_entry(e,struct page , elem);
+	struct page* page = hash_entry(e, struct page , elem);
+	
+	// vm_alloc_page_with_initializer(page_get_type(page) | VM_MARKER_1, page->va , page->writable,NULL,page);
+
 	// struct page *child = (struct page*) malloc(sizeof page);
 	// memcpy(child , page, sizeof page);
 	// spt_insert_page(thread_current()->spt, child);
@@ -278,20 +285,25 @@ void copy_page (struct hash_elem *e, void *aux)
 	// 	temp_aux->zero_bytes = page->zero_bytes;
 	// 	temp_aux->writable = page->writable;
 	// 	temp_aux->upage = page->va;
-	if (page->type == VM_UNINIT) {
-		printf("un\n");
-		struct page *p = (struct page *)malloc(sizeof(struct page));
-		memcpy(p, page, sizeof page);
-		// uninit_new();
-		spt_insert_page(&thread_current()->spt, p);
-	} else {
-		printf("non un\n");
-		vm_alloc_page(page->type , page->va , page->writable);
-	}
-	// vm_alloc_page_with_initializer(page->type , page->va , page->writable, NULL , NULL);
-	struct page *child = spt_find_page(&thread_current()->spt ,page->va);
-	vm_do_claim_page(child);
 
+	// if (page->operations->type == VM_UNINIT) {
+	// 	struct page *p = (struct page *)malloc(sizeof(struct page));
+	// 	memcpy(p, page, sizeof page);
+	// 	// uninit_new();
+	// 	spt_insert_page(&thread_current()->spt, p);
+	// 	printf("dwdwd\n");
+	// } else {
+	// 	vm_alloc_page(page->operations->type , page->va , page->writable);
+	// 	printf("wgrgergegre -2 \n");
+	// }
+	// vm_alloc_page_with_initializer(page->type , page->va , page->writable, NULL , NULL);
+	
+	vm_alloc_page(page->operations->type , page->va , page->writable);
+	struct page *child = spt_find_page(&thread_current()->spt ,page->va);
+	child->frame = vm_get_frame();
+	memcpy(child->frame->kva, page->frame->kva, PGSIZE);
+	child->frame->page = child;
+	pml4_set_page(thread_current()->pml4, child->va, child->frame->kva, child->writable);
 }
 
 /* Copy supplemental page table from src to dst.
@@ -303,12 +315,11 @@ bool
 supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED,
 		struct supplemental_page_table *src UNUSED) {
 
-			printf("supplimental page table copy fcall\n");
 	// hash_first(&init, src->hash);
 	/* src  테이블에서 모든 page 구조체를  dst 테이블로 복사*/
 	/* 타입이 uninit, anon, file 얘네를 다 uninit으로 할당 */
 	hash_apply(&src->hash, copy_page);
-	return true;
+	return true; // 무조건 true의 문제??
 
 	// while (hash_next(&init)){
 	// 	struct page *find_page = hash_entry(hash_cur(&init), struct page, elem);
@@ -336,11 +347,12 @@ supplemental_page_table_kill (struct supplemental_page_table *spt UNUSED) {
 	/* TODO: Destroy all the supplemental_page_table hold by thread and
 	 * TODO: writeback all the modified contents to the storage. */
 	
+	printf("jammin2~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 	struct hash_iterator init;
 	hash_first(&init, &spt->hash);
 	while(hash_next(&init)) {
 		struct page *page = hash_entry(hash_cur(&init), struct page , elem);
-		destroy(page);
-		
+		// destroy(page); //이거 문제?
+		vm_dealloc_page(page);
 	}
 }
