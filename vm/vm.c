@@ -341,18 +341,35 @@ supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED,
 
 }
 
+void kill_page (struct hash_elem *e, void *aux){
+	// printf("jammin2~~~~~~~~~~~~~~~~~~~~~~~~~~ %s\n", thread_current()->name);
+	// struct hash_iterator init;
+	// hash_first(&init, &spt->hash);
+	// while(hash_next(&init)) {
+	// printf("here here here~~~~~~~~~~~~~~~~~~~~~~~~~`` \n ");
+
+	struct page *page = hash_entry(e, struct page , elem);
+	// 	printf("print page %d\n", page);
+	// 	destroy(page);
+	// 	// vm_dealloc_page(page);
+		
+	// }
+	// printf("kill this~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!! %d\n ", page);
+	destroy(page);
+	// if (!page->frame){
+	// 	pml4_clear_page(thread_current()->pml4, page->va);
+	// 	palloc_free_page(page->frame->kva);
+	// 	free(page->frame);
+	// }
+	// vm_dealloc_page(page);
+	
+}
+
 /* Free the resource hold by the supplemental page table */
 void
 supplemental_page_table_kill (struct supplemental_page_table *spt UNUSED) {
 	/* TODO: Destroy all the supplemental_page_table hold by thread and
 	 * TODO: writeback all the modified contents to the storage. */
-	
-	printf("jammin2~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-	struct hash_iterator init;
-	hash_first(&init, &spt->hash);
-	while(hash_next(&init)) {
-		struct page *page = hash_entry(hash_cur(&init), struct page , elem);
-		// destroy(page); //이거 문제?
-		vm_dealloc_page(page);
-	}
+	// printf("supplemental_page_table_kill 되냐?\n");
+	hash_clear(&spt->hash, kill_page);
 }

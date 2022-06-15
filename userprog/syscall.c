@@ -54,12 +54,14 @@ syscall_handler (struct intr_frame *f UNUSED) {
       halt();
       break;
     case SYS_EXIT:
+      // printf("conneiya\n");
       exit(f->R.rdi);
       break;
     case SYS_FORK:
       memcpy(&thread_current()->ptf, f, sizeof(struct intr_frame));
+      //  printf("call fork 11111!! \n");
       f->R.rax = (uint64_t)fork(f->R.rdi);
-      printf("call fork !!!!! \n");
+      // printf("call fork 22222!!!!! \n");
       break;
     case SYS_CREATE:
       f->R.rax = (uint64_t)create(f->R.rdi, f->R.rsi);
