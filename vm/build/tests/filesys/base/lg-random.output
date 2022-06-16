@@ -22,7 +22,7 @@ Executing 'lg-random':
 (lg-random) end
 lg-random: exit(0)
 Execution of 'lg-random' complete.
-Timer: 67 ticks
+Timer: 68 ticks
 Thread: 30 idle ticks, 29 kernel ticks, 9 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 257 reads, 560 writes

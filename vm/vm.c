@@ -181,7 +181,9 @@ vm_get_frame (void) {
 /* Growing the stack. */
 static void
 vm_stack_growth (void *addr UNUSED) {
+	// printf("count\n");
     vm_alloc_page(VM_ANON | VM_MARKER_0 , addr, true);
+	// thread_current()->stack_bottom -= PGSIZE; 
 }
 
 /* Handle the fault on write_protected page */
@@ -200,18 +202,23 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
     struct page *page = spt_find_page(spt, addr);
     /* TODO: Validate the fault */
     /* TODO: Your code goes here */
-
+	// printf("fault count ?, addr: %p, rsp: %p rsp(in thread): %p\n", addr, f->rsp, thread_current()->stack_bottom);
     if(is_kernel_vaddr(addr)){
         return false;
     }
     /* pintos project3 */
-    if (page == NULL && f->rsp - 8 <= addr)
+    if (page == NULL && f->rsp - 8 <= thread_current()->stack_bottom)
     {
 
         uint16_t STACK_LIMIT = USER_STACK - (1<<20);
         if(addr > STACK_LIMIT &&  USER_STACK > addr){
-            vm_stack_growth(addr);
-            thread_current()->stack_bottom = addr;
+			uint64_t lim = f->rsp - 8;
+			uint64_t cur = thread_current()->stack_bottom;
+			while (lim <= cur) {
+				vm_stack_growth(cur - 8);
+				thread_current()->stack_bottom -= PGSIZE;
+				cur = thread_current()->stack_bottom;
+			}
             return true;
         }
         return false;

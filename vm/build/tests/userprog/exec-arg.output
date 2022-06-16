@@ -24,8 +24,8 @@ Executing 'exec-arg':
 (args) end
 exec-arg: exit(0)
 Execution of 'exec-arg' complete.
-Timer: 65 ticks
-Thread: 30 idle ticks, 31 kernel ticks, 4 user ticks
+Timer: 66 ticks
+Thread: 30 idle ticks, 32 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 154 reads, 446 writes
 hd1:0: 204 reads, 0 writes

@@ -18,16 +18,13 @@ Executing 'page-merge-mm':
 (page-merge-mm) init
 (page-merge-mm) sort chunk 0
 (page-merge-mm) sort chunk 1
-(child-qsort-mm) open "buf0": FAILED
-child-qsort-mm: exit(1)
+child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 2
-(child-qsort-mm) open "buf1": FAILED
-child-qsort-mm: exit(1)
+child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 3
 child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 4
-(child-qsort-mm) open "buf3": FAILED
-child-qsort-mm: exit(1)
+child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 5
 child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 6
@@ -39,13 +36,13 @@ child-qsort-mm: exit(-1)
 page-merge-mm: exit(1)
 child-qsort-mm: exit(-1)
 Execution of 'page-merge-mm' complete.
-Timer: 190 ticks
-Thread: 30 idle ticks, 33 kernel ticks, 127 user ticks
+Timer: 189 ticks
+Thread: 30 idle ticks, 34 kernel ticks, 125 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 735 reads, 4678 writes
+hd0:1: 659 reads, 4678 writes
 hd1:0: 224 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1669 characters output
+Console: 1561 characters output
 Keyboard: 0 keys pressed
 Exception: 1 page faults
 Powering off...

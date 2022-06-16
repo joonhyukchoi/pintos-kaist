@@ -1,2 +1,2 @@
 FAIL
-run: open "buf0": FAILED
+run: wait for child 0: FAILED
