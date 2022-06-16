@@ -16,15 +16,16 @@ Putting 'sample.txt' into the file system...
 Executing 'read-boundary':
 (read-boundary) begin
 (read-boundary) open "sample.txt"
-read-boundary: exit(-1)
+(read-boundary) end
+read-boundary: exit(0)
 Execution of 'read-boundary' complete.
 Timer: 61 ticks
-Thread: 30 idle ticks, 29 kernel ticks, 2 user ticks
+Thread: 30 idle ticks, 28 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 111 reads, 256 writes
+hd0:1: 121 reads, 256 writes
 hd1:0: 109 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1055 characters output
+Console: 1074 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

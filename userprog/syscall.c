@@ -55,14 +55,11 @@ syscall_handler (struct intr_frame *f UNUSED) {
       halt();
       break;
     case SYS_EXIT:
-      // printf("conneiya\n");
       exit(f->R.rdi);
       break;
     case SYS_FORK:
       memcpy(&thread_current()->ptf, f, sizeof(struct intr_frame));
-      //  printf("call fork 11111!! \n");
       f->R.rax = (uint64_t)fork(f->R.rdi);
-      // printf("call fork 22222!!!!! \n");
       break;
     case SYS_CREATE:
       f->R.rax = (uint64_t)create(f->R.rdi, f->R.rsi);
@@ -77,11 +74,9 @@ syscall_handler (struct intr_frame *f UNUSED) {
       f->R.rax = (uint64_t)filesize(f->R.rdi);
       break;
     case SYS_READ:
-      printf("read~~~ \n");
       f->R.rax = (uint64_t)read(f->R.rdi, f->R.rsi, f->R.rdx);
       break;  
     case SYS_WRITE:
-      printf("write~~~ \n");
       f->R.rax = (uint64_t)write(f->R.rdi, f->R.rsi, f->R.rdx);
       break;
     case SYS_EXEC:
@@ -259,6 +254,8 @@ void close (int fd) {
   }
 }
 
+/* pintos project2 add
+ * (+fix) pintos project3 */
 void check_address(void *addr)
 {
   struct thread *cur = thread_current();
@@ -271,6 +268,7 @@ void check_address(void *addr)
 #endif
 }
 
+/* pintos project3 */
 void check_valid_string (const void *str, unsigned size) {
   check_address(str);
   struct thread *cur = thread_current();
@@ -286,6 +284,7 @@ void check_valid_string (const void *str, unsigned size) {
   }
 }
 
+/* pintos project3 */
 void check_valid_buffer (void *buffer, unsigned size, bool to_write) {
   // size PGSIZE
   check_address(buffer);

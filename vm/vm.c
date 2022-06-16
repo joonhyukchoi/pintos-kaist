@@ -268,6 +268,7 @@ supplemental_page_table_init (struct supplemental_page_table *spt UNUSED) {
 	hash_init(&spt->hash, vm_hash_func, vm_less_func, NULL);
 }
 
+/* pintos project3 */
 void copy_page (struct hash_elem *e, void *aux)
 {
 	struct page* page = hash_entry(e, struct page , elem);
@@ -317,7 +318,7 @@ bool
 supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED,
 		struct supplemental_page_table *src UNUSED) {
 
-			printf("퇴 근 시 켜 줘\n");
+			// printf("퇴 근 시 켜 줘\n");
 
 	// hash_first(&init, src->hash);
 	/* src  테이블에서 모든 page 구조체를  dst 테이블로 복사*/
@@ -345,6 +346,7 @@ supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED,
 
 }
 
+/* pintos project3 */
 void kill_page (struct hash_elem *e, void *aux){
 	// printf("jammin2~~~~~~~~~~~~~~~~~~~~~~~~~~ %s\n", thread_current()->name);
 	// struct hash_iterator init;
@@ -359,13 +361,13 @@ void kill_page (struct hash_elem *e, void *aux){
 		
 	// }
 	// printf("kill this~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!! %d\n ", page);
-	destroy(page);
+	// destroy(page);
 	// if (!page->frame){
 	// 	pml4_clear_page(thread_current()->pml4, page->va);
 	// 	palloc_free_page(page->frame->kva);
 	// 	free(page->frame);
 	// }
-	// vm_dealloc_page(page);
+	vm_dealloc_page(page);
 	
 }
 

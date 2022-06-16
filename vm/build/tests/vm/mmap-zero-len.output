@@ -19,8 +19,8 @@ Executing 'mmap-zero-len':
 (mmap-zero-len) try to mmap zero length
 mmap-zero-len: exit(-1)
 Execution of 'mmap-zero-len' complete.
-Timer: 62 ticks
-Thread: 30 idle ticks, 30 kernel ticks, 3 user ticks
+Timer: 71 ticks
+Thread: 30 idle ticks, 33 kernel ticks, 8 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 115 reads, 254 writes
 hd1:0: 106 reads, 0 writes

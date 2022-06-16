@@ -17,16 +17,33 @@ Executing 'page-merge-mm':
 (page-merge-mm) begin
 (page-merge-mm) init
 (page-merge-mm) sort chunk 0
-Kernel PANIC at ../../vm/vm.c:66 in vm_alloc_page_with_initializer(): assertion `VM_TYPE(type) != VM_UNINIT' failed.
-Call stack: 0x8004217f38 0x8004220a9a 0x8004221059 0x800421a871 0x8004221160 0x800421b782 0x80042079ef.
-The `backtrace' program can make call stacks useful.
-Read "Backtraces" in the "Debugging Tools" chapter
-of the Pintos documentation for more information.
-Timer: 83 ticks
-Thread: 30 idle ticks, 32 kernel ticks, 21 user ticks
+(page-merge-mm) sort chunk 1
+child-qsort-mm: exit(-1)
+(page-merge-mm) sort chunk 2
+(child-qsort-mm) open "buf1": FAILED
+child-qsort-mm: exit(1)
+child-qsort-mm: exit(-1)
+(page-merge-mm) sort chunk 3
+(page-merge-mm) sort chunk 4
+child-qsort-mm: exit(-1)
+(page-merge-mm) sort chunk 5
+child-qsort-mm: exit(-1)
+(page-merge-mm) sort chunk 6
+child-qsort-mm: exit(-1)
+(page-merge-mm) sort chunk 7
+child-qsort-mm: exit(-1)
+(page-merge-mm) wait for child 0
+(page-merge-mm) wait for child 0: FAILED
+page-merge-mm: exit(1)
+child-qsort-mm: exit(-1)
+Execution of 'page-merge-mm' complete.
+Timer: 190 ticks
+Thread: 30 idle ticks, 45 kernel ticks, 115 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 140 reads, 1010 writes
+hd0:1: 731 reads, 4678 writes
 hd1:0: 224 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1395 characters output
-Key
+Console: 1597 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...

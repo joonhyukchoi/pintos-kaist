@@ -58,14 +58,12 @@ hash_clear (struct hash *h, hash_action_func *destructor) {
 			while (!list_empty (bucket)) {
 				struct list_elem *list_elem = list_pop_front (bucket);
 				struct hash_elem *hash_elem = list_elem_to_hash_elem (list_elem);
-				printf("@@@@@@@2 %d : %p \n",i,bucket);
 				destructor (hash_elem, h->aux);
 			}
 
 		list_init (bucket);
 		
 	}
-	printf("나이따~~~ \n");
 	h->elem_cnt = 0;
 }
 

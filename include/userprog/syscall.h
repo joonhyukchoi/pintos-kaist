@@ -27,6 +27,8 @@ int write(int fd, const void *buffer, unsigned size);
 void seek (int fd, unsigned position);
 unsigned tell (int fd);
 void close (int fd);
+
+/* pintos project3 */
 void check_valid_string (const void *str, unsigned size);
 void check_valid_buffer (void *buffer, unsigned size, bool to_write);
 
