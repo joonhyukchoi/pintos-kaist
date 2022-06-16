@@ -19,17 +19,17 @@ Executing 'swap-iter':
 (swap-iter) write sparsely over page 512
 (swap-iter) write sparsely over page 1024
 Kernel PANIC at ../../vm/vm.c:172 in vm_get_frame(): todo
-Call stack: 0x8004217f38 0x8004220ea1 0x80042211c9 0x80042210fc 0x800421cc9d 0x8004208fd7 0x80042093f5 0x400e2e 0x400e77 0Interrupt 0x0d (#GP General Protection Exception) at rip=8004214f72
+Call stack: 0x8004217f38 0x8004220ea1 0x80042211a1 0x80042210d9 0x800421cc9d 0x8004208fd7 0x80042093f5 0x400e2e 0x400e77 0Interrupt 0x0d (#GP General Protection Exception) at rip=8004214f72
  cr2=0000000000ca4fa0 error=               0
 rax 0000800423d15800 rbx 0000800423f07800 rcx 00000080040b8000 rdx 00000000000003d4
-rsp 000000800423dd50 rbp 000000800423dd60 rsi 000000000000aa0f rdi 0000000000000000
-rip 0000008004214f72 r8 000000800423dc68  r9 000000800421b3b1 r10 0000000000000000
+rsp 000000800423dd70 rbp 000000800423dd80 rsi 000000000000aa0f rdi 0000000000000000
+rip 0000008004214f72 r8 000000800423dc88  r9 000000800421b3b1 r10 0000000000000000
 r11 0000000000000206 r12 0000800423ff1800 r13 0000800420a7c000 r14 0000800423df1000
 r15 0000010000000000 rflags 00000006
 es: 0010 ds: 0010 cs: 0008 ss: 0010
 Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
-Timer: 269 ticks
-Thread: 30 idle ticks, 200 kernel ticks, 39 user ticks
+Timer: 284 ticks
+Thread: 30 idle ticks, 217 kernel ticks, 37 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 116 reads, 15902 writes
 hd1:0: 7932 reads, 0 writes

@@ -1,1 +1,2 @@
-PASS
+FAIL
+run: open "buf0": FAILED
