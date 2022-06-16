@@ -348,27 +348,8 @@ supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED,
 
 /* pintos project3 */
 void kill_page (struct hash_elem *e, void *aux){
-	// printf("jammin2~~~~~~~~~~~~~~~~~~~~~~~~~~ %s\n", thread_current()->name);
-	// struct hash_iterator init;
-	// hash_first(&init, &spt->hash);
-	// while(hash_next(&init)) {
-	// printf("here here here~~~~~~~~~~~~~~~~~~~~~~~~~`` \n ");
-
 	struct page *page = hash_entry(e, struct page , elem);
-	// 	printf("print page %d\n", page);
-	// 	destroy(page);
-	// 	// vm_dealloc_page(page);
-		
-	// }
-	// printf("kill this~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!!!!!! %d\n ", page);
-	// destroy(page);
-	// if (!page->frame){
-	// 	pml4_clear_page(thread_current()->pml4, page->va);
-	// 	palloc_free_page(page->frame->kva);
-	// 	free(page->frame);
-	// }
-	vm_dealloc_page(page);
-	
+	destroy(page);
 }
 
 /* Free the resource hold by the supplemental page table */
