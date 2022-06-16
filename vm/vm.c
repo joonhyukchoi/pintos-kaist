@@ -317,33 +317,11 @@ void copy_page (struct hash_elem *e, void *aux)
 bool
 supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED,
 		struct supplemental_page_table *src UNUSED) {
-
-			// printf("퇴 근 시 켜 줘\n");
-
 	// hash_first(&init, src->hash);
 	/* src  테이블에서 모든 page 구조체를  dst 테이블로 복사*/
 	/* 타입이 uninit, anon, file 얘네를 다 uninit으로 할당 */
 	hash_apply(&src->hash, copy_page);
 	return true; // 무조건 true의 문제??
-
-	// while (hash_next(&init)){
-	// 	struct page *find_page = hash_entry(hash_cur(&init), struct page, elem);
-	// 	struct page *p = (struct page *)malloc(sizeof(struct page));
-	// 	memcpy(p, find_page, sizeof(struct page));
-
-	// 	if (find_page->type == VM_ANON)
-    //         uninit_new(p, find_page->va, lazy_load_segment, find_page->type, aux, anon_initializer);
-    //     else if (find_page->type == VM_FILE)
-    //         uninit_new(p, find_page->va, lazy_load_segment, find_page->type, aux, file_backed_initializer);
-
-	// 	spt_insert_page(dst, p);
-	// 	struct frame *frame = vm_get_frame ();
-
-	// 	/* Set links */
-	// 	frame->page = find_page;
-	// 	find_page->frame = frame;
-	// }
-
 }
 
 /* pintos project3 */

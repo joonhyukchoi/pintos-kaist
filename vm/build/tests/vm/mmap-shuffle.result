@@ -1,0 +1,39 @@
+FAIL
+Test output failed to match any acceptable form.
+
+Acceptable output:
+  (mmap-shuffle) begin
+  (mmap-shuffle) create "buffer"
+  (mmap-shuffle) open "buffer"
+  (mmap-shuffle) mmap "buffer"
+  (mmap-shuffle) init: cksum=3115322833
+  (mmap-shuffle) shuffle 0: cksum=2274652418
+  (mmap-shuffle) shuffle 1: cksum=2281360714
+  (mmap-shuffle) shuffle 2: cksum=3504443700
+  (mmap-shuffle) shuffle 3: cksum=2850516818
+  (mmap-shuffle) shuffle 4: cksum=2406916757
+  (mmap-shuffle) shuffle 5: cksum=3377643430
+  (mmap-shuffle) shuffle 6: cksum=658047850
+  (mmap-shuffle) shuffle 7: cksum=493716582
+  (mmap-shuffle) shuffle 8: cksum=3359519593
+  (mmap-shuffle) shuffle 9: cksum=143675990
+  (mmap-shuffle) end
+Differences in `diff -u' format:
+  (mmap-shuffle) begin
+  (mmap-shuffle) create "buffer"
+  (mmap-shuffle) open "buffer"
+  (mmap-shuffle) mmap "buffer"
+- (mmap-shuffle) init: cksum=3115322833
+- (mmap-shuffle) shuffle 0: cksum=2274652418
+- (mmap-shuffle) shuffle 1: cksum=2281360714
+- (mmap-shuffle) shuffle 2: cksum=3504443700
+- (mmap-shuffle) shuffle 3: cksum=2850516818
+- (mmap-shuffle) shuffle 4: cksum=2406916757
+- (mmap-shuffle) shuffle 5: cksum=3377643430
+- (mmap-shuffle) shuffle 6: cksum=658047850
+- (mmap-shuffle) shuffle 7: cksum=493716582
+- (mmap-shuffle) shuffle 8: cksum=3359519593
+- (mmap-shuffle) shuffle 9: cksum=143675990
+- (mmap-shuffle) end
+
+(Process exit codes are excluded for matching purposes.)
