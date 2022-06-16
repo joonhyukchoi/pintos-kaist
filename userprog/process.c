@@ -803,7 +803,7 @@ setup_stack (struct intr_frame *if_) {
 
 	/* pintos project3 */
 
-	if (vm_alloc_page_with_initializer (VM_ANON||VM_MARKER_0, stack_bottom, true, NULL, NULL)){
+	if (vm_alloc_page_with_initializer (VM_ANON|VM_MARKER_0, stack_bottom, true, NULL, NULL)){
 		success = vm_claim_page(stack_bottom);
 		if_->rsp = USER_STACK;
 	}

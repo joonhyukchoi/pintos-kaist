@@ -80,9 +80,9 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
         /* pintos project3 */
         struct page *p = (struct page *)malloc(sizeof(struct page));
 
-        if (type == VM_ANON)
+        if (VM_TYPE(type) == VM_ANON)
             uninit_new(p, pg_round_down(upage), init, type, aux, anon_initializer);
-        else if (type == VM_FILE)
+        else if (VM_TYPE(type) == VM_FILE)
             uninit_new(p, pg_round_down(upage), init, type, aux, file_backed_initializer);
 
         p->writable = writable;
@@ -181,6 +181,7 @@ vm_get_frame (void) {
 /* Growing the stack. */
 static void
 vm_stack_growth (void *addr UNUSED) {
+    vm_alloc_page(VM_ANON | VM_MARKER_0 , addr, true);
 }
 
 /* Handle the fault on write_protected page */
@@ -191,25 +192,37 @@ vm_handle_wp (struct page *page UNUSED) {
 /* Return true on success */
 bool
 vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
-		bool user UNUSED, bool write UNUSED, bool not_present UNUSED) {
-	
-	struct supplemental_page_table *spt UNUSED = &thread_current ()->spt;
-	
-	/* pintos project3 */
-	struct page *page = spt_find_page(spt, addr);
-	/* TODO: Validate the fault */
-	/* TODO: Your code goes here */
+        bool user UNUSED, bool write UNUSED, bool not_present UNUSED) {
+    
+    struct supplemental_page_table *spt UNUSED = &thread_current ()->spt;
+    
+    /* pintos project3 */
+    struct page *page = spt_find_page(spt, addr);
+    /* TODO: Validate the fault */
+    /* TODO: Your code goes here */
 
-	/* pintos project3 */
-	if (page == NULL){
-		return false;
-	}
-
-	if (page && not_present){
-		return vm_do_claim_page(page);
-	} else {
+    if(is_kernel_vaddr(addr)){
         return false;
     }
+    /* pintos project3 */
+    if (page == NULL && f->rsp - 8 <= addr)
+    {
+
+        uint16_t STACK_LIMIT = USER_STACK - (1<<20);
+        if(addr > STACK_LIMIT &&  USER_STACK > addr){
+            vm_stack_growth(addr);
+            thread_current()->stack_bottom = addr;
+            return true;
+        }
+        return false;
+    }
+
+    if (page && not_present){
+        return vm_do_claim_page(page);
+    } 
+
+    return false;
+
 }
 
 /* Free the page.

@@ -61,9 +61,9 @@ pass tests/userprog/bad-read2
 pass tests/userprog/bad-write2
 pass tests/userprog/bad-jump
 pass tests/userprog/bad-jump2
-FAIL tests/vm/pt-grow-stack
+pass tests/vm/pt-grow-stack
 pass tests/vm/pt-grow-bad
-FAIL tests/vm/pt-big-stk-obj
+pass tests/vm/pt-big-stk-obj
 pass tests/vm/pt-bad-addr
 pass tests/vm/pt-bad-read
 pass tests/vm/pt-write-code

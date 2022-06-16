@@ -21,8 +21,8 @@ Acceptable output:
   mmap-off: exit(0)
 Differences in `diff -u' format:
   (mmap-off) begin
-- (mmap-off) open "large.txt"
-- (mmap-off) try to mmap with offset 0x1000
+  (mmap-off) open "large.txt"
+  (mmap-off) try to mmap with offset 0x1000
 - (mmap-off) validate mmap.
 - (mmap-off) validated.
 - (mmap-off) write to mmap

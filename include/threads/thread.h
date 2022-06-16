@@ -120,6 +120,10 @@ struct thread {
 
   struct file *run_file;
 
+  /* pintos project3 */
+  uintptr_t rsp;
+  uint64_t stack_bottom;
+
 #ifdef USERPROG
 	/* Owned by userprog/process.c. */
 	uint64_t *pml4; /* Page map level 4 == pagedir(32bit) */
