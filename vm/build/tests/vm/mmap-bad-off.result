@@ -1,1 +1,2 @@
-PASS
+FAIL
+run: try to mmap invalid offset: FAILED

@@ -314,7 +314,7 @@ void *mmap (void *addr, size_t length, int writable, int fd, off_t offset) {
     return NULL;
   }
 
-  struct file* file = thread_current()->fdt[fd];
+  struct file* file = file_reopen(thread_current()->fdt[fd]);
   return do_mmap(addr, length, writable, file, offset);
 }
 

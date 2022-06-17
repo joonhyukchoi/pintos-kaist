@@ -1,2 +1,1 @@
-FAIL
-run: mmap "large.txt" with writable=0: FAILED
+PASS

@@ -26,8 +26,7 @@ test_main (void)
     if (actual[i] != 0)
       fail ("byte %zu of mmap'd region has value %02hhx (should be 0)",
             i, actual[i]);
-  puts("잼민이 의견 좋았따");
+            
   munmap (map);
-  puts("잼민이 의견 좋았따2");
   close (handle);
 }

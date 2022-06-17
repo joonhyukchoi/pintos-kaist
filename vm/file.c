@@ -74,6 +74,7 @@ file_backed_destroy (struct page *page) {
 		free(page->frame);
 	}
 	pml4_clear_page(thread_current()->pml4, page->va);
+	free(page);
 }
 
 static bool
@@ -118,6 +119,7 @@ do_mmap (void *addr, size_t length, int writable,
 		struct aux_struct *temp_aux = (struct aux_struct*)malloc(sizeof(struct aux_struct));
 
         uint32_t read_bytes = read_size > PGSIZE ? PGSIZE : read_size;
+		
 		temp_aux->vmfile = file;
 		temp_aux->ofs = offset;
 		temp_aux->read_bytes = read_bytes;
@@ -125,7 +127,7 @@ do_mmap (void *addr, size_t length, int writable,
 		temp_aux->writable = writable;
 		temp_aux->upage = va;
 
-		if (!vm_alloc_page_with_initializer(VM_FILE, addr, writable, lazy_load_file, temp_aux))
+		if (!vm_alloc_page_with_initializer(VM_FILE, va, writable, lazy_load_file, temp_aux))
 			return NULL;
 		
 		read_size -= read_bytes;
