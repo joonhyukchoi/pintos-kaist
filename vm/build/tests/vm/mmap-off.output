@@ -17,15 +17,16 @@ Executing 'mmap-off':
 (mmap-off) begin
 (mmap-off) open "large.txt"
 (mmap-off) try to mmap with offset 0x1000
-mmap-off: exit(-1)
+(mmap-off) try to mmap with offset 0x1000: FAILED
+mmap-off: exit(1)
 Execution of 'mmap-off' complete.
-Timer: 234 ticks
-Thread: 30 idle ticks, 201 kernel ticks, 3 user ticks
+Timer: 266 ticks
+Thread: 30 idle ticks, 232 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 112 reads, 15904 writes
 hd1:0: 7933 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1060 characters output
+Console: 1109 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

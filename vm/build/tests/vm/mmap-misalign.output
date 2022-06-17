@@ -17,15 +17,16 @@ Executing 'mmap-misalign':
 (mmap-misalign) begin
 (mmap-misalign) open "sample.txt"
 (mmap-misalign) try to mmap at misaligned address
-mmap-misalign: exit(-1)
+(mmap-misalign) try to mmap at misaligned address: FAILED
+mmap-misalign: exit(1)
 Execution of 'mmap-misalign' complete.
 Timer: 62 ticks
-Thread: 30 idle ticks, 31 kernel ticks, 2 user ticks
+Thread: 30 idle ticks, 29 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 111 reads, 250 writes
 hd1:0: 106 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1105 characters output
+Console: 1162 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

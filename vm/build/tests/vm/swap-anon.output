@@ -18,7 +18,7 @@ Executing 'swap-anon':
 (swap-anon) write sparsely over page 512
 (swap-anon) write sparsely over page 1024
 Kernel PANIC at ../../vm/vm.c:172 in vm_get_frame(): todo
-Call stack: 0x8004217f38 0x8004220ea1 0x80042211a1 0x80042210d9 0x800421cc9d 0x8004208fd7 0x80042093f5 0x400cac 0x400cf5 0Interrupt 0x0d (#GP General Protection Exception) at rip=8004214f72
+Call stack: 0x8004217f38 0x8004220fdf 0x80042212df 0x8004221217 0x800421cc9d 0x8004208fd7 0x80042093f5 0x400cac 0x400cf5 0Interrupt 0x0d (#GP General Protection Exception) at rip=8004214f72
  cr2=0000000000abbd60 error=               0
 rax 0000800423d15800 rbx 0000800423f07800 rcx 00000080040b8000 rdx 00000000000003d4
 rsp 000000800423dd70 rbp 000000800423dd80 rsi 000000000000aa0f rdi 0000000000000000

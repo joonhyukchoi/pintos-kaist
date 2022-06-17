@@ -1,15 +1,1 @@
-FAIL
-Test output failed to match any acceptable form.
-
-Acceptable output:
-  (mmap-over-code) begin
-  (mmap-over-code) open "sample.txt"
-  (mmap-over-code) try to mmap over code segment
-  (mmap-over-code) end
-Differences in `diff -u' format:
-  (mmap-over-code) begin
-  (mmap-over-code) open "sample.txt"
-  (mmap-over-code) try to mmap over code segment
-- (mmap-over-code) end
-
-(Process exit codes are excluded for matching purposes.)
+PASS

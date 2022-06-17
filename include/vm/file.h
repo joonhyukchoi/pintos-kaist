@@ -8,8 +8,10 @@ struct page;
 enum vm_type;
 
 struct file_page {
-	int mapid;
 	struct file* file;
+	off_t offset;
+	uint32_t read_byte;
+	uint32_t zero_byte;
 };
 
 void vm_file_init (void);

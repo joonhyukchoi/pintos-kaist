@@ -7,7 +7,7 @@ Pintos booting with:
 Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
-hd1:0: detected 109 sector (54 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+hd1:0: detected 110 sector (55 kB) disk, model "QEMU HARDDISK", serial "QM00003"
 hd1:1: detected 8,064 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00004"
 Formatting file system...done.
 Boot complete.
@@ -17,15 +17,18 @@ Executing 'mmap-read':
 (mmap-read) begin
 (mmap-read) open "sample.txt"
 (mmap-read) mmap "sample.txt"
-mmap-read: exit(-1)
+잼민이 의견 좋았따
+잼민이 의견 좋았따2
+(mmap-read) end
+mmap-read: exit(0)
 Execution of 'mmap-read' complete.
-Timer: 63 ticks
-Thread: 30 idle ticks, 31 kernel ticks, 2 user ticks
+Timer: 62 ticks
+Thread: 30 idle ticks, 29 kernel ticks, 3 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 113 reads, 256 writes
-hd1:0: 109 reads, 0 writes
+hd0:1: 125 reads, 258 writes
+hd1:0: 110 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1053 characters output
+Console: 1123 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

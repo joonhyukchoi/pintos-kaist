@@ -22,10 +22,10 @@ Execution of 'mmap-close' complete.
 Timer: 62 ticks
 Thread: 30 idle ticks, 30 kernel ticks, 2 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 112 reads, 256 writes
+hd0:1: 120 reads, 256 writes
 hd1:0: 109 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1062 characters output
 Keyboard: 0 keys pressed
-Exception: 0 page faults
+Exception: 1 page faults
 Powering off...

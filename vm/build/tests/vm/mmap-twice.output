@@ -4,7 +4,7 @@ Kernel command line: -q -f put mmap-twice put sample.txt run mmap-twice
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  130,867,200 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 109 sector (54 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -17,15 +17,20 @@ Executing 'mmap-twice':
 (mmap-twice) begin
 (mmap-twice) open "sample.txt" #0
 (mmap-twice) mmap "sample.txt" #0 at 0x10000000
-mmap-twice: exit(-1)
+(mmap-twice) open "sample.txt" #1
+(mmap-twice) mmap "sample.txt" #1 at 0x20000000
+(mmap-twice) compare mmap'd file 0 against data
+(mmap-twice) compare mmap'd file 1 against data
+(mmap-twice) end
+mmap-twice: exit(0)
 Execution of 'mmap-twice' complete.
-Timer: 61 ticks
-Thread: 30 idle ticks, 30 kernel ticks, 2 user ticks
+Timer: 64 ticks
+Thread: 30 idle ticks, 30 kernel ticks, 4 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 113 reads, 256 writes
+hd0:1: 132 reads, 256 writes
 hd1:0: 109 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1082 characters output
+Console: 1276 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

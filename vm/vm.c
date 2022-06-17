@@ -220,6 +220,7 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
         }
         return false;
     }
+	
 
 	// if (page->uninit->type == VM_FILE) {
 	// 	//로드
@@ -323,6 +324,8 @@ supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED,
 void kill_page (struct hash_elem *e, void *aux){
 	struct page *page = hash_entry(e, struct page , elem);
 	destroy(page);
+	// free(page);
+	// vm_dealloc_page(page);
 }
 
 /* Free the resource hold by the supplemental page table */

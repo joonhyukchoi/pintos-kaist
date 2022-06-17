@@ -31,6 +31,20 @@ file_backed_initializer (struct page *page, enum vm_type type, void *kva) {
 	page->operations = &file_ops;
 
 	struct file_page *file_page = &page->file;
+
+	/* pintos project3 */
+	struct aux_struct *dummy = (struct aux_struct *)(page->uninit.aux);
+
+	file_page->file = dummy->vmfile;
+	file_page->offset = dummy->ofs;
+	file_page->read_byte = dummy->read_bytes;
+	file_page->zero_byte = dummy->zero_bytes;
+
+	if(file_read_at(dummy->vmfile , kva , dummy->read_bytes , dummy->ofs ) != dummy->read_bytes) {
+
+		return false;
+	}
+	return true;
 }
 
 /* Swap in the page by read contents from the file. */
@@ -50,7 +64,16 @@ file_backed_swap_out (struct page *page) {
  * 이 함수에서 페이지 구조를 해제할 필요가 없습니다. file_backed_destroy의 호출자가 이를 처리해야 합니다.*/
 static void
 file_backed_destroy (struct page *page) {
-	struct file_page *file_page UNUSED = &page->file;
+	struct file_page *p UNUSED = &page->file;
+	/* 안애매함 */
+	do_munmap(page->va);
+	
+	if (page->frame)
+	{
+		palloc_free_page(page->frame->kva);
+		free(page->frame);
+	}
+	pml4_clear_page(thread_current()->pml4, page->va);
 }
 
 static bool
@@ -109,7 +132,7 @@ do_mmap (void *addr, size_t length, int writable,
 		va += PGSIZE; //애매함 
 		offset += read_bytes;
 	}
-	
+	return addr;
 }
 
 /* Do the munmap.
@@ -123,7 +146,16 @@ do_munmap (void *addr) {
 	struct page *page = spt_find_page(&thread_current()->spt, addr);
 	struct file *file = &page->file.file;
 	off_t read_size = file_length(file);
-	while (){
+
+	while (page = spt_find_page(&thread_current()->spt, addr)){
+		if (page->file.file != file) {
+			return;
+		} 
+		if (pml4_is_dirty(thread_current()->pml4, addr)) {
+			pml4_set_dirty(thread_current()->pml4, addr, false);
+			file_write_at(page->file.file, addr, page->file.read_byte, page->file.offset);
+		}	
+		addr += PGSIZE;
 
 	}
 

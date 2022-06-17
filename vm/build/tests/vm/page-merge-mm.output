@@ -4,7 +4,7 @@ Kernel command line: -q -f put page-merge-mm put child-qsort-mm run page-merge-m
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  98,201,600 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 224 sector (112 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -17,33 +17,39 @@ Executing 'page-merge-mm':
 (page-merge-mm) begin
 (page-merge-mm) init
 (page-merge-mm) sort chunk 0
-child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 1
-child-qsort-mm: exit(-1)
+(child-qsort-mm) mmap "buf0": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 2
+(child-qsort-mm) mmap "buf1": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 3
-child-qsort-mm: exit(-1)
-child-qsort-mm: exit(-1)
+(child-qsort-mm) mmap "buf2": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 4
+(child-qsort-mm) mmap "buf3": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 5
 child-qsort-mm: exit(-1)
 (page-merge-mm) sort chunk 6
-(child-qsort-mm) open "buf5": FAILED
+(child-qsort-mm) mmap "buf5": FAILED
 child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 7
-child-qsort-mm: exit(-1)
+(child-qsort-mm) mmap "buf6": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) wait for child 0
 (page-merge-mm) wait for child 0: FAILED
 page-merge-mm: exit(1)
-child-qsort-mm: exit(-1)
+(child-qsort-mm) mmap "buf7": FAILED
+child-qsort-mm: exit(1)
 Execution of 'page-merge-mm' complete.
-Timer: 191 ticks
-Thread: 30 idle ticks, 33 kernel ticks, 128 user ticks
+Timer: 197 ticks
+Thread: 30 idle ticks, 32 kernel ticks, 135 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 729 reads, 4678 writes
+hd0:1: 795 reads, 4678 writes
 hd1:0: 224 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1596 characters output
+Console: 1813 characters output
 Keyboard: 0 keys pressed
-Exception: 0 page faults
+Exception: 1 page faults
 Powering off...
