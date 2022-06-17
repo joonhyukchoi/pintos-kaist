@@ -94,6 +94,12 @@ syscall_handler (struct intr_frame *f UNUSED) {
     case SYS_CLOSE:
       close(f->R.rdi);
       break;
+    case SYS_MMAP:
+      f->R.rax = mmap(f->R.rdi, f->R.rsi, f->R.rdx, f->R.r10, f->R.r8);
+      break;
+    case SYS_MUNMAP:
+      munmap(f->R.rdi);
+      break;
     default:
       exit(-1);
       break;
@@ -300,4 +306,24 @@ void check_valid_buffer (void *buffer, unsigned size, bool to_write) {
     }
   }
 }
+
+/* pintos project3 */
+void *mmap (void *addr, size_t length, int writable, int fd, off_t offset) {
+  /* kernel address 일때 exit 인지 불명확*/
+  if (!addr || !length || fd < 2 || is_kernel_vaddr(addr)) {
+    return NULL;
+  }
+
+  struct file* file = thread_current()->fdt[fd];
+  return do_mmap(addr, length, writable, file, offset);
+}
+
+/* pintos project3 */
+void munmap (void *addr) {
+  if (is_kernel_vaddr(addr)) {
+    return NULL;
+  }
+  do_munmap(addr);
+}
+
 

@@ -2,11 +2,14 @@
 #define VM_FILE_H
 #include "filesys/file.h"
 #include "vm/vm.h"
+// #include "userprog/process.c"
 
 struct page;
 enum vm_type;
 
 struct file_page {
+	int mapid;
+	struct file* file;
 };
 
 void vm_file_init (void);

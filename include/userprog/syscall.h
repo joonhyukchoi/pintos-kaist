@@ -31,7 +31,8 @@ void close (int fd);
 /* pintos project3 */
 void check_valid_string (const void *str, unsigned size);
 void check_valid_buffer (void *buffer, unsigned size, bool to_write);
-
+void *mmap (void *addr, size_t length, int writable, int fd, off_t offset);
+void munmap (void *addr);
 
 
 #endif /* userprog/syscall.h */

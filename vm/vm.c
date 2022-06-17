@@ -221,6 +221,10 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
         return false;
     }
 
+	// if (page->uninit->type == VM_FILE) {
+	// 	//로드
+	// }
+
     if (page && not_present){
         return vm_do_claim_page(page);
     } 
@@ -298,32 +302,6 @@ void copy_page (struct hash_elem *e, void *aux)
 		child->frame->page = child;
 		pml4_set_page(thread_current()->pml4, child->va, child->frame->kva, child->writable);
 	}
-	
-	// vm_alloc_page_with_initializer(page_get_type(page) | VM_MARKER_1, page->va , page->writable,NULL,page);
-
-	// struct page *child = (struct page*) malloc(sizeof page);
-	// memcpy(child , page, sizeof page);
-	// spt_insert_page(thread_current()->spt, child);
-	// struct aux_struct *temp_aux = (struct aux_struct*)malloc(sizeof(struct aux_struct));
-
-	// 	temp_aux->vmfile = page->vmfile;
-	// 	temp_aux->ofs = page->offset;
-	// 	temp_aux->read_bytes = page->read_bytes;
-	// 	temp_aux->zero_bytes = page->zero_bytes;
-	// 	temp_aux->writable = page->writable;
-	// 	temp_aux->upage = page->va;
-
-	// if (page->operations->type == VM_UNINIT) {
-	// 	struct page *p = (struct page *)malloc(sizeof(struct page));
-	// 	memcpy(p, page, sizeof page);
-	// 	// uninit_new();
-	// 	spt_insert_page(&thread_current()->spt, p);
-	// 	printf("dwdwd\n");
-	// } else {
-	// 	vm_alloc_page(page->operations->type , page->va , page->writable);
-	// 	printf("wgrgergegre -2 \n");
-	// }
-	// vm_alloc_page_with_initializer(page->type , page->va , page->writable, NULL , NULL);
 }
 
 /* Copy supplemental page table from src to dst.
