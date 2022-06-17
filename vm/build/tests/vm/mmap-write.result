@@ -1,2 +1,1 @@
-FAIL
-run: compare read data against written data: FAILED
+PASS

@@ -146,7 +146,8 @@ do_mmap (void *addr, size_t length, int writable,
 void
 do_munmap (void *addr) {
 	struct page *page = spt_find_page(&thread_current()->spt, addr);
-	struct file *file = &page->file.file;
+	struct file *file = page->file.file;
+
 	off_t read_size = file_length(file);
 
 	while (page = spt_find_page(&thread_current()->spt, addr)){

@@ -4,7 +4,7 @@ Kernel command line: -q -f put mmap-exit put child-mm-wrt run mmap-exit
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  157,081,600 loops/s.
+Calibrating timer...  62,668,800 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 210 sector (105 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -38,20 +38,20 @@ child-mm-wrt: exit(0)
 mmap-exit: exit(1)
 child-mm-wrt: exit(-1)
 Kernel PANIC at ../../filesys/inode.c:305 in inode_allow_write(): assertion `inode->deny_write_cnt <= inode->open_cnt' failed.
-Call stack: 0x8004217f38 0x800422023c 0x800421f042 0x800421edef 0x800421ba5f 0x80042072f1 0x800421d18a 0x800421ccd0 0x8004208fd7 0x80042093f5 0x8004221c93 0x80042219c1 0x8004221551 0x800421a506 0x800422157d 0x800421bb52 0x800421bb1e 0x80042072f1 0x800421d18a 0x800421ce7b 0x800421cd45 0x400d49 0Interrupt 0x0d (#GP General Protection Exception) at rip=8004214f72
+Call stack: 0x8004217f38 0x800422025b 0x800421f061 0x800421ee0e 0x800421ba5f 0x80042072f1 0x800421d18a 0x800421ccd0 0x8004208fd7 0x80042093f5 0x80042219e0 0x8004221570 0x800421a506 0x800422159c 0x800421bb52 0x800421bb1e 0x80042072f1 0x800421d18a 0x800421ce7b 0x800421cd45 0x400d49 0Interrupt 0x0d (#GP General Protection Exception) at rip=8004214f72
  cr2=0000000000000038 error=               0
 rax 0000800425500000 rbx 000000004043f0ff rcx 00000080040b8000 rdx 00000000000003d4
-rsp 000000800424cac0 rbp 000000800424cad0 rsi 000000000000b70f rdi 0000000000000000
-rip 0000008004214f72 r8 000000800424c9d8  r9 000000800421b3b1 r10 0000000000000000
+rsp 000000800424cae0 rbp 000000800424caf0 rsi 000000000000aa0f rdi 0000000000000000
+rip 0000008004214f72 r8 000000800424c9f8  r9 000000800421b3b1 r10 0000000000000000
 r11 0000000000000206 r12 000000800421ce1c r13 0000012440780000 r14 0000800424ce6000
 r15 0000800420814a00 rflags 00000006
 es: 0010 ds: 0010 cs: 0008 ss: 0010
 Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
-Timer: 75 ticks
-Thread: 30 idle ticks, 31 kernel ticks, 14 user ticks
+Timer: 116 ticks
+Thread: 30 idle ticks, 51 kernel ticks, 35 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 209 reads, 472 writes
 hd1:0: 210 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 3170 characters output
+Console: 3157 characters output
 Key

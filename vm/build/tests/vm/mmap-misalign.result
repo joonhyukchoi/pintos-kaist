@@ -1,2 +1,1 @@
-FAIL
-run: try to mmap at misaligned address: FAILED
+PASS

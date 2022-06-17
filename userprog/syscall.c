@@ -193,7 +193,6 @@ int filesize (int fd) {
 
 int read (int fd, void *buffer, unsigned size) {
   // check_address(buffer);
-
   check_valid_buffer (buffer, size, true);
   if (fd == 1) {
     return -1;
@@ -310,7 +309,12 @@ void check_valid_buffer (void *buffer, unsigned size, bool to_write) {
 /* pintos project3 */
 void *mmap (void *addr, size_t length, int writable, int fd, off_t offset) {
   /* kernel address 일때 exit 인지 불명확*/
-  if (!addr || !length || fd < 2 || is_kernel_vaddr(addr)) {
+  if (length <= 0) {
+    puts("승우야 해결좀");
+    return NULL;
+  }
+
+  if (!addr|| fd < 2 || is_kernel_vaddr(addr) || pg_ofs(addr)) {
     return NULL;
   }
 
