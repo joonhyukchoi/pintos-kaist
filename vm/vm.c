@@ -194,7 +194,6 @@ vm_handle_wp (struct page *page UNUSED) {
 bool
 vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
         bool user UNUSED, bool write UNUSED, bool not_present UNUSED) {
-    
     struct supplemental_page_table *spt UNUSED = &thread_current ()->spt;
     
     /* pintos project3 */
@@ -209,7 +208,7 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	uint16_t STACK_LIMIT = USER_STACK - (1<<20);
 	uint64_t limit = f->rsp - 8;
 
-    if (page == NULL && limit <= addr)
+    if (page == NULL && limit >= addr) // ==
     {
         if(f->rsp > STACK_LIMIT &&  USER_STACK > f->rsp){
 			while (limit <= thread_current()->stack_bottom) {

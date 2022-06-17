@@ -30,7 +30,7 @@ Differences in `diff -u' format:
   (page-merge-par) sort chunk 0
   (page-merge-par) sort chunk 1
   (page-merge-par) sort chunk 2
-  (page-merge-par) sort chunk 3
+- (page-merge-par) sort chunk 3
 - (page-merge-par) sort chunk 4
 - (page-merge-par) sort chunk 5
 - (page-merge-par) sort chunk 6

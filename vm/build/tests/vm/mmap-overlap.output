@@ -22,13 +22,13 @@ Executing 'mmap-overlap':
 (mmap-overlap) end
 mmap-overlap: exit(0)
 Execution of 'mmap-overlap' complete.
-Timer: 78 ticks
-Thread: 30 idle ticks, 41 kernel ticks, 8 user ticks
+Timer: 88 ticks
+Thread: 30 idle ticks, 47 kernel ticks, 12 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 114 reads, 276 writes
 hd1:0: 119 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1157 characters output
+Console: 1158 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

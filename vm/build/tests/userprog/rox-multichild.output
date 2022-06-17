@@ -4,7 +4,7 @@ Kernel command line: -q -f put rox-multichild put child-rox run rox-multichild
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  19,635,200 loops/s.
+Calibrating timer...  26,188,800 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 220 sector (110 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -52,8 +52,8 @@ child-rox: exit(12)
 (rox-multichild) end
 rox-multichild: exit(0)
 Execution of 'rox-multichild' complete.
-Timer: 129 ticks
-Thread: 30 idle ticks, 45 kernel ticks, 54 user ticks
+Timer: 156 ticks
+Thread: 30 idle ticks, 57 kernel ticks, 70 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 420 reads, 480 writes
 hd1:0: 220 reads, 0 writes

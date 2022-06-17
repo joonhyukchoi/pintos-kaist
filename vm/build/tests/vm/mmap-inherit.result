@@ -1,11 +1,11 @@
 FAIL
 Kernel panic in run: PANIC at ../../vm/vm.c:66 in vm_alloc_page_with_initializer(): assertion `VM_TYPE(type) != VM_UNINIT' failed.
-Call stack: 0x8004217f38 0x8004220d60 0x8004221411 0x800421a871 0x8004221529 0x800421b782 0x80042079ef
+Call stack: 0x8004217f38 0x8004220d59 0x800422140a 0x800421a871 0x8004221522 0x800421b782 0x80042079ef
 Translation of call stack:
 0x0000008004217f38: debug_panic (lib/kernel/debug.c:32)
-0x0000008004220d60: vm_alloc_page_with_initializer (vm/vm.c:68)
-0x0000008004221411: copy_page (vm/vm.c:299)
+0x0000008004220d59: vm_alloc_page_with_initializer (vm/vm.c:68)
+0x000000800422140a: copy_page (vm/vm.c:298)
 0x000000800421a871: hash_apply (lib/kernel/hash.c:159 (discriminator 3))
-0x0000008004221529: supplemental_page_table_copy (vm/vm.c:320)
+0x0000008004221522: supplemental_page_table_copy (vm/vm.c:319)
 0x000000800421b782: __do_fork (userprog/process.c:161)
 0x00000080042079ef: kernel_thread (threads/thread.c:554)

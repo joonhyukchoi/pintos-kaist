@@ -310,7 +310,6 @@ void check_valid_buffer (void *buffer, unsigned size, bool to_write) {
 void *mmap (void *addr, size_t length, int writable, int fd, off_t offset) {
   /* kernel address 일때 exit 인지 불명확*/
   if (length <= 0) {
-    puts("승우야 해결좀");
     return NULL;
   }
 

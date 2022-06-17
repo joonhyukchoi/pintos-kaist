@@ -4,7 +4,7 @@ Kernel command line: -q -f put mmap-inherit put sample.txt put child-inherit run
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  39,270,400 loops/s.
+Calibrating timer...  53,350,400 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 215 sector (107 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -19,15 +19,15 @@ Executing 'mmap-inherit':
 (mmap-inherit) open "sample.txt"
 (mmap-inherit) mmap "sample.txt"
 Kernel PANIC at ../../vm/vm.c:66 in vm_alloc_page_with_initializer(): assertion `VM_TYPE(type) != VM_UNINIT' failed.
-Call stack: 0x8004217f38 0x8004220d60 0x8004221411 0x800421a871 0x8004221529 0x800421b782 0x80042079ef.
+Call stack: 0x8004217f38 0x8004220d59 0x800422140a 0x800421a871 0x8004221522 0x800421b782 0x80042079ef.
 The `backtrace' program can make call stacks useful.
 Read "Backtraces" in the "Debugging Tools" chapter
 of the Pintos documentation for more information.
-Timer: 82 ticks
-Thread: 30 idle ticks, 44 kernel ticks, 8 user ticks
+Timer: 106 ticks
+Thread: 30 idle ticks, 66 kernel ticks, 10 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 155 reads, 478 writes
 hd1:0: 215 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1460 characters output
+Console: 1462 characters output
 Key

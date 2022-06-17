@@ -1,21 +1,21 @@
 FAIL
 Kernel panic in run: PANIC at ../../filesys/inode.c:305 in inode_allow_write(): assertion `inode->deny_write_cnt <= inode->open_cnt' failed.
-Call stack: 0x8004217f38 0x800422025b 0x800421f061 0x800421ee0e 0x800421ba5f 0x80042072f1 0x800421d18a 0x800421ccd0 0x8004208fd7 0x80042093f5 0x80042219e0 0x8004221570 0x800421a506 0x800422159c 0x800421bb52 0x800421bb1e 0x80042072f1 0x800421d18a 0x800421ce7b 0x800421cd45 0x400d49
+Call stack: 0x8004217f38 0x8004220254 0x800421f05a 0x800421ee07 0x800421ba5f 0x80042072f1 0x800421d18a 0x800421ccd0 0x8004208fd7 0x80042093f5 0x80042219d9 0x8004221569 0x800421a506 0x8004221595 0x800421bb52 0x800421bb1e 0x80042072f1 0x800421d18a 0x800421ce7b 0x800421cd45 0x400d49
 Translation of call stack:
 0x0000008004217f38: debug_panic (lib/kernel/debug.c:32)
-0x000000800422025b: inode_allow_write (filesys/inode.c:306)
-0x000000800421f061: file_allow_write (filesys/file.c:137)
-0x000000800421ee0e: file_close (filesys/file.c:56)
+0x0000008004220254: inode_allow_write (filesys/inode.c:306)
+0x000000800421f05a: file_allow_write (filesys/file.c:137)
+0x000000800421ee07: file_close (filesys/file.c:56)
 0x000000800421ba5f: process_exit (userprog/process.c:268)
 0x00000080042072f1: thread_exit (threads/thread.c:342)
 0x000000800421d18a: fork (userprog/syscall.c:127)
 0x000000800421ccd0: page_fault (userprog/exception.c:149)
 0x0000008004208fd7: intr_handler (threads/interrupt.c:352)
 0x00000080042093f5: intr_entry (threads/intr-stubs.o:?)
-0x00000080042219e0: file_backed_destroy (vm/file.c:71)
-0x0000008004221570: kill_page (vm/vm.c:329)
+0x00000080042219d9: file_backed_destroy (vm/file.c:71)
+0x0000008004221569: kill_page (vm/vm.c:328)
 0x000000800421a506: hash_clear (lib/kernel/hash.c:58)
-0x000000800422159c: supplemental_page_table_kill (vm/vm.c:338)
+0x0000008004221595: supplemental_page_table_kill (vm/vm.c:337)
 0x000000800421bb52: process_cleanup (userprog/process.c:301)
 0x000000800421bb1e: process_exit (userprog/process.c:287)
 0x00000080042072f1: thread_exit (threads/thread.c:342)
