@@ -65,7 +65,7 @@ file_backed_swap_out (struct page *page) {
 static void
 file_backed_destroy (struct page *page) {
 	struct file_page *p UNUSED = &page->file;
-	/* 안애매함 */
+	/* 안애매함? */
 	do_munmap(page->va);
 	
 	if (page->frame)
