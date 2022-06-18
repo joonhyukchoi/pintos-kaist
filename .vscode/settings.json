@@ -10,6 +10,7 @@
     "filesys.h": "c",
     "file.h": "c",
     "flags.h": "c",
-    "*.inc": "c"
+    "*.inc": "c",
+    "main.h": "c"
   }
 }

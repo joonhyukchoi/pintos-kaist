@@ -18,33 +18,36 @@ Executing 'page-merge-mm':
 (page-merge-mm) init
 (page-merge-mm) sort chunk 0
 (page-merge-mm) sort chunk 1
-(child-qsort-mm) open "buf0": FAILED
-child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 2
-(child-qsort-mm) open "buf1": FAILED
-child-qsort-mm: exit(1)
+child-qsort-mm: exit(80)
+child-qsort-mm: exit(80)
 (page-merge-mm) sort chunk 3
+child-qsort-mm: exit(80)
 (page-merge-mm) sort chunk 4
-child-qsort-mm: exit(80)
-child-qsort-mm: exit(80)
 (page-merge-mm) sort chunk 5
-(child-qsort-mm) open "buf4": FAILED
-child-qsort-mm: exit(1)
+child-qsort-mm: exit(80)
+child-qsort-mm: exit(80)
 (page-merge-mm) sort chunk 6
+(child-qsort-mm) open "buf5": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 7
-child-qsort-mm: exit(80)
-child-qsort-mm: exit(80)
 (page-merge-mm) wait for child 0
-(page-merge-mm) wait for child 0: FAILED
+(page-merge-mm) wait for child 1
+(page-merge-mm) wait for child 2
+(page-merge-mm) wait for child 3
+child-qsort-mm: exit(80)
+(page-merge-mm) wait for child 4
+(page-merge-mm) wait for child 5
+(page-merge-mm) wait for child 5: FAILED
 page-merge-mm: exit(1)
 Execution of 'page-merge-mm' complete.
-Timer: 231 ticks
-Thread: 30 idle ticks, 32 kernel ticks, 169 user ticks
+Timer: 287 ticks
+Thread: 30 idle ticks, 32 kernel ticks, 225 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 3080 reads, 4678 writes
+hd0:1: 5462 reads, 6214 writes
 hd1:0: 224 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 1645 characters output
+Console: 1738 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

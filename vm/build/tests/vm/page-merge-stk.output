@@ -21,25 +21,25 @@ Executing 'page-merge-stk':
 child-qsort: exit(-1)
 child-qsort: exit(-1)
 (page-merge-stk) sort chunk 2
-child-qsort: exit(-1)
 (page-merge-stk) sort chunk 3
+child-qsort: exit(-1)
+child-qsort: exit(-1)
 (page-merge-stk) sort chunk 4
 child-qsort: exit(-1)
-child-qsort: exit(-1)
 (page-merge-stk) sort chunk 5
+child-qsort: exit(-1)
 (page-merge-stk) sort chunk 6
 child-qsort: exit(-1)
 (page-merge-stk) sort chunk 7
-child-qsort: exit(-1)
-child-qsort: exit(-1)
 (page-merge-stk) wait for child 0
 (page-merge-stk) wait for child 0: FAILED
 page-merge-stk: exit(1)
+child-qsort: exit(-1)
 Execution of 'page-merge-stk' complete.
 Timer: 181 ticks
-Thread: 30 idle ticks, 33 kernel ticks, 119 user ticks
+Thread: 30 idle ticks, 34 kernel ticks, 117 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 583 reads, 4678 writes
+hd0:1: 558 reads, 4678 writes
 hd1:0: 224 reads, 0 writes
 hd1:1: 0 reads, 0 writes
 Console: 1549 characters output

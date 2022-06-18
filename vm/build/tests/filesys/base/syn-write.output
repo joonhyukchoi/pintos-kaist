@@ -18,8 +18,8 @@ Executing 'syn-write':
 (syn-write) create "stuff"
 child-syn-wrt: exit(0)
 (syn-write) exec child 1 of 10: "child-syn-wrt 0"
-(syn-write) exec child 2 of 10: "child-syn-wrt 1"
 child-syn-wrt: exit(1)
+(syn-write) exec child 2 of 10: "child-syn-wrt 1"
 child-syn-wrt: exit(2)
 (syn-write) exec child 3 of 10: "child-syn-wrt 2"
 child-syn-wrt: exit(3)
@@ -51,13 +51,13 @@ child-syn-wrt: exit(9)
 (syn-write) end
 syn-write: exit(0)
 Execution of 'syn-write' complete.
-Timer: 116 ticks
-Thread: 30 idle ticks, 43 kernel ticks, 43 user ticks
+Timer: 90 ticks
+Thread: 30 idle ticks, 34 kernel ticks, 26 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 676 reads, 522 writes
 hd1:0: 226 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2416 characters output
+Console: 2415 characters output
 Keyboard: 0 keys pressed
 Exception: 0 page faults
 Powering off...

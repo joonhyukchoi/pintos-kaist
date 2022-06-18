@@ -40,6 +40,7 @@ file_backed_initializer (struct page *page, enum vm_type type, void *kva) {
 	file_page->read_byte = dummy->read_bytes;
 	file_page->zero_byte = dummy->zero_bytes;
 	file_page->type = type;
+	// printf("$$$$ %d %d", file_page->read_byte, file_page->zero_byte);
 	if(file_read_at(dummy->vmfile , kva , dummy->read_bytes , dummy->ofs ) != dummy->read_bytes) {
 
 		return false;
@@ -66,7 +67,7 @@ static void
 file_backed_destroy (struct page *page) {
 	struct file_page *p UNUSED = &page->file;
 	/* 안애매함? */
-	do_munmap(page->va);
+	// do_munmap(page->va);
 	
 	if (page->frame)
 	{
@@ -82,14 +83,19 @@ lazy_load_file (struct page *page, struct aux_struct *aux) {
 	/* TODO: Load the segment from the file */
 	/* TODO: This called when the first page fault occurs on address VA. */
 	/* TODO: VA is available when calling this function. */
-
 	/* pintos project3 */
-	if (file_read_at(aux->vmfile, page->frame->kva, aux->read_bytes, aux->ofs) != (int) aux->read_bytes) {
+	off_t ck;
+	ck = file_read_at(page->file.file, page->frame->kva, page->file.read_byte, page->file.offset);
+	if (ck != (int) page->file.read_byte) {
 	    palloc_free_page (page->frame->kva);
 		free(aux);
 		return false;
 	}
-	memset (page->frame->kva + aux->read_bytes, 0, aux->zero_bytes);
+	// printf("page writable check: %d\n",page->writable);
+	if (page->writable) {
+		pml4_set_dirty(thread_current()->pml4, page->va, true);
+	}
+	memset (page->frame->kva + page->file.read_byte, 0, page->file.zero_byte);
 	free(aux);
 
 	return true;
@@ -126,7 +132,7 @@ do_mmap (void *addr, size_t length, int writable,
 		temp_aux->zero_bytes = PGSIZE - read_bytes;
 		temp_aux->writable = writable;
 		temp_aux->upage = va;
-
+		
 		if (!vm_alloc_page_with_initializer(VM_FILE, va, writable, lazy_load_file, temp_aux))
 			return NULL;
 		
@@ -143,13 +149,40 @@ do_mmap (void *addr, size_t length, int writable,
  * 
  * + 필요에 따라 vm/vm.c에서 vm_file_init 및 vm_file_initializer를 수정할 수 있음. */
 /* pintos project3 */
+void munmap_page (struct hash_elem *e, void *aux){
+	struct page *page = hash_entry(e, struct page , elem);
+	// printf("page check: %d %d\n",page, page->file.read_byte);
+	if (page->file.type == 2) {
+		// printf("check munmap ******* ?????? %d\n", spt_find_page(&thread_current()->spt, page->va));
+		struct file *file = page->file.file;
+		off_t read_size = file_length(file);
+		void* addr = page->va;
+		while (page){
+			if (page->file.file != file) {
+				return;
+			} 
+			if (pml4_is_dirty(thread_current()->pml4, addr)) {
+				pml4_set_dirty(thread_current()->pml4, addr, false);
+				file_write_at(page->file.file, addr, page->file.read_byte, page->file.offset);
+			}	
+			addr += PGSIZE;
+			page = spt_find_page(&thread_current()->spt, addr);
+		}
+	}
+}
+
+void do_do_munmap() {
+	struct supplemental_page_table *spt = &thread_current()->spt;
+	hash_clear(&spt->hash, munmap_page);
+}
+
 void
 do_munmap (void *addr) {
-	struct page *page = spt_find_page(&thread_current()->spt, addr);
+	struct page *page = spt_find_page(&thread_current()->spt, pg_round_down(addr));
+	// printf("check munmap ******* %d\n", page);
 	struct file *file = page->file.file;
-
 	off_t read_size = file_length(file);
-
+	// printf("check munmap ******* \n");
 	while (page = spt_find_page(&thread_current()->spt, addr)){
 		if (page->file.file != file) {
 			return;
