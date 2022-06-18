@@ -208,7 +208,7 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
 	uint16_t STACK_LIMIT = USER_STACK - (1<<20);
 	uint64_t limit = f->rsp - 8;
 
-    if (page == NULL && limit >= addr) // ==
+    if (page == NULL && limit == addr)
     {
         if(f->rsp > STACK_LIMIT &&  USER_STACK > f->rsp){
 			while (limit <= thread_current()->stack_bottom) {
@@ -274,10 +274,6 @@ vm_do_claim_page (struct page *page) {
 	/* TODO: Insert page table entry to map page's VA to frame's PA. */
 	/* pintos project3 */
 	pml4_set_page(thread_current()->pml4, page->va, frame->kva, page->writable);
-	// if(page_get_type(page) && VM_MARKER_0)
-	// {
-	// 	return true;
-	// }
 
     return swap_in(page, frame->kva);
 }

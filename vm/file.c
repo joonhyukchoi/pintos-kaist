@@ -39,7 +39,7 @@ file_backed_initializer (struct page *page, enum vm_type type, void *kva) {
 	file_page->offset = dummy->ofs;
 	file_page->read_byte = dummy->read_bytes;
 	file_page->zero_byte = dummy->zero_bytes;
-
+	file_page->type = type;
 	if(file_read_at(dummy->vmfile , kva , dummy->read_bytes , dummy->ofs ) != dummy->read_bytes) {
 
 		return false;

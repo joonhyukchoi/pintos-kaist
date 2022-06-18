@@ -8,6 +8,8 @@ struct page;
 enum vm_type;
 
 struct file_page {
+	vm_initializer *init;
+	enum vm_type type;
 	struct file* file;
 	off_t offset;
 	uint32_t read_byte;

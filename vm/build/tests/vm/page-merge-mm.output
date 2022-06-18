@@ -4,7 +4,7 @@ Kernel command line: -q -f put page-merge-mm put child-qsort-mm run page-merge-m
 Pintos booting with: 
 	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
 	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
-Calibrating timer...  25,369,600 loops/s.
+Calibrating timer...  157,081,600 loops/s.
 hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
 hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
 hd1:0: detected 224 sector (112 kB) disk, model "QEMU HARDDISK", serial "QM00003"
@@ -18,38 +18,33 @@ Executing 'page-merge-mm':
 (page-merge-mm) init
 (page-merge-mm) sort chunk 0
 (page-merge-mm) sort chunk 1
+(child-qsort-mm) open "buf0": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 2
-child-qsort-mm: exit(80)
+(child-qsort-mm) open "buf1": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 3
-child-qsort-mm: exit(80)
 (page-merge-mm) sort chunk 4
 child-qsort-mm: exit(80)
-(page-merge-mm) sort chunk 5
-load: child-qsort-mm: open failed
-child-qsort-mm: exit(-1)
 child-qsort-mm: exit(80)
+(page-merge-mm) sort chunk 5
+(child-qsort-mm) open "buf4": FAILED
+child-qsort-mm: exit(1)
 (page-merge-mm) sort chunk 6
 (page-merge-mm) sort chunk 7
-load: child-qsort-mm: open failed
-child-qsort-mm: exit(-1)
+child-qsort-mm: exit(80)
 child-qsort-mm: exit(80)
 (page-merge-mm) wait for child 0
-child-qsort-mm: exit(-1)
-Kernel PANIC at ../../filesys/inode.c:304 in inode_allow_write(): assertion `inode->deny_write_cnt > 0' failed.
-Call stack: 0x8004217f38 0x8004220203 0x800421f05a 0x800421ee07 0x800421ba5f 0x80042072f1 0x800421d18a 0x800421ccd0 0x8004208fd7 0x80042093f5 0x80042219d9 0x8004221569 0x800421a506 0x8004221595 0x800421bb52 0x800421bb1e 0x80042072f1 0x800421d18a 0x800421ce7b 0x800421cd45 0x4010c1 0Interrupt 0x0d (#GP General Protection Exception) at rip=8004214f72
- cr2=0000000000000038 error=               0
-rax 0000800427600000 rbx 0000004747feb0ff rcx 00000080040b8000 rdx 00000000000003d4
-rsp 000000800424bae0 rbp 000000800424baf0 rsi 000000000000aa0f rdi 0000000000000000
-rip 0000008004214f72 r8 000000800424b9f8  r9 000000800421b3b1 r10 0000000000000000
-r11 0000000000000206 r12 000000800421ce1c r13 0000010000800000 r14 0000800424be6000
-r15 0000800420814a00 rflags 00000006
-es: 0010 ds: 0010 cs: 0008 ss: 0010
-Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
-Timer: 691 ticks
-Thread: 30 idle ticks, 61 kernel ticks, 600 user ticks
+(page-merge-mm) wait for child 0: FAILED
+page-merge-mm: exit(1)
+Execution of 'page-merge-mm' complete.
+Timer: 231 ticks
+Thread: 30 idle ticks, 32 kernel ticks, 169 user ticks
 hd0:0: 0 reads, 0 writes
-hd0:1: 3227 reads, 4678 writes
+hd0:1: 3080 reads, 4678 writes
 hd1:0: 224 reads, 0 writes
 hd1:1: 0 reads, 0 writes
-Console: 2508 characters output
-Key
+Console: 1645 characters output
+Keyboard: 0 keys pressed
+Exception: 0 page faults
+Powering off...
