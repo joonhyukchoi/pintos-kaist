@@ -92,11 +92,9 @@ vm_alloc_page_with_initializer (enum vm_type type, void *upage, bool writable,
     return success;
 err:
     return success;
-    // return false;
 }
 
 /* Find VA from spt and return page. On error, return NULL. */
-/* 애매함 */
 struct page *
 spt_find_page (struct supplemental_page_table *spt UNUSED, void *va UNUSED) {
 	/* TODO: Fill this function. */
@@ -220,7 +218,7 @@ vm_try_handle_fault (struct intr_frame *f UNUSED, void *addr UNUSED,
         return false;
     }
 	
-
+	// 여기 코딩
 	// if (page->uninit->type == VM_FILE) {
 	// 	//로드
 	// }
@@ -244,7 +242,6 @@ vm_dealloc_page (struct page *page) {
 /* Claim the page that allocate on VA.
  * VA를 할당할 페이지를 요청합니다.
  * 먼저 페이지를 가져온 다음 해당 페이지와 함께 vm_do_claim_page를 호출해야 합니다. */
-/* 애매함 */
 bool
 vm_claim_page (void *va UNUSED) {
 	struct page *page = spt_find_page(&thread_current()->spt, va);
@@ -308,11 +305,11 @@ void copy_page (struct hash_elem *e, void *aux)
 bool
 supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED,
 		struct supplemental_page_table *src UNUSED) {
-	// hash_first(&init, src->hash);
+
 	/* src  테이블에서 모든 page 구조체를  dst 테이블로 복사*/
 	/* 타입이 uninit, anon, file 얘네를 다 uninit으로 할당 */
 	hash_apply(&src->hash, copy_page);
-	return true; // 무조건 true의 문제??
+	return true;
 }
 
 /* pintos project3 */
@@ -328,6 +325,6 @@ void
 supplemental_page_table_kill (struct supplemental_page_table *spt UNUSED) {
 	/* TODO: Destroy all the supplemental_page_table hold by thread and
 	 * TODO: writeback all the modified contents to the storage. */
-	// printf("supplemental_page_table_kill 되냐?\n");
+
 	hash_clear(&spt->hash, kill_page);
 }

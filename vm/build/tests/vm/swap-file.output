@@ -17,7 +17,7 @@ Executing 'swap-file':
 (swap-file) begin
 (swap-file) open "large.txt"
 (swap-file) mmap "large.txt"
-Kernel PANIC at ../../vm/vm.c:172 in vm_get_frame(): todo
+Kernel PANIC at ../../vm/vm.c:170 in vm_get_frame(): todo
 Call stack: 0x8004217f38 0x800422100e 0x800422130e 0x8004221246 0x800421ccae 0x8004208fd7 0x80042093f5 0x4001f3 0x400d85 0x400dce 0Interrupt 0x0d (#GP General Protection Exception) at rip=8004214f72
  cr2=00000000101ce000 error=               0
 rax 0000800423c15800 rbx 0000800423e07800 rcx 00000080040b8000 rdx 00000000000003d4
@@ -27,8 +27,8 @@ r11 0000000000000206 r12 0000800423ef1800 r13 0000800420a7c000 r14 0000800423cf1
 r15 0000010000000000 rflags 00000006
 es: 0010 ds: 0010 cs: 0008 ss: 0010
 Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
-Timer: 345 ticks
-Thread: 30 idle ticks, 212 kernel ticks, 103 user ticks
+Timer: 364 ticks
+Thread: 30 idle ticks, 218 kernel ticks, 116 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 11424 reads, 15900 writes
 hd1:0: 7931 reads, 0 writes

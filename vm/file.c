@@ -40,7 +40,7 @@ file_backed_initializer (struct page *page, enum vm_type type, void *kva) {
 	file_page->read_byte = dummy->read_bytes;
 	file_page->zero_byte = dummy->zero_bytes;
 	file_page->type = type;
-	// printf("$$$$ %d %d", file_page->read_byte, file_page->zero_byte);
+
 	if(file_read_at(dummy->vmfile , kva , dummy->read_bytes , dummy->ofs ) != dummy->read_bytes) {
 
 		return false;
@@ -48,26 +48,27 @@ file_backed_initializer (struct page *page, enum vm_type type, void *kva) {
 	return true;
 }
 
-/* Swap in the page by read contents from the file. */
+/* Swap in the page by read contents from the file.
+ * + 파일에서 내용을 읽어 kva에서 페이지를 swap in 합니다. file system과 동기화해야 합니다. */
 static bool
 file_backed_swap_in (struct page *page, void *kva) {
 	struct file_page *file_page UNUSED = &page->file;
 }
 
-/* Swap out the page by writeback contents to the file. */
+/* Swap out the page by writeback contents to the file.
+ * + 파일에 내용을 다시 기록하여 페이지를 swap out 합니다. page가 dirty한지 먼저 확인하는 것이 좋습니다.
+ * not dirty하면 파일의 내용을 수정할 필요가 없습니다. 페이지를 swap out 한 후 page의 dirty bit를 끄는 것을 잊지 마십시오. */
 static bool
 file_backed_swap_out (struct page *page) {
 	struct file_page *file_page UNUSED = &page->file;
 }
 
 /* Destory the file backed page. PAGE will be freed by the caller.
- * 연결된 파일을 닫아 파일 백업 페이지를 파괴합니다. 내용이 더러우면 변경 사항을 파일에 다시 기록하십시오.
+ * 연결된 파일을 닫아 파일 백업 페이지를 파괴합니다. 내용이 dirty하면 변경 사항을 파일에 다시 기록하십시오.
  * 이 함수에서 페이지 구조를 해제할 필요가 없습니다. file_backed_destroy의 호출자가 이를 처리해야 합니다.*/
 static void
 file_backed_destroy (struct page *page) {
 	struct file_page *p UNUSED = &page->file;
-	/* 안애매함? */
-	// do_munmap(page->va);
 	
 	if (page->frame)
 	{
@@ -84,17 +85,12 @@ lazy_load_file (struct page *page, struct aux_struct *aux) {
 	/* TODO: This called when the first page fault occurs on address VA. */
 	/* TODO: VA is available when calling this function. */
 	/* pintos project3 */
-	off_t ck;
-	ck = file_read_at(page->file.file, page->frame->kva, page->file.read_byte, page->file.offset);
-	if (ck != (int) page->file.read_byte) {
+	if (file_read_at(page->file.file, page->frame->kva, page->file.read_byte, page->file.offset) != (int) page->file.read_byte) {
 	    palloc_free_page (page->frame->kva);
 		free(aux);
 		return false;
 	}
-	// printf("page writable check: %d\n",page->writable);
-	if (page->writable) {
-		pml4_set_dirty(thread_current()->pml4, page->va, true);
-	}
+
 	memset (page->frame->kva + page->file.read_byte, 0, page->file.zero_byte);
 	free(aux);
 
@@ -118,7 +114,7 @@ do_mmap (void *addr, size_t length, int writable,
 		struct file *file, off_t offset) {
 	
 	off_t read_size = file_length(file);
-	// off_t zero_size = length - read_size;
+
 	void* va = addr;
 
 	while (0 < read_size){
@@ -137,7 +133,7 @@ do_mmap (void *addr, size_t length, int writable,
 			return NULL;
 		
 		read_size -= read_bytes;
-		va += PGSIZE; //애매함 
+		va += PGSIZE;
 		offset += read_bytes;
 	}
 	return addr;
@@ -151,9 +147,9 @@ do_mmap (void *addr, size_t length, int writable,
 /* pintos project3 */
 void munmap_page (struct hash_elem *e, void *aux){
 	struct page *page = hash_entry(e, struct page , elem);
-	// printf("page check: %d %d\n",page, page->file.read_byte);
+
 	if (page->file.type == 2) {
-		// printf("check munmap ******* ?????? %d\n", spt_find_page(&thread_current()->spt, page->va));
+
 		struct file *file = page->file.file;
 		off_t read_size = file_length(file);
 		void* addr = page->va;
@@ -179,10 +175,10 @@ void do_do_munmap() {
 void
 do_munmap (void *addr) {
 	struct page *page = spt_find_page(&thread_current()->spt, pg_round_down(addr));
-	// printf("check munmap ******* %d\n", page);
+
 	struct file *file = page->file.file;
 	off_t read_size = file_length(file);
-	// printf("check munmap ******* \n");
+
 	while (page = spt_find_page(&thread_current()->spt, addr)){
 		if (page->file.file != file) {
 			return;

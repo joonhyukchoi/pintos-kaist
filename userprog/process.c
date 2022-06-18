@@ -53,8 +53,6 @@ process_create_initd (const char *file_name) {
 	strlcpy (fn_copy, file_name, PGSIZE);
 
 	/* Create a new thread to execute FILE_NAME. */
-  // printf("create_initd filename: %s\n",file_name);
-
   char *save_ptr;
 	strtok_r(file_name, " ", &save_ptr);
 
@@ -87,7 +85,7 @@ process_fork (const char *name, struct intr_frame *if_ UNUSED) {
   tid_t ctid = thread_create (name, PRI_DEFAULT, __do_fork, cur);
   if (ctid == TID_ERROR)
     return TID_ERROR;
-//   struct thread *child = get_child_process(ctid);
+
   sema_down(&cur->fork_sema);
   return ctid;
 }
@@ -179,7 +177,6 @@ __do_fork (void *aux) {
     }
     cnt++;
   }
-//   current->next_fd = parent->next_fd;
 
   sema_up(&parent->fork_sema);
 
@@ -264,10 +261,9 @@ process_exit (void) {
   if (curr->run_file)
     file_close(curr->run_file);
 
-//   printf("process exit>222222?\n");
   int cnt = 2;
   while (cnt < 128) {
-    if (table[cnt]) { // != 0 && table[cnt] != NULL
+    if (table[cnt]) {
       file_close(table[cnt]);
       table[cnt] = NULL;
     }
@@ -279,11 +275,8 @@ process_exit (void) {
   sema_up(&curr->load_sema);
   sema_down(&curr->exit_sema);
 
-//   printf("process exit>55555?\n");
   palloc_free_page(table);
-//   printf("process exit>6666?\n");
   process_cleanup();
-//   printf("process exit>7777?\n");
 }
 
 /* Free the current process's resources. */
@@ -529,10 +522,10 @@ void argument_stack(char **parse, int count, void **esp) {
 
 	// * argv[i] 문자열
 	for (int i = count - 1; -1 < i; i--) {
-    // printf("%d parse[%d]: '%s' / len: %d\n", (int)*esp, i, parse[i], strlen(parse[i]));
+
     *esp -= (strlen(parse[i]) + 1);
     memcpy(*esp, parse[i], strlen(parse[i]) + 1);
-		// strlcpy(*esp, parse[i], strlen(parse[i]) + 1);
+
 		size += strlen(parse[i]) + 1;
 		argv_address[i] = *esp;
 	}
@@ -807,7 +800,6 @@ setup_stack (struct intr_frame *if_) {
 		success = vm_claim_page(stack_bottom);
 		if_->rsp = USER_STACK;
 		thread_current()->stack_bottom = stack_bottom;
-		// printf("stack_bottom ? %p\n", USER_STACK);
 	}
 	return success;
 }
