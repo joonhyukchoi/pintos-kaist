@@ -1,5 +1,4 @@
 /* anon.c: Implementation of page for non-disk image (a.k.a. anonymous page). */
-//son..... hmm..
 
 #include "vm/vm.h"
 #include "devices/disk.h"
