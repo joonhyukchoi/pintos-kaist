@@ -146,15 +146,15 @@ vm_get_victim (void) {
 
 		struct page * cur_page = hash_entry(iter->elem, struct page ,elem);
 
-		if(pml4_is_accessed(cur_page->pml4, cur_page->va)) {
-			pml4_set_accessed(cur_page->pml4, cur_page->va, false);
+		if(pml4_is_accessed(curr->pml4, cur_page->va)) {
+			pml4_set_accessed(curr->pml4, cur_page->va, false);
 			continue;
 		}
 		if(cur_page->frame == NULL) continue;
 		
 		if (page_get_type(cur_page) == VM_FILE)
 		{
-			if (pml4_is_dirty(cur_page->pml4, cur_page->va))
+			if (pml4_is_dirty(curr->pml4, cur_page->va))
 			{
 				file_write_at(cur_page->file.file, cur_page->va, cur_page->file.read_byte, cur_page->file.offset);
 			}
@@ -182,14 +182,7 @@ vm_evict_frame (void) {
 		struct thread *curr = thread_current();
 		struct page *victim_page = victim->page;
 		
-		if(page_get_type(victim_page) == VM_FILE)
-		{
-			file_backed_swap_out(victim_page);
-		}
-		else if (page_get_type(victim_page) == VM_ANON)
-		{
-			anon_swap_out(victim_page);
-		}
+		swap_out(victim_page);
 	}
 	return victim;
 }

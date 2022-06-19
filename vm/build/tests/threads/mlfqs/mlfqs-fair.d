@@ -12,6 +12,7 @@ tests/threads/mlfqs/mlfqs-fair.o: ../../tests/threads/mlfqs/mlfqs-fair.c \
  ../../include/./threads/mmu.h ../../include/threads/pte.h \
  ../../include/threads/vaddr.h ../../include/threads/loader.h \
  ../../include/vm/uninit.h ../../include/vm/anon.h \
- ../../include/vm/file.h ../../include/filesys/file.h \
- ../../include/filesys/off_t.h ../../include/threads/synch.h \
- ../../include/devices/timer.h ../../include/lib/round.h
+ ../../include/lib/kernel/bitmap.h ../../include/vm/file.h \
+ ../../include/filesys/file.h ../../include/filesys/off_t.h \
+ ../../include/threads/synch.h ../../include/devices/timer.h \
+ ../../include/lib/round.h

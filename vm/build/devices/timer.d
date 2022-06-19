@@ -11,6 +11,6 @@ devices/timer.o: ../../devices/timer.c ../../include/devices/timer.h \
  ../../include/threads/palloc.h ../../include/./threads/mmu.h \
  ../../include/threads/pte.h ../../include/threads/vaddr.h \
  ../../include/threads/loader.h ../../include/vm/uninit.h \
- ../../include/vm/anon.h ../../include/vm/file.h \
- ../../include/filesys/file.h ../../include/filesys/off_t.h \
- ../../include/threads/synch.h
+ ../../include/vm/anon.h ../../include/lib/kernel/bitmap.h \
+ ../../include/vm/file.h ../../include/filesys/file.h \
+ ../../include/filesys/off_t.h ../../include/threads/synch.h

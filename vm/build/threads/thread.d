@@ -7,7 +7,8 @@ threads/thread.o: ../../threads/thread.c ../../include/threads/thread.h \
  ../../include/threads/palloc.h ../../include/./threads/mmu.h \
  ../../include/threads/pte.h ../../include/threads/vaddr.h \
  ../../include/threads/loader.h ../../include/vm/uninit.h \
- ../../include/vm/anon.h ../../include/vm/file.h \
+ ../../include/vm/anon.h ../../include/lib/kernel/bitmap.h \
+ ../../include/lib/inttypes.h ../../include/vm/file.h \
  ../../include/filesys/file.h ../../include/filesys/off_t.h \
  ../../include/threads/synch.h ../../include/lib/random.h \
  ../../include/lib/stdio.h ../../include/lib/stdarg.h \
