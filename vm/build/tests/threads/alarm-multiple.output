@@ -55,7 +55,7 @@ Executing 'alarm-multiple':
 (alarm-multiple) end
 Execution of 'alarm-multiple' complete.
 Timer: 618 ticks
-Thread: 580 idle ticks, 38 kernel ticks, 0 user ticks
+Thread: 580 idle ticks, 39 kernel ticks, 0 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 9 reads, 18 writes
 hd1:1: 0 reads, 0 writes

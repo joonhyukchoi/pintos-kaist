@@ -49,14 +49,13 @@ anon_initializer (struct page *page, enum vm_type type, void *kva) {
 static bool
 anon_swap_in (struct page *page, void *kva) {
 	struct anon_page *anon_page = &page->anon;
-
-	/* swap out에서 매핑을 해제하게 된다면 여기서 할당해줘야 함 */
-
 	/* pintos project3 */
 	struct disk *cur_disk = thread_current()->disk_table;
 	size_t sector_slot = page->anon.swap_slot;
 	disk_read(cur_disk, sector_slot, kva);
 	bitmap_set(cur_disk, sector_slot, false);
+
+	return true;
 }
 
 /* Swap out the page by writing contents to the swap disk.
@@ -80,7 +79,14 @@ anon_swap_out (struct page *page) {
 	disk_write(cur_disk, empty_slot, page->frame->kva);
 	bitmap_set(cur_disk, empty_slot, true);
 	/* 물리 메모리 매핑 해제 해야함=?? */
+	if (page->frame)
+	{
+		palloc_free_page(page->frame->kva);
+		// free(page->frame);
+	}
+	pml4_clear_page(thread_current()->pml4, page->va);
 
+	return true;
 }
 
 /* Destroy the anonymous page. PAGE will be freed by the caller. */

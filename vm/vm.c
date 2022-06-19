@@ -154,10 +154,6 @@ vm_get_victim (void) {
 		
 		if (page_get_type(cur_page) == VM_FILE)
 		{
-			if (pml4_is_dirty(curr->pml4, cur_page->va))
-			{
-				file_write_at(cur_page->file.file, cur_page->va, cur_page->file.read_byte, cur_page->file.offset);
-			}
 			victim = cur_page->frame;
 			break;
 		}
@@ -181,7 +177,7 @@ vm_evict_frame (void) {
 	if(victim != NULL){
 		struct thread *curr = thread_current();
 		struct page *victim_page = victim->page;
-		
+
 		swap_out(victim_page);
 	}
 	return victim;
@@ -205,7 +201,7 @@ vm_get_frame (void) {
 
     if (frame->kva == NULL){
         frame = NULL;
-		PANIC("todo");
+		// PANIC("todo");
 	}
 
 	ASSERT (frame != NULL);
@@ -301,6 +297,10 @@ vm_claim_page (void *va UNUSED) {
 static bool
 vm_do_claim_page (struct page *page) {
 	struct frame *frame = vm_get_frame ();
+
+	if (frame == NULL) {
+		frame = vm_evict_frame();
+	}
 
 	/* Set links */
 	frame->page = page;

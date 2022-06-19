@@ -13,6 +13,7 @@ struct file_page {
 	enum vm_type type;
 	struct file* file;
 	off_t offset;
+	size_t swap_slot;
 };
 
 void vm_file_init (void);
