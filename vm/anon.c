@@ -24,7 +24,11 @@ static const struct page_operations anon_ops = {
 void
 vm_anon_init (void) {
 	/* TODO: Set up the swap_disk. */
-	swap_disk = NULL;
+	/* pintos project3 */
+	swap_disk = disk_get(1, 1);
+	/* disk sector 크기 = 512bytes
+	 * page 크기 = 4096bytes = 512*8 bytes = disk sector*8 */
+	thread_current()->disk_table = bitmap_create(disk_size(swap_disk) / 8);
 }
 
 /* Initialize the file mapping.
@@ -45,15 +49,38 @@ anon_initializer (struct page *page, enum vm_type type, void *kva) {
 static bool
 anon_swap_in (struct page *page, void *kva) {
 	struct anon_page *anon_page = &page->anon;
+
+	/* swap out에서 매핑을 해제하게 된다면 여기서 할당해줘야 함 */
+
+	/* pintos project3 */
+	struct disk *cur_disk = thread_current()->disk_table;
+	size_t sector_slot = page->anon.swap_slot;
+	disk_read(cur_disk, sector_slot, kva);
+	bitmap_set(cur_disk, sector_slot, false);
 }
 
 /* Swap out the page by writing contents to the swap disk.
  * + 메모리에서 디스크로 내용을 복사하여 anonymous page를 swap disk로 교체합니다.
  * 먼저 swap table을 사용하여 디스크에서 free swap slot을 찾은 다음 데이터 page를 슬롯에 복사합니다.
- * 데이터의 위치는 page struct에 저장해야 합니다. 디스크에 free slot이 더 이상 없으면 커널을 panic 상태로 만들 수 있습니다. */
+ * 데이터의 위치는 page struct에 저장해야 합니다. 디스크에 free slot이 더 이상 없으면, you can panic the kernel. */
 static bool
 anon_swap_out (struct page *page) {
 	struct anon_page *anon_page = &page->anon;
+
+	/* pintos project3 */
+	/* 해시테이블 순회해서 swap_slot = 1이 아닌거를 찾아서 */
+	struct disk *cur_disk = thread_current()->disk_table;
+
+	size_t empty_slot = bitmap_scan(cur_disk, 0, 1, false);
+	
+	if (empty_slot == BITMAP_ERROR){
+		PANIC("empty_slot == BITMAP_ERROR");
+	}
+	page->anon.swap_slot = empty_slot;
+	disk_write(cur_disk, empty_slot, page->frame->kva);
+	bitmap_set(cur_disk, empty_slot, true);
+	/* 물리 메모리 매핑 해제 해야함=?? */
+
 }
 
 /* Destroy the anonymous page. PAGE will be freed by the caller. */

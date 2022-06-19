@@ -123,6 +123,7 @@ struct thread {
   /* pintos project3 */
   uintptr_t rsp;
   uint64_t stack_bottom;
+  struct bitmap *disk_table;
 
 #ifdef USERPROG
 	/* Owned by userprog/process.c. */

@@ -57,9 +57,6 @@ struct page {
                           False일 경우 해당 주소에 write 불가능 */
     bool is_loaded;    /* 물리메모리의 탑재 여부를 알려주는 플래그 */
 	
-    /* Swapping 과제에서 다룰 예정 */
-    size_t swap_slot; /* 스왑 슬롯 */
-	
     /* ‘vm_entry들을 위한 자료구조’ 부분에서 다룰 예정 */
     struct hash_elem elem; /* 해시 테이블 Element */
 

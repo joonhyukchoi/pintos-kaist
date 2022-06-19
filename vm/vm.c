@@ -12,6 +12,7 @@ static bool vm_do_claim_page (struct page *page);
  * intialize codes. */
 void
 vm_init (void) {
+	/* pintos project3 */
 	vm_anon_init ();
 	vm_file_init ();
 #ifdef EFILESYS  /* For project 4 */
@@ -134,8 +135,38 @@ spt_remove_page (struct supplemental_page_table *spt, struct page *page) {
 static struct frame *
 vm_get_victim (void) {
 	struct frame *victim = NULL;
-	 /* TODO: The policy for eviction is up to you. */
+	/* TODO: The policy for eviction is up to you. */
 
+	/* pintos project3 */
+	struct thread * curr = thread_current();
+	struct hash hash = curr->spt.hash;
+	struct hash_iterator *iter;
+	hash_first(iter,&hash);
+	while(hash_next(iter)) {
+
+		struct page * cur_page = hash_entry(iter->elem, struct page ,elem);
+
+		if(pml4_is_accessed(cur_page->pml4, cur_page->va)) {
+			pml4_set_accessed(cur_page->pml4, cur_page->va, false);
+			continue;
+		}
+		if(cur_page->frame == NULL) continue;
+		
+		if (page_get_type(cur_page) == VM_FILE)
+		{
+			if (pml4_is_dirty(cur_page->pml4, cur_page->va))
+			{
+				file_write_at(cur_page->file.file, cur_page->va, cur_page->file.read_byte, cur_page->file.offset);
+			}
+			victim = cur_page->frame;
+			break;
+		}
+		else if (page_get_type(cur_page) == VM_ANON)
+		{
+			victim = cur_page->frame;
+			break;
+		}
+	}
 	return victim;
 }
 
@@ -146,7 +177,21 @@ vm_evict_frame (void) {
 	struct frame *victim UNUSED = vm_get_victim ();
 	/* TODO: swap out the victim and return the evicted frame. */
 
-	return NULL;
+	/* pintos project3 */
+	if(victim != NULL){
+		struct thread *curr = thread_current();
+		struct page *victim_page = victim->page;
+		
+		if(page_get_type(victim_page) == VM_FILE)
+		{
+			file_backed_swap_out(victim_page);
+		}
+		else if (page_get_type(victim_page) == VM_ANON)
+		{
+			anon_swap_out(victim_page);
+		}
+	}
+	return victim;
 }
 
 /* palloc() and get frame. If there is no available page, evict the page
@@ -306,7 +351,7 @@ bool
 supplemental_page_table_copy (struct supplemental_page_table *dst UNUSED,
 		struct supplemental_page_table *src UNUSED) {
 
-	/* src  테이블에서 모든 page 구조체를  dst 테이블로 복사*/
+	/* src 테이블에서 모든 page 구조체를 dst 테이블로 복사*/
 	/* 타입이 uninit, anon, file 얘네를 다 uninit으로 할당 */
 	hash_apply(&src->hash, copy_page);
 	return true;
