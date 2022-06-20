@@ -16,18 +16,18 @@ Putting 'child-linear' into the file system...
 Executing 'page-parallel':
 (page-parallel) begin
 child-linear: exit(66)
-child-linear: exit(66)
 (page-parallel) wait for child 0
 (page-parallel) wait for child 1
+child-linear: exit(66)
 (page-parallel) wait for child 2
 child-linear: exit(66)
-(page-parallel) wait for child 3
 child-linear: exit(66)
+(page-parallel) wait for child 3
 (page-parallel) end
 page-parallel: exit(0)
 Execution of 'page-parallel' complete.
 Timer: 169 ticks
-Thread: 30 idle ticks, 39 kernel ticks, 100 user ticks
+Thread: 30 idle ticks, 36 kernel ticks, 103 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 232 reads, 456 writes
 hd1:0: 209 reads, 0 writes

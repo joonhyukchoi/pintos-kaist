@@ -257,7 +257,7 @@ process_exit (void) {
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
-  do_do_munmap();
+  //여기?
   if (curr->run_file)
     file_close(curr->run_file);
 
@@ -273,6 +273,7 @@ process_exit (void) {
   struct thread *ch;
 
   sema_up(&curr->load_sema);
+  do_do_munmap();
   sema_down(&curr->exit_sema);
 
   palloc_free_page(table);

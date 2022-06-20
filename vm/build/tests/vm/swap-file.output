@@ -27,8 +27,8 @@ r11 0000000000000206 r12 0000800423ff1800 r13 0000800420a7c000 r14 0000800423df1
 r15 0000010000000000 rflags 00000006
 es: 0010 ds: 0010 cs: 0008 ss: 0010
 Kernel PANIC recursion at ../../userprog/exception.c:98 in kill().
-Timer: 350 ticks
-Thread: 30 idle ticks, 205 kernel ticks, 115 user ticks
+Timer: 340 ticks
+Thread: 30 idle ticks, 206 kernel ticks, 104 user ticks
 hd0:0: 0 reads, 0 writes
 hd0:1: 11424 reads, 15900 writes
 hd1:0: 7931 reads, 0 writes
