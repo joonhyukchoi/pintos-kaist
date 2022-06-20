@@ -51,6 +51,7 @@ uninit_initialize (struct page *page, void *kva) {
 	vm_initializer *init = uninit->init;
 	void *aux = uninit->aux;
 
+	/* pintos project3 */
 	/* TODO: You may need to fix this function. */
 	return uninit->page_initializer (page, uninit->type, kva) &&
 		(init ? init (page, aux) : true);
@@ -65,4 +66,11 @@ uninit_destroy (struct page *page) {
 	struct uninit_page *uninit UNUSED = &page->uninit;
 	/* TODO: Fill this function.
 	 * TODO: If you don't have anything to do, just return. */
+	if (page->frame)
+	{
+		palloc_free_page(page->frame->kva);
+		free(page->frame);
+	}
+	pml4_clear_page(thread_current()->pml4, page->va);
+	free(page);
 }

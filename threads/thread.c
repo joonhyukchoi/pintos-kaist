@@ -12,8 +12,11 @@
 #include "threads/synch.h"
 #include "threads/vaddr.h"
 #include "intrinsic.h"
+// * 추가
+#include "threads/malloc.h"
 #ifdef USERPROG
 #include "userprog/process.h"
+
 #endif
 
 /* Random value for struct thread's `magic' member.
@@ -217,12 +220,28 @@ thread_create (const char *name, int priority,
 	t->tf.cs = SEL_KCSEG;
 	t->tf.eflags = FLAG_IF;
 
+  // * USERPROG 추가
+  t->parent = thread_current(); // * 부모 프로세스 저장
+  sema_init(&t->exit_sema, 0); // * exit 세마포어 0으로 초기화
+  sema_init(&t->load_sema, 0); // * load 세마포어 0으로 초기화
+  sema_init(&t->fork_sema, 0); // * fork 세마포어 0으로 초기화
+  // * 자식 리스트에 추가
+  list_push_back(&thread_current()->children, &t->child_elem);
+
+  // * 파일 디스크립터 초기값 설정
+  // t->fdt = (struct file **)calloc(128, sizeof(struct file *));
+  t->fdt = palloc_get_page(PAL_ZERO);
+	if (t->fdt == NULL) {
+		return TID_ERROR;
+	}
+  t->fdt[0] = 1;
+  t->fdt[1] = 2;
+  t->next_fd = 2;
+
 	/* Add to run queue. */
 	thread_unblock (t);
-
   // * 추가 코드
   test_max_priority();
-
 	return tid;
 }
 
@@ -242,8 +261,11 @@ cmp_priority (const struct list_elem *a, const struct list_elem *b, void *aux UN
 void test_max_priority (void) {
 
   // * 추가 코드
-  if (cmp_priority(list_begin(&ready_list), &thread_current()->elem, NULL))
-    thread_yield();
+  if (!list_empty(&ready_list)) {
+    if (cmp_priority(list_begin(&ready_list), &thread_current()->elem, NULL)) {
+      thread_yield();
+    }
+  }
 
 }
 
@@ -599,6 +621,10 @@ init_thread (struct thread *t, const char *name, int priority, int wakeup_tick) 
 	list_init(&t->donations);
 	t->wakeup_tick = wakeup_tick;
 	t->magic = THREAD_MAGIC;
+
+  // * USERPROG 추가
+  list_init(&t->children);
+
 }
 
 /* Chooses and returns the next thread to be scheduled.  Should

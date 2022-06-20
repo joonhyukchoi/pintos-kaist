@@ -18,6 +18,8 @@
 #include "threads/mmu.h"
 #include "threads/vaddr.h"
 #include "intrinsic.h"
+
+
 #ifdef VM
 #include "vm/vm.h"
 #endif
@@ -51,6 +53,9 @@ process_create_initd (const char *file_name) {
 	strlcpy (fn_copy, file_name, PGSIZE);
 
 	/* Create a new thread to execute FILE_NAME. */
+  char *save_ptr;
+	strtok_r(file_name, " ", &save_ptr);
+
 	tid = thread_create (file_name, PRI_DEFAULT, initd, fn_copy);
 	if (tid == TID_ERROR)
 		palloc_free_page (fn_copy);
@@ -76,8 +81,13 @@ initd (void *f_name) {
 tid_t
 process_fork (const char *name, struct intr_frame *if_ UNUSED) {
 	/* Clone current thread to new thread.*/
-	return thread_create (name,
-			PRI_DEFAULT, __do_fork, thread_current ());
+  struct thread *cur = thread_current();
+  tid_t ctid = thread_create (name, PRI_DEFAULT, __do_fork, cur);
+  if (ctid == TID_ERROR)
+    return TID_ERROR;
+
+  sema_down(&cur->fork_sema);
+  return ctid;
 }
 
 #ifndef VM
@@ -92,21 +102,31 @@ duplicate_pte (uint64_t *pte, void *va, void *aux) {
 	bool writable;
 
 	/* 1. TODO: If the parent_page is kernel page, then return immediately. */
+  if (is_kernel_vaddr(va))
+    return true;
 
 	/* 2. Resolve VA from the parent's page map level 4. */
 	parent_page = pml4_get_page (parent->pml4, va);
+  if (parent_page == NULL)
+    return false;
 
 	/* 3. TODO: Allocate new PAL_USER page for the child and set result to
 	 *    TODO: NEWPAGE. */
+  newpage = palloc_get_page(PAL_USER);
+  if (newpage == NULL)
+    return false;  
 
 	/* 4. TODO: Duplicate parent's page to the new page and
 	 *    TODO: check whether parent's page is writable or not (set WRITABLE
 	 *    TODO: according to the result). */
+  memcpy(newpage, parent_page, PGSIZE);
+  writable = is_writable(pte);
 
 	/* 5. Add new page to child's page table at address VA with WRITABLE
 	 *    permission. */
 	if (!pml4_set_page (current->pml4, va, newpage, writable)) {
 		/* 6. TODO: if fail to insert page, do error handling. */
+    return false;
 	}
 	return true;
 }
@@ -122,11 +142,11 @@ __do_fork (void *aux) {
 	struct thread *parent = (struct thread *) aux;
 	struct thread *current = thread_current ();
 	/* TODO: somehow pass the parent_if. (i.e. process_fork()'s if_) */
-	struct intr_frame *parent_if;
+	struct intr_frame *parent_if = &parent->ptf;
 	bool succ = true;
-
 	/* 1. Read the cpu context to local stack. */
 	memcpy (&if_, parent_if, sizeof (struct intr_frame));
+  if_.R.rax = 0;
 
 	/* 2. Duplicate PT */
 	current->pml4 = pml4_create();
@@ -142,20 +162,31 @@ __do_fork (void *aux) {
 	if (!pml4_for_each (parent->pml4, duplicate_pte, parent))
 		goto error;
 #endif
-
 	/* TODO: Your code goes here.
 	 * TODO: Hint) To duplicate the file object, use `file_duplicate`
 	 * TODO:       in include/filesys/file.h. Note that parent should not return
 	 * TODO:       from the fork() until this function successfully duplicates
 	 * TODO:       the resources of parent.*/
+  int cnt = 2;
+  struct file **table = parent->fdt;
+  while (cnt < 128) {
+    if (table[cnt]) {
+      current->fdt[cnt] = file_duplicate(table[cnt]);
+    } else {
+      current->fdt[cnt] = NULL;
+    }
+    cnt++;
+  }
 
-	process_init ();
+  sema_up(&parent->fork_sema);
 
+  process_init ();
 	/* Finally, switch to the newly created process. */
 	if (succ)
 		do_iret (&if_);
 error:
-	thread_exit ();
+  sema_up(&parent->fork_sema);
+  exit(TID_ERROR);
 }
 
 /* Switch the current execution context to the f_name.
@@ -204,19 +235,49 @@ process_wait (tid_t child_tid UNUSED) {
 	/* XXX: Hint) The pintos exit if process_wait (initd), we recommend you
 	 * XXX:       to add infinite loop here before
 	 * XXX:       implementing the process_wait. */
-	return -1;
+
+  struct thread *child = get_child_process(child_tid);
+
+  if (child == NULL)
+    return -1;
+
+  sema_down(&child->load_sema);
+  int exit_status = child->exit_status;
+  list_remove(&child->child_elem);
+  sema_up(&child->exit_sema);
+  return exit_status;
 }
 
 /* Exit the process. This function is called by thread_exit (). */
 void
 process_exit (void) {
-	struct thread *curr = thread_current ();
+  struct thread *curr = thread_current ();
+  struct file **table = curr->fdt;
 	/* TODO: Your code goes here.
 	 * TODO: Implement process termination message (see
 	 * TODO: project2/process_termination.html).
 	 * TODO: We recommend you to implement process resource cleanup here. */
+  //여기?
+  if (curr->run_file)
+    file_close(curr->run_file);
 
-	process_cleanup ();
+  int cnt = 2;
+  while (cnt < 128) {
+    if (table[cnt]) {
+      file_close(table[cnt]);
+      table[cnt] = NULL;
+    }
+    cnt++;
+  }
+  struct list_elem *e;
+  struct thread *ch;
+
+  sema_up(&curr->load_sema);
+  do_do_munmap();
+  sema_down(&curr->exit_sema);
+
+  palloc_free_page(table);
+  process_cleanup();
 }
 
 /* Free the current process's resources. */
@@ -335,8 +396,16 @@ load (const char *file_name, struct intr_frame *if_) {
 		goto done;
 	process_activate (thread_current ());
 
+  char *token, *save_ptr;
+  char *argv[64];
+  uint64_t cnt = 0;
+
+  for (token = strtok_r(file_name, " ", &save_ptr); token != NULL; token = strtok_r(NULL, " ", &save_ptr)) {
+    argv[cnt++] = token;
+  }
+
 	/* Open executable file. */
-	file = filesys_open (file_name);
+  file = filesys_open (argv[0]);
 	if (file == NULL) {
 		printf ("load: %s: open failed\n", file_name);
 		goto done;
@@ -416,13 +485,74 @@ load (const char *file_name, struct intr_frame *if_) {
 
 	/* TODO: Your code goes here.
 	 * TODO: Implement argument passing (see project2/argument_passing.html). */
+  
+  argument_stack(argv, cnt, &if_->rsp);
+  if_->R.rdi = cnt;
+  if_->R.rsi = if_->rsp + 8;
 
 	success = true;
 
+  // * 추가
+  t->run_file = file;
+  file_deny_write(file);
+
 done:
 	/* We arrive here whether the load is successful or not. */
-	file_close (file);
 	return success;
+}
+
+struct thread *get_child_process(int pid) {
+  struct thread *cur = thread_current();
+  struct list *child_list = &cur->children;
+  struct list_elem *cur_child = list_begin(child_list);
+
+  while (cur_child != list_end(child_list)) {
+    struct thread *cur_t = list_entry(cur_child, struct thread, child_elem);
+    if (cur_t->tid == pid) {
+      return cur_t;
+    }
+    cur_child = list_next(cur_child);
+  }
+  return NULL;
+}
+
+void argument_stack(char **parse, int count, void **esp) {
+  
+  char *argv_address[count];
+  uint8_t size = 0;
+
+	// * argv[i] 문자열
+	for (int i = count - 1; -1 < i; i--) {
+
+    *esp -= (strlen(parse[i]) + 1);
+    memcpy(*esp, parse[i], strlen(parse[i]) + 1);
+
+		size += strlen(parse[i]) + 1;
+		argv_address[i] = *esp;
+	}
+
+  if (size % 8) {
+		for (int i = (8 - (size % 8)); 0 < i; i--) {
+			*esp -= 1;
+      **(char **)esp = 0;
+    }
+  }
+
+  *esp -= 8;
+  memset(*esp, 0, sizeof(char *));
+//   **(char **)esp = 0;
+
+  // * argv[i] 주소
+	for (int i = count - 1; -1 < i; i--) {
+		*esp = *esp - 8;
+		memcpy(*esp, &argv_address[i], sizeof(char *));
+		// memcpy(*esp, &argv_address[i], strlen(&argv_address[i]));
+	}
+
+	// * return address(fake)
+	*esp -= 8;
+  	memset(*esp, 0, sizeof(char *));
+
 }
 
 
@@ -559,7 +689,12 @@ setup_stack (struct intr_frame *if_) {
  * KPAGE should probably be a page obtained from the user pool
  * with palloc_get_page().
  * Returns true on success, false if UPAGE is already mapped or
- * if memory allocation fails. */
+ * if memory allocation fails.
+ * 사용자 가상 주소 UPAGE에서 커널 가상 주소 KPAGE로의 매핑을 페이지 테이블에 추가합니다.
+ * WRITABLE이 true이면 사용자 프로세스가 페이지를 수정할 수 있습니다. 그렇지 않으면 읽기 전용입니다.
+ * UPAGE는 이미 매핑되어 있지 않아야 합니다.
+ * KPAGE는 아마도 palloc_get_page()를 사용하여 사용자 풀에서 얻은 페이지여야 합니다.
+ * 성공하면 true, UPAGE가 이미 매핑되어 있거나 메모리 할당에 실패하면 false를 반환합니다.*/
 static bool
 install_page (void *upage, void *kpage, bool writable) {
 	struct thread *t = thread_current ();
@@ -575,10 +710,21 @@ install_page (void *upage, void *kpage, bool writable) {
  * upper block. */
 
 static bool
-lazy_load_segment (struct page *page, void *aux) {
+lazy_load_segment (struct page *page, struct aux_struct *aux) {
 	/* TODO: Load the segment from the file */
 	/* TODO: This called when the first page fault occurs on address VA. */
 	/* TODO: VA is available when calling this function. */
+
+	/* pintos project3 */
+	if (file_read_at(aux->vmfile, page->frame->kva, aux->read_bytes, aux->ofs) != (int) aux->read_bytes) {
+	    palloc_free_page (page->frame->kva);
+		free(aux);
+		return false;
+	}
+	memset (page->frame->kva + aux->read_bytes, 0, aux->zero_bytes);
+	free(aux);
+
+	return true;
 }
 
 /* Loads a segment starting at offset OFS in FILE at address
@@ -609,8 +755,18 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		size_t page_read_bytes = read_bytes < PGSIZE ? read_bytes : PGSIZE;
 		size_t page_zero_bytes = PGSIZE - page_read_bytes;
 
+		/* pintos project3 */
+		struct aux_struct *temp_aux = (struct aux_struct*)malloc(sizeof(struct aux_struct));
+
+		temp_aux->vmfile = file;
+		temp_aux->ofs = ofs;
+		temp_aux->read_bytes = page_read_bytes;
+		temp_aux->zero_bytes = page_zero_bytes;
+		temp_aux->writable = writable;
+		temp_aux->upage = upage;
+
 		/* TODO: Set up aux to pass information to the lazy_load_segment. */
-		void *aux = NULL;
+		void *aux = temp_aux;
 		if (!vm_alloc_page_with_initializer (VM_ANON, upage,
 					writable, lazy_load_segment, aux))
 			return false;
@@ -619,11 +775,13 @@ load_segment (struct file *file, off_t ofs, uint8_t *upage,
 		read_bytes -= page_read_bytes;
 		zero_bytes -= page_zero_bytes;
 		upage += PGSIZE;
+		ofs += page_read_bytes;
 	}
 	return true;
 }
 
-/* Create a PAGE of stack at the USER_STACK. Return true on success. */
+/* Create a PAGE of stack at the USER_STACK. Return true on success.
+   USER_STACK에서 스택의 PAGE를 만듭니다. 성공하면 true를 반환합니다.*/
 static bool
 setup_stack (struct intr_frame *if_) {
 	bool success = false;
@@ -631,9 +789,19 @@ setup_stack (struct intr_frame *if_) {
 
 	/* TODO: Map the stack on stack_bottom and claim the page immediately.
 	 * TODO: If success, set the rsp accordingly.
-	 * TODO: You should mark the page is stack. */
-	/* TODO: Your code goes here */
+	 * TODO: You should mark the page is stack.
+	 * TODO: Your code goes here
+	 * stack_bottom에 스택을 매핑하고 즉시 페이지를 요청하십시오.
+	 * 성공하면 그에 따라 rsp를 설정하십시오.
+	 * 페이지가 스택임을 표시해야 합니다. */
 
+	/* pintos project3 */
+
+	if (vm_alloc_page_with_initializer (VM_ANON|VM_MARKER_0, stack_bottom, true, NULL, NULL)){
+		success = vm_claim_page(stack_bottom);
+		if_->rsp = USER_STACK;
+		thread_current()->stack_bottom = stack_bottom;
+	}
 	return success;
 }
 #endif /* VM */

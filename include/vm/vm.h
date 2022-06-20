@@ -3,6 +3,10 @@
 #include <stdbool.h>
 #include "threads/palloc.h"
 
+/* pintos project3 */
+#include <hash.h>
+#include <./threads/mmu.h>
+
 enum vm_type {
 	/* page not initialized */
 	VM_UNINIT = 0,
@@ -16,7 +20,9 @@ enum vm_type {
 	/* Bit flags to store state */
 
 	/* Auxillary bit flag marker for store information. You can add more
-	 * markers, until the value is fit in the int. */
+	 * markers, until the value is fit in the int.
+	 * 저장 정보를 위한 보조 비트 플래그 마커.
+	 * 값이 int에 맞을 때까지 더 많은 마커를 추가할 수 있다.*/
 	VM_MARKER_0 = (1 << 3),
 	VM_MARKER_1 = (1 << 4),
 
@@ -46,6 +52,13 @@ struct page {
 	struct frame *frame;   /* Back reference for frame */
 
 	/* Your implementation */
+	/* pintos project3 */
+	bool writable;     /* True일 경우 해당 주소에 write 가능
+                          False일 경우 해당 주소에 write 불가능 */
+    bool is_loaded;    /* 물리메모리의 탑재 여부를 알려주는 플래그 */
+	
+    /* ‘vm_entry들을 위한 자료구조’ 부분에서 다룰 예정 */
+    struct hash_elem elem; /* 해시 테이블 Element */
 
 	/* Per-type data are binded into the union.
 	 * Each function automatically detects the current union */
@@ -65,10 +78,24 @@ struct frame {
 	struct page *page;
 };
 
+/* pintos project3 */
+struct aux_struct {
+	struct file *vmfile;
+	off_t ofs;
+	uint32_t read_bytes;
+	uint32_t zero_bytes;
+	bool is_loaded;
+	bool writable;
+	uint8_t* upage;
+};
+
 /* The function table for page operations.
  * This is one way of implementing "interface" in C.
  * Put the table of "method" into the struct's member, and
- * call it whenever you needed. */
+ * call it whenever you needed.
+ * 페이지 작업을 위한 함수 테이블입니다.
+ * 이것은 C에서 "인터페이스"를 구현하는 한 가지 방법입니다.
+ * "method" 테이블을 구조체의 멤버에 넣고 필요할 때마다 호출합니다. */
 struct page_operations {
 	bool (*swap_in) (struct page *, void *);
 	bool (*swap_out) (struct page *);
@@ -85,6 +112,8 @@ struct page_operations {
  * We don't want to force you to obey any specific design for this struct.
  * All designs up to you for this. */
 struct supplemental_page_table {
+	/* pintos project3 */
+	struct hash hash;
 };
 
 #include "threads/thread.h"

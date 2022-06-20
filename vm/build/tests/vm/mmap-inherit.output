@@ -1,0 +1,37 @@
+Kernel command line: -q -f put mmap-inherit put sample.txt put child-inherit run mmap-inherit
+0 ~ 9fc00 1
+100000 ~ 13e0000 1
+Pintos booting with: 
+	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
+	ext_mem: 0x100000 ~ 0x13e0000 (Usable: 19,328 kB)
+Calibrating timer...  157,081,600 loops/s.
+hd0:0: detected 329 sector (164 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 20,160 sector (9 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 215 sector (107 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+hd1:1: detected 8,064 sector (3 MB) disk, model "QEMU HARDDISK", serial "QM00004"
+Formatting file system...done.
+Boot complete.
+Putting 'mmap-inherit' into the file system...
+Putting 'sample.txt' into the file system...
+Putting 'child-inherit' into the file system...
+Executing 'mmap-inherit':
+(mmap-inherit) begin
+(mmap-inherit) open "sample.txt"
+(mmap-inherit) mmap "sample.txt"
+(mmap-inherit) exec "child-inherit"
+(child-inherit) begin
+child-inherit: exit(-1)
+(mmap-inherit) checking that mmap'd file still has same data
+(mmap-inherit) end
+mmap-inherit: exit(0)
+Execution of 'mmap-inherit' complete.
+Timer: 68 ticks
+Thread: 30 idle ticks, 33 kernel ticks, 6 user ticks
+hd0:0: 0 reads, 0 writes
+hd0:1: 211 reads, 478 writes
+hd1:0: 215 reads, 0 writes
+hd1:1: 0 reads, 0 writes
+Console: 1308 characters output
+Keyboard: 0 keys pressed
+Exception: 1 page faults
+Powering off...
