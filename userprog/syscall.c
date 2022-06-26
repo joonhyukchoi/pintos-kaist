@@ -280,12 +280,14 @@ void check_valid_string (const void *str, unsigned size) {
 
   for (int i = 0; i < size; i += PGSIZE)
   {
+    #ifdef VM
     struct page *p = spt_find_page(&cur->spt, str + i);
     if (p == NULL)
     {
       // printf("check valid buffer writable %d, p->writable %d\n", writable, p->writable);
       exit(-1);
     }
+    #endif
   }
 }
 
@@ -297,12 +299,14 @@ void check_valid_buffer (void *buffer, unsigned size, bool to_write) {
 
   for (int i = 0; i < size; i += PGSIZE)
   {
+    #ifdef VM
     struct page *p = spt_find_page(&cur->spt, buffer + i);
     if (!p->writable)
     {
       // printf("check valid buffer writable %d, p->writable %d\n", writable, p->writable);
       exit(-1);
     }
+    #endif
   }
 }
 
@@ -318,7 +322,9 @@ void *mmap (void *addr, size_t length, int writable, int fd, off_t offset) {
   }
 
   struct file* file = file_reopen(thread_current()->fdt[fd]);
+  #ifdef VM
   return do_mmap(addr, length, writable, file, offset);
+  #endif
 }
 
 /* pintos project3 */
@@ -326,7 +332,67 @@ void munmap (void *addr) {
   if (is_kernel_vaddr(addr)) {
     return NULL;
   }
+  #ifdef VM
   do_munmap(addr);
+  #endif
 }
 
+/* pintos project4
 
+ * 프로세스의 현재 작업 디렉터리를 상대 또는 절대 디렉터리로 변경합니다.
+ * 성공하면 true를, 실패하면 false를 반환합니다. */
+bool chdir (const char *dir){
+
+}
+
+/* pintos project4
+
+ * 상대 또는 절대일 수 있는 dir이라는 디렉터리를 만듭니다.
+ * 성공하면 true를, 실패하면 false를 반환합니다.
+ * dir이 이미 존재하거나 dir의 마지막 이름 외에 디렉터리 이름이 이미 존재하지 않는 경우 실패합니다.
+ * 즉, mkdir("/a/b/c")은 /a/b가 이미 있고 /a/b/c가 없는 경우에만 성공합니다. */
+bool mkdir (const char *dir){
+
+}
+
+/* pintos project4
+
+ * 디렉토리를 나타내야 하는 파일 설명자 fd에서 디렉토리 항목을 읽습니다.
+ * 성공하면 READDIR_MAX_LEN + 1바이트를 위한 공간이 있어야 하는 이름에 null로
+ * 끝나는 파일 이름을 저장하고 true를 반환합니다.
+ * 디렉토리에 항목이 남아 있지 않으면 false를 반환합니다.
+ * 
+ * . 그리고 ..는 readdir에 의해 반환되어서는 안됩니다.
+ * 디렉토리가 열려 있는 동안 변경되면 일부 항목이 전혀 읽히지 않거나 여러 번 읽는 것이 허용됩니다.
+ * 그렇지 않으면 각 디렉토리 항목은 순서에 관계없이 한 번만 읽어야 합니다.
+ * 
+ * READDIR_MAX_LEN은 lib/user/syscall.h에 정의되어 있습니다.
+ * 파일 시스템이 기본 파일 시스템보다 긴 파일 이름을 지원하는 경우
+ * 이 값을 기본값인 14에서 늘려야 합니다. */
+bool readdir (int fd, char *name){
+
+}
+
+/* pintos project4
+
+ * fd가 디렉토리를 나타내는 경우 true를 반환하고 일반 파일을 나타내는 경우 false를 반환합니다. */
+bool isdir (int fd){
+
+}
+
+/* pintos project4
+
+ * 일반 파일이나 디렉토리를 나타낼 수 있는 fd와 관련된 inode의 inode 번호를 반환합니다.
+
+ * inode 번호는 파일이나 디렉토리를 지속적으로 식별합니다. 파일이 존재하는 동안 고유합니다.
+ * Pintos에서 inode의 sector number는 inode number로 사용하기에 적합합니다. */
+int inumber (int fd){
+
+}
+
+/* pintos project4
+ * 문자열 target을 포함하는 linkpath라는 symbolic link를 만듭니다.
+ * 성공하면 0이 반환됩니다. 그렇지 않으면 -1이 반환됩니다. */
+int symlink (const char *target, const char *linkpath){
+
+}

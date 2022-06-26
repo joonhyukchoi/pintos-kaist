@@ -1,0 +1,19 @@
+Kernel command line: -q run 'tar fs.tar /' get fs.tar
+0 ~ 9fc00 1
+100000 ~ ffe0000 1
+Pintos booting with: 
+	base_mem: 0x0 ~ 0x9fc00 (Usable: 639 kB)
+	ext_mem: 0x100000 ~ 0xffe0000 (Usable: 260,992 kB)
+Calibrating timer...  157,081,600 loops/s.
+hd0:0: detected 321 sector (160 kB) disk, model "QEMU HARDDISK", serial "QM00001"
+hd0:1: detected 4,032 sector (1 MB) disk, model "QEMU HARDDISK", serial "QM00002"
+hd1:0: detected 2,048 sector (1024 kB) disk, model "QEMU HARDDISK", serial "QM00003"
+Boot complete.
+Executing 'tar fs.tar /':
+Kernel PANIC at ../../threads/thread.c:354 in thread_yield(): assertion `!intr_context ()' failed.
+Call stack: 0x8004213c72 0x80042073a1 0x8004206fba 0x800420a1d3 0x8004210239 0x8004208fcb 0x80042093e9 0x80042079e3.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Kernel PANIC recursion at ../../threads/synch.c:217 in lock_acquire().
+bad signature on scratch disk

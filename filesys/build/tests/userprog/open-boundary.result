@@ -1,0 +1,12 @@
+FAIL
+Kernel panic in run: PANIC at ../../lib/kernel/bitmap.c:272 in bitmap_scan(): assertion `b != NULL' failed.
+Call stack: 0x8004213c72 0x8004215e3a 0x8004215f37 0x800421a8e5 0x8004219b3c 0x800421c6c8 0x80042068c0 0x800420617a
+Translation of call stack:
+0x0000008004213c72: debug_panic (lib/kernel/debug.c:32)
+0x0000008004215e3a: bitmap_scan (lib/kernel/bitmap.c:273)
+0x0000008004215f37: bitmap_scan_and_flip (lib/kernel/bitmap.c:294)
+0x000000800421a8e5: free_map_allocate (filesys/free-map.c:27)
+0x0000008004219b3c: filesys_create (filesys/filesys.c:65)
+0x000000800421c6c8: fsutil_put (filesys/fsutil.c:108)
+0x00000080042068c0: run_actions (threads/init.c:297)
+0x000000800420617a: main (threads/init.c:125)

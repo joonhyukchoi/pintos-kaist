@@ -272,8 +272,11 @@ process_exit (void) {
   struct list_elem *e;
   struct thread *ch;
 
-  sema_up(&curr->load_sema);
+#ifdef VM
   do_do_munmap();
+#endif
+
+  sema_up(&curr->load_sema);
   sema_down(&curr->exit_sema);
 
   palloc_free_page(table);

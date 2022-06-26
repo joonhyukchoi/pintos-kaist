@@ -31,8 +31,15 @@ void close (int fd);
 /* pintos project3 */
 void check_valid_string (const void *str, unsigned size);
 void check_valid_buffer (void *buffer, unsigned size, bool to_write);
-void *mmap (void *addr, size_t length, int writable, int fd, off_t offset);
+void *mmap (void *addr, size_t length, int writable, int fd, int offset);
 void munmap (void *addr);
 
+/* pintos project4 */
+bool chdir (const char *dir);
+bool mkdir (const char *dir);
+bool readdir (int fd, char *name);
+bool isdir (int fd);
+int inumber (int fd);
+int symlink (const char *target, const char *linkpath);
 
 #endif /* userprog/syscall.h */
